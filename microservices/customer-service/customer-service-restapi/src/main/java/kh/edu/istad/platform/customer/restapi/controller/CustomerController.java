@@ -29,31 +29,30 @@ public class CustomerController {
     private final InitiateCustomerUseCase initiateCustomerUseCase;
     private final CustomerWebMapper customerWebMapper;
     private final UpdateCustomerUseCase updateCustomerUseCase;
-    private final GetAllCustomersUseCase getAllCustomersUseCase;
     private final DeactivateCustomerUseCase deactivateCustomerUseCase;
+    private final GetAllCustomersUseCase getAllCustomersUseCase;
 
     @GetMapping
     public PagedModel<CustomerResponse> getAllCustomers(
-            @ParameterObject @PageableDefault(size = 10, sort = "customerId") Pageable pageable
-    ) {
-        try {
-            var customers = getAllCustomersUseCase.execute(pageable);
-            return new PagedModel<>(customers.map(customer -> new CustomerResponse(
-                    customer.getId().id(),
-                    customer.getUsername(),
-                    customer.getFamilyName(),
-                    customer.getGivenName(),
-                    customer.getEmail() == null ? null : customer.getEmail().value(),
-                    customer.getPhoneNumber() == null ? null : customer.getPhoneNumber().value()
-            )));
-        } catch (IllegalArgumentException exception) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST, exception.getMessage(), exception);
-        }
-    }
+            @ParameterObject
+            @PageableDefault(page = 0, size = 15, sort = "customerId")
+            Pageable pageable
+    ){
+        var customers = getAllCustomersUseCase.execute(pageable);
+        var responses = customers.map(customer -> new CustomerResponse(
+                customer.getId().id(),
+                customer.getUsername(),
+                customer.getFamilyName(),
+                customer.getGivenName(),
+                customer.getEmail().value(),
+                customer.getPhoneNumber().value()
+        ));
 
+        return new PagedModel<>(responses);
+    }
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
-    public CustomerInitiateResponse initiateResponse(@RequestBody CustomerInitiateRequest customerInitiateRequest){
+    public CustomerInitiateResponse initiateResponse(@Valid @RequestBody CustomerInitiateRequest customerInitiateRequest){
         InitiateCustomerResult result = initiateCustomerUseCase.execute(customerWebMapper.toCommand(customerInitiateRequest));
 
         return customerWebMapper.toResponse(result);

@@ -13,5 +13,5 @@ public interface CustomerRepository {
 
     Optional<Customer> findById(CustomerId customerId);
 
-    Page<Customer> findAll(Pageable pageable);
+    Page<Customer> findAll (Pageable pageable);
 }

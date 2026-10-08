@@ -5,23 +5,24 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/DeactivateCustomerUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerDeactivateResponse.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/exception/CustomerNotFoundException.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/event/CustomerDeactivatedEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/event/CustomerDeactivatedEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/service/CustomerDomainServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/service/CustomerDomainServiceImpl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/GetAllCustomersUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/GetAllCustomersUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseLocalColorSettings">
+    <colors>
+      <entry key="07e6868d-ce7a-4038-b383-e0963e7a0673" value="" />
+    </colors>
   </component>
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
@@ -66,61 +67,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0" />
-      <entry key="S5" value="1.0000000000005362" />
-      <entry key="S10" value="1.000000884375599" />
-      <entry key="S30" value="1.0147273270082233" />
-      <entry key="S60" value="1.2271826605549232" />
-      <entry key="M2" value="2.7616050488251878" />
-      <entry key="M5" value="11.155735030107769" />
-      <entry key="M10" value="23.012728527113495" />
-      <entry key="M15" value="33.85898331401852" />
-      <entry key="M30" value="68.23601180768797" />
-      <entry key="H1" value="134.01275317229573" />
-      <entry key="H2" value="222.84950768700674" />
-      <entry key="H4" value="305.0405602982432" />
-      <entry key="D1" value="410.22922952517996" />
-      <entry key="W1" value="433.0355794727777" />
+      <entry key="MS100" value="2.5263544760463636E-180" />
+      <entry key="MS500" value="1.2036462230249171E-36" />
+      <entry key="S2" value="1.0474292903113238E-9" />
+      <entry key="S5" value="2.558879798715735E-4" />
+      <entry key="S10" value="0.015996513134861834" />
+      <entry key="S30" value="0.2556766126422965" />
+      <entry key="S60" value="0.6159990382497155" />
+      <entry key="M2" value="1.9565771619034469" />
+      <entry key="M5" value="9.719241090842049" />
+      <entry key="M10" value="21.480045484692585" />
+      <entry key="M15" value="32.33840791964209" />
+      <entry key="M30" value="66.6862039742777" />
+      <entry key="H1" value="132.48213242359552" />
+      <entry key="H2" value="221.573220044916" />
+      <entry key="H4" value="304.1658028799279" />
+      <entry key="D1" value="410.03292743731276" />
+      <entry key="W1" value="433.005971209072" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="2.079751450455158E-107" />
-      <entry key="S2" value="3.359131694397357E-27" />
-      <entry key="S5" value="3.8784402416581445E-11" />
-      <entry key="S10" value="8.943962042506523E-6" />
-      <entry key="S30" value="0.03851863842150904" />
-      <entry key="S60" value="0.42045779585834386" />
-      <entry key="M2" value="2.63300021976019" />
-      <entry key="M5" value="13.794736389590666" />
-      <entry key="M10" value="29.450479362776786" />
-      <entry key="M15" value="43.902430391009226" />
-      <entry key="M30" value="87.55891445147225" />
-      <entry key="H1" value="162.87355955379138" />
-      <entry key="H2" value="257.36065308592737" />
-      <entry key="H4" value="341.842224397902" />
-      <entry key="D1" value="448.13598766892153" />
-      <entry key="W1" value="471.0252686658909" />
+      <entry key="MS100" value="1.0000000000305507" />
+      <entry key="MS500" value="1.0078886820124742" />
+      <entry key="S2" value="1.2980239129647737" />
+      <entry key="S5" value="1.6161698515999765" />
+      <entry key="S10" value="1.7849650159166972" />
+      <entry key="S30" value="1.9321707565325563" />
+      <entry key="S60" value="2.1715044385965534" />
+      <entry key="M2" value="3.8454873941098175" />
+      <entry key="M5" value="14.010387292123589" />
+      <entry key="M10" value="29.485005092252077" />
+      <entry key="M15" value="43.92812657990847" />
+      <entry key="M30" value="87.56889173733109" />
+      <entry key="H1" value="163.01263405893332" />
+      <entry key="H2" value="257.8863794826303" />
+      <entry key="H4" value="342.86176361760175" />
+      <entry key="D1" value="449.9215184910234" />
+      <entry key="W1" value="472.9930589016768" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.8290215846382385E-115" />
-      <entry key="MS500" value="1.3701617181724373E-23" />
-      <entry key="S2" value="1.9239463496978736E-6" />
-      <entry key="S5" value="0.005172222341352342" />
-      <entry key="S10" value="0.07192748348745018" />
-      <entry key="S30" value="0.46828244321714496" />
-      <entry key="S60" value="1.2865816296767616" />
-      <entry key="M2" value="5.1719905123468255" />
-      <entry key="M5" value="24.80414203801981" />
-      <entry key="M10" value="52.34960519970332" />
-      <entry key="M15" value="77.65914082460426" />
-      <entry key="M30" value="155.70072555342134" />
-      <entry key="H1" value="296.80070193758155" />
-      <entry key="H2" value="480.14348916781216" />
-      <entry key="H4" value="646.8389997313652" />
-      <entry key="D1" value="858.3557690431602" />
-      <entry key="W1" value="904.0594329422629" />
+      <entry key="MS100" value="5.710023440872447E-7" />
+      <entry key="MS500" value="0.057500425558388364" />
+      <entry key="S2" value="0.6692124009001211" />
+      <entry key="S5" value="1.255841035442049" />
+      <entry key="S10" value="1.5783845610539189" />
+      <entry key="S30" value="1.9637898369544005" />
+      <entry key="S60" value="2.5669089013436186" />
+      <entry key="M2" value="5.6244015894103425" />
+      <entry key="M5" value="23.594100333522427" />
+      <entry key="M10" value="50.854982643461355" />
+      <entry key="M15" value="76.16616462058713" />
+      <entry key="M30" value="154.1616883415113" />
+      <entry key="H1" value="295.40946009511345" />
+      <entry key="H2" value="479.3929729844232" />
+      <entry key="H4" value="646.9837386875607" />
+      <entry key="D1" value="859.9449742281735" />
+      <entry key="W1" value="905.9976110009939" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -143,6 +144,7 @@
     "RequestMappingsPanelWidth0": "75",
     "RequestMappingsPanelWidth1": "75",
     "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
     "RunOnceActivity.typescript.service.memoryLimit.init": "true",
     "Spring Boot.BusinessApplicationService.executor": "Run",
     "Spring Boot.CustomerApplicationService (1).executor": "Run",
