@@ -1,0 +1,8 @@
+plugins {
+    id 'java-common-conventions'
+}
+
+dependencies {
+
+}
+

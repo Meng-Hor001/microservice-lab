@@ -1,0 +1,22 @@
+pluginManagement {
+    includeBuild('../../build-logic')
+
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+}
+
+include 'customer-service-restapi'
+include 'customer-service-main'
+include 'customer-service-persistence'
+include 'customer-service-message'
+include 'customer-service-domain:customer-domain-core'
+include 'customer-service-domain:customer-application-service'
+

@@ -1,0 +1,8 @@
+plugins {
+    id 'spring-common-conventions'
+}
+
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+    api 'kh.edu.istad:customer-application-service'
+}
