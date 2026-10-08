@@ -11,7 +11,7 @@ public record CustomerInitiateRequest (
         String familyName,
 
         @NotBlank
-        String giveName,
+        String givenName,
 
         @NotBlank
         String email,

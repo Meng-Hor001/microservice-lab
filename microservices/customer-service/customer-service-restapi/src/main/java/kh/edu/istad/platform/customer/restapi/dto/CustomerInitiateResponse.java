@@ -2,11 +2,13 @@ package kh.edu.istad.platform.customer.restapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CustomerInitiateResponse(
+import java.util.UUID;
 
+public record CustomerInitiateResponse(
+        UUID customerId,
         String username,
         String familyName,
-        String giveName,
+        String givenName,
         String email,
         String phoneNumber
 ) {

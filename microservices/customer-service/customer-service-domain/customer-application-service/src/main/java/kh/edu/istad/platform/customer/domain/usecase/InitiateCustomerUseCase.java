@@ -20,6 +20,12 @@ public class InitiateCustomerUseCase {
         // validate by load data from persistence (Output port)
         // invoke domain logic (called domain service)
         // save data into database (output port)
-        return new InitiateCustomerResult(UUID.randomUUID());
+        return new InitiateCustomerResult(
+                UUID.randomUUID(),
+                command.username(),
+                command.familyName(),
+                command.givenName(),
+                command.email(),
+                command.phoneNumber());
     }
 }
