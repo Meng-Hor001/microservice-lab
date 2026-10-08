@@ -5,7 +5,13 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/UpdateCustomerCommand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/service/CustomerDomainService.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/service/CustomerDomainService.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/service/CustomerDomainServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/service/CustomerDomainServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -45,8 +51,8 @@
         <option value="Enum" />
         <option value="Exception" />
         <option value="Record" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -55,61 +61,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="2.4651903288156685E-32" />
-      <entry key="MS500" value="4.768371582031249E-7" />
-      <entry key="S2" value="0.026278401229568767" />
-      <entry key="S5" value="0.23598500804675374" />
-      <entry key="S10" value="0.5353269355586455" />
-      <entry key="S30" value="1.2823561583546146" />
-      <entry key="S60" value="2.2386514928806527" />
-      <entry key="M2" value="3.7512153535501724" />
-      <entry key="M5" value="7.401770951769982" />
-      <entry key="M10" value="16.451194314700395" />
-      <entry key="M15" value="28.330445119665693" />
-      <entry key="M30" value="65.05642656374792" />
-      <entry key="H1" value="118.334492056571" />
-      <entry key="H2" value="171.86182041625827" />
-      <entry key="H4" value="212.20853531109802" />
-      <entry key="D1" value="256.6152323006692" />
-      <entry key="W1" value="265.4817826462107" />
+      <entry key="MS100" value="2.89342372517299E-17" />
+      <entry key="MS500" value="4.923595971165014E-4" />
+      <entry key="S2" value="0.14896032799236553" />
+      <entry key="S5" value="0.46814002052934256" />
+      <entry key="S10" value="0.7594480613854152" />
+      <entry key="S30" value="2.2748060724206076" />
+      <entry key="S60" value="4.753731636217028" />
+      <entry key="M2" value="8.740717485869679" />
+      <entry key="M5" value="18.262348980312893" />
+      <entry key="M10" value="32.25420106081922" />
+      <entry key="M15" value="45.022595842099925" />
+      <entry key="M30" value="81.74311340250344" />
+      <entry key="H1" value="141.5209776973153" />
+      <entry key="H2" value="209.43730245855244" />
+      <entry key="H4" value="264.8719689103247" />
+      <entry key="D1" value="329.42340593979833" />
+      <entry key="W1" value="342.7119918188772" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000002596168" />
-      <entry key="S2" value="1.006313412249527" />
-      <entry key="S5" value="1.2355006594947255" />
-      <entry key="S10" value="1.945829009480303" />
-      <entry key="S30" value="4.665302708978148" />
-      <entry key="S60" value="8.162007441421423" />
-      <entry key="M2" value="12.705659790997222" />
-      <entry key="M5" value="20.708949276522855" />
-      <entry key="M10" value="33.76788327048467" />
-      <entry key="M15" value="46.78819922931566" />
-      <entry key="M30" value="82.18146007562426" />
-      <entry key="H1" value="131.7333499313601" />
-      <entry key="H2" value="181.4946333324763" />
-      <entry key="H4" value="219.25506041996414" />
-      <entry key="D1" value="261.14891016927663" />
-      <entry key="W1" value="269.5585053015098" />
+      <entry key="MS100" value="1.0000019883456437" />
+      <entry key="MS500" value="1.072393345630097" />
+      <entry key="S2" value="1.5412986980656629" />
+      <entry key="S5" value="2.1740272305512187" />
+      <entry key="S10" value="3.1741371054646863" />
+      <entry key="S30" value="6.211382254598111" />
+      <entry key="S60" value="9.01979518414772" />
+      <entry key="M2" value="12.444436716727258" />
+      <entry key="M5" value="19.993331554635862" />
+      <entry key="M10" value="32.66528316957161" />
+      <entry key="M15" value="45.45281519633419" />
+      <entry key="M30" value="82.60433645167205" />
+      <entry key="H1" value="141.08027092893343" />
+      <entry key="H2" value="206.2867804778617" />
+      <entry key="H4" value="259.2835960814698" />
+      <entry key="D1" value="321.0634565405006" />
+      <entry key="W1" value="333.80514955212215" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="2.6794458120250365E-32" />
-      <entry key="MS500" value="5.696639112172217E-7" />
-      <entry key="S2" value="0.04766600497978636" />
-      <entry key="S5" value="0.6333273116051109" />
-      <entry key="S10" value="1.847793440390406" />
-      <entry key="S30" value="5.556709524755713" />
-      <entry key="S60" value="10.1027158956645" />
-      <entry key="M2" value="16.245395684691882" />
-      <entry key="M5" value="27.979214988922937" />
-      <entry key="M10" value="50.11010740839459" />
-      <entry key="M15" value="75.01607355179891" />
-      <entry key="M30" value="147.1477860699436" />
-      <entry key="H1" value="249.99795832470957" />
-      <entry key="H2" value="353.309786720256" />
-      <entry key="H4" value="431.43595278580386" />
-      <entry key="D1" value="517.758753558074" />
-      <entry key="W1" value="535.039495896343" />
+      <entry key="MS100" value="0.003400588137893225" />
+      <entry key="MS500" value="0.32263414902748677" />
+      <entry key="S2" value="0.9979586591663858" />
+      <entry key="S5" value="2.003754418778185" />
+      <entry key="S10" value="3.431744518046331" />
+      <entry key="S30" value="8.180654340839896" />
+      <entry key="S60" value="13.540601982028429" />
+      <entry key="M2" value="21.00708699468812" />
+      <entry key="M5" value="38.12823586687719" />
+      <entry key="M10" value="64.81022962089835" />
+      <entry key="M15" value="90.37270676104843" />
+      <entry key="M30" value="164.25409244304052" />
+      <entry key="H1" value="282.5236034620532" />
+      <entry key="H2" value="415.6689891108294" />
+      <entry key="H4" value="524.1216396789158" />
+      <entry key="D1" value="650.4799980072082" />
+      <entry key="W1" value="676.5161255031853" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -169,7 +175,7 @@
             <map>
               <entry key="BusinessApplicationService" value="STOPPED" />
               <entry key="CustomerApplicationService" value="STOPPED" />
-              <entry key="CustomerApplicationService (1)" value="FAILED" />
+              <entry key="CustomerApplicationService (1)" value="STOPPED" />
             </map>
           </value>
         </entry>
