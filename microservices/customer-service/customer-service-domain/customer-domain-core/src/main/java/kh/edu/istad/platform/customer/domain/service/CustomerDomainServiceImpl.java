@@ -24,6 +24,9 @@ public class CustomerDomainServiceImpl implements CustomerDomainService{
     @Override
     public CustomerDeactivatedEvent deactivateCustomer(Customer customer) {
         customer.deactivateCustomer();
-        return null;
+        return new CustomerDeactivatedEvent(
+                customer.getId(),
+                ZonedDateTime.now(ZoneId.of("UTC"))
+        );
     }
 }

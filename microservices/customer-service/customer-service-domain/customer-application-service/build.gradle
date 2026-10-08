@@ -4,4 +4,5 @@ plugins {
 
 dependencies {
     api 'kh.edu.istad:customer-domain-core'
+    api 'org.springframework.data:spring-data-commons'
 }

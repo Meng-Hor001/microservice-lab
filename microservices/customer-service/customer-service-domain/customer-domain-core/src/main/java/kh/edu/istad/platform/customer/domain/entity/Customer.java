@@ -58,7 +58,7 @@ public class Customer extends AggregateRoot<CustomerId> {
 
 public void deactivateCustomer(){
         if (status != CustomerStatus.ACTIVE){
-            throw new CustomerDomainException("Could not deactivate because customer is activate");
+            throw new CustomerDomainException(" Only active customers can be deactivated");
         }
         status = CustomerStatus.INACTIVE;
 }
