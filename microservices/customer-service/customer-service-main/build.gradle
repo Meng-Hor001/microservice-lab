@@ -9,8 +9,8 @@ dependencies {
     implementation 'kh.edu.istad:customer-service-message'
     implementation 'kh.edu.istad:customer-service-persistence'
     implementation 'kh.edu.istad:customer-service-restapi'
-
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.1.1'
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-
+    implementation 'org.springdoc:springdoc-openapi-starter-webmvc-scalar:3.1.1'
 }
 
