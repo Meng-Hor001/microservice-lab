@@ -5,25 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/dto/CreateOrderCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/dto/CreateOrderResult.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/dto/Item.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/exception/DomainException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/BusinessId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/CustomerId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/Money.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/OrderId.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/OrderStatus.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/StreetAddress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/port/out/OrderRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/usecase/CreateOrderUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Business.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Customer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Order.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/OrderItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Product.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/business-service-domain/business-application-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/business-service-domain/business-application-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/business-service-main/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/business-service-main/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/business-service-persistence/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/business-service-persistence/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/business-service-restapi/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/business-service-restapi/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/order-service/order-service-main/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/order-service/order-service-main/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/order-service/order-service-persistence/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/order-service/order-service-persistence/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/order-service/order-service-restapi/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/order-service/order-service-restapi/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/dto/CreateOrderResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-application-service/src/main/java/kh/edu/istad/platform/order/application/dto/CreateOrderResult.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -65,10 +55,10 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Interface" />
-        <option value="Class" />
         <option value="Exception" />
         <option value="Enum" />
+        <option value="Interface" />
+        <option value="Class" />
         <option value="Record" />
       </list>
     </option>
@@ -78,61 +68,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="0.0012975447403286249" />
-      <entry key="MS500" value="0.26462109871878314" />
-      <entry key="S2" value="0.7172263261568638" />
-      <entry key="S5" value="0.8775313795565534" />
-      <entry key="S10" value="0.9909268318741183" />
-      <entry key="S30" value="2.0941901072587563" />
-      <entry key="S60" value="4.961274426156896" />
-      <entry key="M2" value="12.15787563779758" />
-      <entry key="M5" value="30.592117962943775" />
-      <entry key="M10" value="49.54927897094236" />
-      <entry key="M15" value="61.832472882495104" />
-      <entry key="M30" value="87.43636671511658" />
-      <entry key="H1" value="137.27259405069955" />
-      <entry key="H2" value="230.13199929891582" />
-      <entry key="H4" value="341.2058879025138" />
-      <entry key="D1" value="514.0394428966167" />
-      <entry key="W1" value="555.6290210335147" />
+      <entry key="MS100" value="1.0" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000926915727377" />
+      <entry key="S5" value="1.0452800009093521" />
+      <entry key="S10" value="1.3871990193925288" />
+      <entry key="S30" value="3.026614569466301" />
+      <entry key="S60" value="4.799004839313502" />
+      <entry key="M2" value="8.413495690398877" />
+      <entry key="M5" value="23.069992029681984" />
+      <entry key="M10" value="49.46661136887094" />
+      <entry key="M15" value="72.26907252373934" />
+      <entry key="M30" value="120.91486318733672" />
+      <entry key="H1" value="188.2908460204207" />
+      <entry key="H2" value="293.1010954883986" />
+      <entry key="H4" value="417.40335985282263" />
+      <entry key="D1" value="616.3952114154804" />
+      <entry key="W1" value="665.2952455343793" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="1.0000001794453877" />
-      <entry key="MS500" value="1.0504444250654117" />
-      <entry key="S2" value="1.7581869993889643" />
-      <entry key="S5" value="2.746783937946316" />
-      <entry key="S10" value="3.905250217242252" />
-      <entry key="S30" value="8.033660810600738" />
-      <entry key="S60" value="14.600817747221633" />
-      <entry key="M2" value="25.860646915686093" />
-      <entry key="M5" value="46.408394343457026" />
-      <entry key="M10" value="63.581062775110844" />
-      <entry key="M15" value="73.81767735194062" />
-      <entry key="M30" value="97.29687661462441" />
-      <entry key="H1" value="151.83577931993207" />
-      <entry key="H2" value="254.3448372621913" />
-      <entry key="H4" value="373.86041414986477" />
-      <entry key="D1" value="555.9535393215604" />
-      <entry key="W1" value="599.3266055105473" />
+      <entry key="MS100" value="4.46772963300033E-62" />
+      <entry key="MS500" value="5.372478037799318E-13" />
+      <entry key="S2" value="0.0010251489438834426" />
+      <entry key="S5" value="0.11697306569421002" />
+      <entry key="S10" value="0.7321071689169747" />
+      <entry key="S30" value="3.410787729487495" />
+      <entry key="S60" value="7.356355992555326" />
+      <entry key="M2" value="16.47499938086536" />
+      <entry key="M5" value="43.64223400565652" />
+      <entry key="M10" value="83.09927910368293" />
+      <entry key="M15" value="114.02813422878155" />
+      <entry key="M30" value="174.63151470913704" />
+      <entry key="H1" value="254.07020547157774" />
+      <entry key="H2" value="372.86824583414676" />
+      <entry key="H4" value="508.9389860990329" />
+      <entry key="D1" value="721.2879607063745" />
+      <entry key="W1" value="772.8422010853972" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.001552557592943357" />
-      <entry key="MS500" value="0.4615356054679319" />
-      <entry key="S2" value="1.9908324032765874" />
-      <entry key="S5" value="3.308393794138269" />
-      <entry key="S10" value="4.656170871411065" />
-      <entry key="S30" value="9.925773420241185" />
-      <entry key="S60" value="19.36522910333764" />
-      <entry key="M2" value="37.83132266122234" />
-      <entry key="M5" value="76.85100439333324" />
-      <entry key="M10" value="113.01895204469034" />
-      <entry key="M15" value="135.55903283336067" />
-      <entry key="M30" value="184.66579801011505" />
-      <entry key="H1" value="289.04740491170935" />
-      <entry key="H2" value="484.42050683809777" />
-      <entry key="H4" value="715.0232052473808" />
-      <entry key="D1" value="1069.982055385766" />
-      <entry key="W1" value="1154.9539391864232" />
+      <entry key="MS100" value="7.556469695031199E-4" />
+      <entry key="MS500" value="0.2375000957188689" />
+      <entry key="S2" value="0.6989293594795422" />
+      <entry key="S5" value="1.0123029204433767" />
+      <entry key="S10" value="1.9900140344208845" />
+      <entry key="S30" value="6.299111116358852" />
+      <entry key="S60" value="12.019649026034743" />
+      <entry key="M2" value="24.7527278745648" />
+      <entry key="M5" value="66.57672127265504" />
+      <entry key="M10" value="132.43388211631446" />
+      <entry key="M15" value="186.17346237793157" />
+      <entry key="M30" value="295.44553997421116" />
+      <entry key="H1" value="442.278767942922" />
+      <entry key="H2" value="665.9007268231405" />
+      <entry key="H4" value="926.291697095566" />
+      <entry key="D1" value="1337.6704535345646" />
+      <entry key="W1" value="1438.135481520169" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{

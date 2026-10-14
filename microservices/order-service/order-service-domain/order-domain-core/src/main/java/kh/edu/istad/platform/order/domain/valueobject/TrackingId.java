@@ -10,4 +10,8 @@ public record TrackingId(UUID id) {
             throw new DomainException("Tracking ID is required");
         }
     }
+
+    public static TrackingId generate() {
+        return new TrackingId(UUID.randomUUID());
+    }
 }
