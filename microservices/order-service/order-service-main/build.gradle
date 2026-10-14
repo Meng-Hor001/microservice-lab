@@ -1,9 +1,8 @@
-plugins { id 'springboot-common-conventions' }
+plugins {
+    id 'springboot-common-conventions'
+}
 
 dependencies {
-    testImplementation platform('org.junit:junit-bom:6.0.0')
-    testImplementation 'org.junit.jupiter:junit-jupiter'
-    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
     implementation project(':order-service-restapi')
     implementation project(':order-service-persistence')
     runtimeOnly 'org.postgresql:postgresql'

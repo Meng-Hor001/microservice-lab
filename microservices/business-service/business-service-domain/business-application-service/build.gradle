@@ -1,5 +1,5 @@
 plugins {
-    id 'java'
+    id 'spring-common-conventions'
 }
 
 group = 'com.edu.kh'
@@ -10,7 +10,9 @@ repositories {
 }
 
 dependencies {
-
+    api project(':business-service-domain:business-domain-core')
+    api 'io.projectreactor:reactor-core'
+    implementation 'org.springframework:spring-context'
 }
 
 test {
