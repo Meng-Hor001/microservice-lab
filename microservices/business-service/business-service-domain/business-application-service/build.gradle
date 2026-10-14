@@ -1,0 +1,18 @@
+plugins {
+    id 'java'
+}
+
+group = 'com.edu.kh'
+version = 'unspecified'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+
+}
+
+test {
+    useJUnitPlatform()
+}

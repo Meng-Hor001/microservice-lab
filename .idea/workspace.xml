@@ -5,14 +5,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/deployment/docker-compose.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/settings.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/payment-service/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/InitiateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/InitiateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-logic/src/main/groovy/spring-common-conventions.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build-logic/src/main/groovy/spring-common-conventions.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build-logic/src/main/groovy/springboot-common-conventions.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build-logic/src/main/groovy/springboot-common-conventions.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/deployment/docker-compose.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/deployment/docker-compose.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/business-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/business-service/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -68,60 +71,60 @@
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.000000000847246" />
-      <entry key="S5" value="1.0002350735761607" />
-      <entry key="S10" value="1.015332122878041" />
-      <entry key="S30" value="1.2520867341881274" />
-      <entry key="S60" value="1.6116592222314114" />
-      <entry key="M2" value="2.9496727734639316" />
-      <entry key="M5" value="10.705507599147035" />
-      <entry key="M10" value="22.464864242345648" />
-      <entry key="M15" value="33.323169123386116" />
-      <entry key="M30" value="67.67048988556962" />
-      <entry key="H1" value="133.46652230850682" />
-      <entry key="H2" value="222.5601658869943" />
-      <entry key="H4" value="305.15684266598765" />
-      <entry key="D1" value="411.0309142656511" />
-      <entry key="W1" value="434.00566749925247" />
+      <entry key="MS500" value="1.0001246352692514" />
+      <entry key="S2" value="1.105659910641299" />
+      <entry key="S5" value="1.4069715925352173" />
+      <entry key="S10" value="1.6379432518141543" />
+      <entry key="S30" value="1.8608502450362163" />
+      <entry key="S60" value="1.9287426359391102" />
+      <entry key="M2" value="2.0062170482730934" />
+      <entry key="M5" value="2.5152166584188347" />
+      <entry key="M10" value="4.050146636228794" />
+      <entry key="M15" value="7.039894751169591" />
+      <entry key="M30" value="24.773979219627734" />
+      <entry key="H1" value="77.43919962428225" />
+      <entry key="H2" value="170.2012564338057" />
+      <entry key="H4" value="270.8162563901756" />
+      <entry key="D1" value="414.9911334519026" />
+      <entry key="W1" value="448.1691159515619" />
     </decayedCancelled>
     <decayedSelected>
-      <entry key="MS100" value="0.014377932041452927" />
-      <entry key="MS500" value="0.4314712408330248" />
-      <entry key="S2" value="1.0499473329247269" />
-      <entry key="S5" value="1.4847075931009437" />
-      <entry key="S10" value="1.7108292742495583" />
-      <entry key="S30" value="1.9050417278076803" />
-      <entry key="S60" value="2.1562058274603797" />
-      <entry key="M2" value="3.8319174009476953" />
-      <entry key="M5" value="13.990590320763182" />
-      <entry key="M10" value="29.464166262640422" />
-      <entry key="M15" value="43.90742637189201" />
-      <entry key="M30" value="87.54825680460407" />
-      <entry key="H1" value="162.99342659350367" />
-      <entry key="H2" value="257.8711859067868" />
-      <entry key="H4" value="342.8516634856183" />
-      <entry key="D1" value="449.9193094751362" />
-      <entry key="W1" value="472.99272714496647" />
+      <entry key="MS100" value="3.328945459114105E-13" />
+      <entry key="MS500" value="0.0032309210231828986" />
+      <entry key="S2" value="0.31520204069407115" />
+      <entry key="S5" value="0.9223535946515875" />
+      <entry key="S10" value="1.3498078759541245" />
+      <entry key="S30" value="1.7518848347921259" />
+      <entry key="S60" value="1.871775021997712" />
+      <entry key="M2" value="1.9510138506562285" />
+      <entry key="M5" value="2.243256575544703" />
+      <entry key="M10" value="3.875098470699135" />
+      <entry key="M15" value="7.82564859005535" />
+      <entry key="M30" value="31.274038600853576" />
+      <entry key="H1" value="95.330208169284" />
+      <entry key="H2" value="199.52014659825775" />
+      <entry key="H4" value="307.62697747174496" />
+      <entry key="D1" value="458.61534732352425" />
+      <entry key="W1" value="492.9729705327868" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.01437794025084657" />
-      <entry key="MS500" value="0.4527097376329923" />
-      <entry key="S2" value="1.3501947775422256" />
-      <entry key="S5" value="2.0723467343694097" />
-      <entry key="S10" value="2.4712953744131014" />
-      <entry key="S30" value="2.9221761548564866" />
-      <entry key="S60" value="3.541779432911548" />
-      <entry key="M2" value="6.60102533692044" />
-      <entry key="M5" value="24.55934835345322" />
-      <entry key="M10" value="51.8183336028917" />
-      <entry key="M15" value="77.12980168449484" />
-      <entry key="M30" value="155.12512568852787" />
-      <entry key="H1" value="296.3745347380044" />
-      <entry key="H2" value="480.3646702602377" />
-      <entry key="H4" value="647.9646501744095" />
-      <entry key="D1" value="860.9407471773482" />
-      <entry key="W1" value="906.9969748340607" />
+      <entry key="MS100" value="3.090226059498105E-4" />
+      <entry key="MS500" value="0.19917880380079014" />
+      <entry key="S2" value="0.9441993670211788" />
+      <entry key="S5" value="1.9705662546349463" />
+      <entry key="S10" value="2.744792314780463" />
+      <entry key="S30" value="3.510896248566411" />
+      <entry key="S60" value="3.7463864978163666" />
+      <entry key="M2" value="3.9285929143448763" />
+      <entry key="M5" value="4.743565075795063" />
+      <entry key="M10" value="7.912431077554225" />
+      <entry key="M15" value="14.849412165677299" />
+      <entry key="M30" value="56.01691932461607" />
+      <entry key="H1" value="172.7214754658184" />
+      <entry key="H2" value="369.6711144614455" />
+      <entry key="H4" value="578.4046124732113" />
+      <entry key="D1" value="873.5969527856398" />
+      <entry key="W1" value="941.1406257589426" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -133,42 +136,42 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build microservice-lab.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.customer-service [dependencies].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BusinessApplicationService.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CustomerApplicationService (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CustomerApplicationService.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Main&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build microservice-lab.executor": "Run",
+    "Gradle.Upgrade Gradle wrapper.executor": "Run",
+    "Gradle.customer-service [dependencies].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.BusinessApplicationService.executor": "Run",
+    "Spring Boot.CustomerApplicationService (1).executor": "Run",
+    "Spring Boot.CustomerApplicationService.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "git-widget-placeholder": "Assignment-01",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true"
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -218,6 +221,17 @@
       <RunAsTest>false</RunAsTest>
       <GradleProfilingDisabled>false</GradleProfilingDisabled>
       <GradleCoverageDisabled>false</GradleCoverageDisabled>
+      <method v="2" />
+    </configuration>
+    <configuration default="true" type="JetRunConfigurationType">
+      <module name="microservices.customer-service.customer-service-domain.customer-application-service.main" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
+      <module name="microservices.customer-service.customer-service-domain.customer-application-service.main" />
+      <option name="filePath" />
       <method v="2" />
     </configuration>
     <configuration name="BusinessApplicationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
