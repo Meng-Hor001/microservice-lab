@@ -22,7 +22,7 @@ public class UpdateCustomerUseCase {
         // 1. Load the existing customer
         Customer customer = customerRepository.findById(
                         new CustomerId(command.customerId()))
-                .orElseThrow(()-> new CustomerNotFoundException(command.customerId());
+                .orElseThrow(()-> new CustomerNotFoundException(command.customerId()));
 
         //2. Update the names and create the event
         CustomerUpdatedEvent event = customerDomainService.updateCustomer(

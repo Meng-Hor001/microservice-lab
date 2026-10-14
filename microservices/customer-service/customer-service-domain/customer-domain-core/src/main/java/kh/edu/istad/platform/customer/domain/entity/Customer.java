@@ -56,12 +56,12 @@ public class Customer extends AggregateRoot<CustomerId> {
         this.givenName = givenName;
     }
 
-public void deactivateCustomer(){
-        if (status != CustomerStatus.ACTIVE){
-            throw new CustomerDomainException(" Only active customers can be deactivated");
-        }
-        status = CustomerStatus.INACTIVE;
-}
+    public void deactivateCustomer(){
+            if (status != CustomerStatus.ACTIVE){
+                throw new CustomerDomainException(" Only active customers can be deactivated");
+            }
+            status = CustomerStatus.INACTIVE;
+    }
     public static final class Builder {
         private CustomerId id;
         private String username;

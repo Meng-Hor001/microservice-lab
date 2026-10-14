@@ -20,8 +20,9 @@ public class InitiateCustomerUseCase {
 
     private final CustomerDomainService customerDomainService;
     private final CustomerRepository customerRepository;
+
     public InitiateCustomerResult execute(InitiateCustomerCommand command){
-        log.info("initiatete customer usecase:{}", command);
+        log.info("Initiate customer use case:{}", command);
         // validate by load data from persistence (Output port)
 
         // TODO : Note for my self
