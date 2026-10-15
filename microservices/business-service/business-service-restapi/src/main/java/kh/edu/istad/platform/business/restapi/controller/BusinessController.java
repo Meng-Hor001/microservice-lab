@@ -1,22 +1,29 @@
 package kh.edu.istad.platform.business.restapi.controller;
 
 import jakarta.validation.Valid;
+import kh.edu.istad.platform.business.application.dto.RegisterBusinessCommand;
+import kh.edu.istad.platform.business.application.dto.RegisterBusinessResult;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.*;
 import org.springframework.web.bind.annotation.*;
 import reactor.core.publisher.Mono;
-import kh.edu.istad.platform.business.application.dto.*;
 import kh.edu.istad.platform.business.application.usecase.RegisterBusinessUseCase;
 import kh.edu.istad.platform.business.restapi.dto.RegisterBusinessRequest;
 
 @RestController
 @RequestMapping("/api/businesses")
+@RequiredArgsConstructor
 public class BusinessController {
-    private final RegisterBusinessUseCase useCase;
-    public BusinessController(RegisterBusinessUseCase useCase) { this.useCase = useCase; }
+    private final RegisterBusinessUseCase registerBusinessUseCase;
+
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Mono<RegisterBusinessResult> register(@Valid @RequestBody RegisterBusinessRequest request) {
-        return useCase.execute(new RegisterBusinessCommand(request.legalName(), request.displayName(),
-                request.email(), request.phoneNumber()));
+        return registerBusinessUseCase.execute(
+                new RegisterBusinessCommand(
+                        request.legalName(),
+                        request.displayName(),
+                        request.email(),
+                        request.phoneNumber()));
     }
 }

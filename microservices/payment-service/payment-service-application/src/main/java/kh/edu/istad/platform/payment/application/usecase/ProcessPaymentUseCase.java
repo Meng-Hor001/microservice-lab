@@ -8,6 +8,7 @@ import kh.edu.istad.platform.payment.domain.service.*;
 public class ProcessPaymentUseCase {
     private final PaymentDomainService service;
     private final Clock clock;
+
     public ProcessPaymentUseCase(PaymentDomainService service, Clock clock) {
         this.service = service; this.clock = clock;
     }

@@ -18,3 +18,8 @@ spring:
     name: microservice-lab
 server:
   port: 9292
+
+scalar:
+  enabled: true
+  url: /v3/api-docs
+  path: /scalar

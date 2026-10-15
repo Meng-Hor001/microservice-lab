@@ -1,7 +1,12 @@
 pluginManagement {
     includeBuild('../../build-logic')
-    repositories { gradlePluginPortal(); mavenCentral() }
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
 }
 rootProject.name = 'payment-service'
-include 'payment-service-domain'
+
+include 'payment-service-domain:payment-application-service'
+include 'payment-service-domain:payment-domain-core'
 include 'payment-service-application'

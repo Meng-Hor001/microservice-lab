@@ -5,7 +5,6 @@ pluginManagement {
 rootProject.name = 'business-service'
 include 'business-service-domain:business-application-service'
 include 'business-service-domain:business-domain-core'
-include 'business-service-application'
 include 'business-service-persistence'
 include 'business-service-restapi'
 include 'business-service-main'

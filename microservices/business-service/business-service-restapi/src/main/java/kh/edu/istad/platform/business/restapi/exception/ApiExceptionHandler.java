@@ -11,18 +11,44 @@ import kh.edu.istad.platform.business.domain.exception.DomainException;
 
 @RestControllerAdvice
 public class ApiExceptionHandler {
-    private static final Logger log = LoggerFactory.getLogger(ApiExceptionHandler.class);
+
+
     @ExceptionHandler(DomainException.class)
-    public ProblemDetail domain(DomainException ex) { return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, ex.getMessage()); }
+    public ProblemDetail handleDomain(DomainException exception) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                exception.getMessage()
+        );
+    }
+
     @ExceptionHandler(WebExchangeBindException.class)
-    public ProblemDetail validation(WebExchangeBindException ex) {
-        var problem = ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Request validation failed");
-        problem.setProperty("errors", ex.getBindingResult().getFieldErrors().stream().map(error ->
-                Map.of("field", error.getField(), "message", String.valueOf(error.getDefaultMessage()))).toList());
+    public ProblemDetail handleValidation(
+            WebExchangeBindException exception
+    ) {
+        var problem = ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                "Request validation failed"
+        );
+
+        var errors = exception.getFieldErrors()
+                .stream()
+                .map(error -> Map.of(
+                        "field", error.getField(),
+                        "message", String.valueOf(error.getDefaultMessage())
+                ))
+                .toList();
+
+        problem.setProperty("errors", errors);
         return problem;
     }
+
     @ExceptionHandler(ServerWebInputException.class)
-    public ProblemDetail malformed(ServerWebInputException ex) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.BAD_REQUEST, "Malformed request body or invalid field type");
+    public ProblemDetail handleMalformedBody(
+            ServerWebInputException exception
+    ) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.BAD_REQUEST,
+                "Malformed JSON or invalid field type"
+        );
     }
 }

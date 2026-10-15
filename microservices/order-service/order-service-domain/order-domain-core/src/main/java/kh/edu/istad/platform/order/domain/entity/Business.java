@@ -14,7 +14,7 @@ public record Business(
 
     public Business {
         if (businessId == null) {
-            throw new DomainException("Restaurant ID is required");
+            throw new DomainException("Business ID is required");
         }
 
         if (products == null
@@ -23,7 +23,7 @@ public record Business(
         }
 
         if (active == null) {
-            throw new DomainException("Restaurant active status is required");
+            throw new DomainException("Business active status is required");
         }
 
         products = List.copyOf(products);

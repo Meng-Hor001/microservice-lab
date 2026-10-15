@@ -27,7 +27,6 @@
               <build path="$PROJECT_DIR$/microservices/business-service" name="business-service">
                 <projects>
                   <project path="$PROJECT_DIR$/microservices/business-service" />
-                  <project path="$PROJECT_DIR$/microservices/business-service/business-service-application" />
                   <project path="$PROJECT_DIR$/microservices/business-service/business-service-domain" />
                   <project path="$PROJECT_DIR$/microservices/business-service/business-service-domain/business-application-service" />
                   <project path="$PROJECT_DIR$/microservices/business-service/business-service-domain/business-domain-core" />
@@ -64,6 +63,8 @@
                   <project path="$PROJECT_DIR$/microservices/payment-service" />
                   <project path="$PROJECT_DIR$/microservices/payment-service/payment-service-application" />
                   <project path="$PROJECT_DIR$/microservices/payment-service/payment-service-domain" />
+                  <project path="$PROJECT_DIR$/microservices/payment-service/payment-service-domain/payment-application-service" />
+                  <project path="$PROJECT_DIR$/microservices/payment-service/payment-service-domain/payment-domain-core" />
                 </projects>
               </build>
             </builds>
@@ -80,7 +81,6 @@
             <option value="$PROJECT_DIR$/istad-common/istad-common-restapi" />
             <option value="$PROJECT_DIR$/microservices" />
             <option value="$PROJECT_DIR$/microservices/business-service" />
-            <option value="$PROJECT_DIR$/microservices/business-service/business-service-application" />
             <option value="$PROJECT_DIR$/microservices/business-service/business-service-domain" />
             <option value="$PROJECT_DIR$/microservices/business-service/business-service-domain/business-application-service" />
             <option value="$PROJECT_DIR$/microservices/business-service/business-service-domain/business-domain-core" />
@@ -105,6 +105,8 @@
             <option value="$PROJECT_DIR$/microservices/payment-service" />
             <option value="$PROJECT_DIR$/microservices/payment-service/payment-service-application" />
             <option value="$PROJECT_DIR$/microservices/payment-service/payment-service-domain" />
+            <option value="$PROJECT_DIR$/microservices/payment-service/payment-service-domain/payment-application-service" />
+            <option value="$PROJECT_DIR$/microservices/payment-service/payment-service-domain/payment-domain-core" />
           </set>
         </option>
       </GradleProjectSettings>

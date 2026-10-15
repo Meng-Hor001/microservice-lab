@@ -1,13 +1,25 @@
-server:
-  port: ${ORDER_PORT:8083}
 spring:
-  application:
-    name: order-service
-  datasource:
-    url: ${ORDER_DATABASE_URL:jdbc:postgresql://localhost:5433/order_db}
-    username: ${ORDER_DATABASE_USERNAME:order_user}
-    password: ${ORDER_DATABASE_PASSWORD:order_password}
   jpa:
-    open-in-view: false
     hibernate:
       ddl-auto: update
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+  datasource:
+    driver-class-name: org.postgresql.Driver
+    username: postgres
+    password: 12345
+    url: jdbc:postgresql://localhost:5432/microservice_db
+  jackson:
+    deserialization:
+      fail-on-unknown-properties: true
+  application:
+    name: microservice-lab
+server:
+  port: 8383
+
+scalar:
+  enabled: true
+  url: /v3/api-docs
+  path: /scalar

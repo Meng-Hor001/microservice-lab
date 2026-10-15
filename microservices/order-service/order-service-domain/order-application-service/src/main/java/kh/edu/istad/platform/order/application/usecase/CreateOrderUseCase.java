@@ -3,10 +3,11 @@ package kh.edu.istad.platform.order.application.usecase;
 import kh.edu.istad.platform.order.application.dto.CreateOrderCommand;
 import kh.edu.istad.platform.order.application.dto.CreateOrderResult;
 import kh.edu.istad.platform.order.application.port.out.OrderRepository;
+import kh.edu.istad.platform.order.domain.entity.Order;
+import kh.edu.istad.platform.order.domain.entity.OrderItem;
 import kh.edu.istad.platform.order.domain.entity.Product;
 import kh.edu.istad.platform.order.domain.exception.DomainException;
-import kh.edu.istad.platform.order.domain.valueobject.OrderId;
-import kh.edu.istad.platform.order.domain.valueobject.StreetAddress;
+import kh.edu.istad.platform.order.domain.valueobject.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,8 +47,33 @@ public class CreateOrderUseCase {
                 .stream()
                 .map(item -> {
                    var product = new Product(
-                           new ProductId
-                   )
+                           item.name(),
+                           new Money(item.price())
+                   );
+
+                   return OrderItem.create(
+                           orderId,
+                           product,
+                           item.quantity()
+                   );
                 })
+                .toList();
+
+        var order = Order.initializeOrder(
+                orderId,
+                new CustomerId(command.customerId()),
+                new BusinessId(command.businessId()),
+                address,
+                items
+        );
+
+        var saved = orderRepository.save(order);
+
+        return new CreateOrderResult(
+                saved.orderId().id(),
+                saved.trackingId().id(),
+                saved.status(),
+                saved.price().amount()
+        );
     }
 }
