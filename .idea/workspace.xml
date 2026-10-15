@@ -5,13 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/business-service-main/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/business-service-main/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/business-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/business-service-main/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/settings.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/business-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/business-service/src/main/resources/application.yaml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
