@@ -39,14 +39,7 @@ public class CustomerController {
             Pageable pageable
     ){
         var customers = getAllCustomersUseCase.execute(pageable);
-        var responses = customers.map(customer -> new CustomerResponse(
-                customer.getId().id(),
-                customer.getUsername(),
-                customer.getFamilyName(),
-                customer.getGivenName(),
-                customer.getEmail().value(),
-                customer.getPhoneNumber().value()
-        ));
+        var responses = customers.map(customerWebMapper::toResponse);
 
         return new PagedModel<>(responses);
     }
@@ -62,21 +55,15 @@ public class CustomerController {
     public CustomerUpdateResponse updateCustomer(
             @PathVariable ("customerId") UUID customerId,
             @Valid @RequestBody CustomerUpdateRequest customerUpdateRequest
-            ){
-        var command = new UpdateCustomerCommand(
-                customerId,
-                customerUpdateRequest.familyName(),
-                customerUpdateRequest.givenName()
+            ) {
+        var command = customerWebMapper.toUpdateCommand(
+                customerUpdateRequest,
+                customerId
         );
 
         var event = updateCustomerUseCase.execute(command);
-        var customer = event.getCustomer();
 
-        return new CustomerUpdateResponse(
-                customer.getId().id(),
-                customer.getFamilyName(),
-                customer.getGivenName()
-        );
+        return customerWebMapper.toUpdateResponse(event);
     }
 
     @PatchMapping("/{customerId}/deactivate")
@@ -85,10 +72,7 @@ public class CustomerController {
     ){
         var event = deactivateCustomerUseCase.execute(customerId);
 
-        return new CustomerDeactivateResponse(
-                event.getCustomerId().id(),
-                event.getDeactivatedAt()
-        );
+        return customerWebMapper.toDeactivateResponse(event);
     }
 
 }

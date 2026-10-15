@@ -2,7 +2,9 @@ package kh.edu.istad.platform.order.restapi.mapper;
 
 import kh.edu.istad.platform.order.application.dto.CreateOrderCommand;
 import kh.edu.istad.platform.order.application.dto.Item;
+import kh.edu.istad.platform.order.domain.entity.Order;
 import kh.edu.istad.platform.order.restapi.dto.CreateOrderRequest;
+import kh.edu.istad.platform.order.restapi.dto.OrderResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
@@ -15,4 +17,9 @@ public interface OrderWebMapper {
     CreateOrderCommand toCommand(CreateOrderRequest request);
 
     Item toItem(CreateOrderRequest.Item item);
+
+    @Mapping(target = "orderId", source = "orderId.id")
+    @Mapping(target = "trackingId", source = "trackingId.id")
+    @Mapping(target = "totalAmount", source = "price.amount")
+    OrderResponse orderToOrderResponse(Order order);
 }

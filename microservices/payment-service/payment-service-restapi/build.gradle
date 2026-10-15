@@ -1,0 +1,9 @@
+plugins {
+    id 'spring-common-conventions'
+}
+
+dependencies {
+    implementation project(':payment-service-application')
+    implementation project(':payment-service-domain')
+    implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+}

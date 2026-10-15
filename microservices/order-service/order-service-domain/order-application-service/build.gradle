@@ -11,7 +11,7 @@ repositories {
 
 dependencies {
     api project(':order-service-domain:order-domain-core')
-
+    api 'org.springframework.data:spring-data-commons'
     implementation 'org.springframework:spring-tx:7.0.9'
     implementation 'org.springframework:spring-context:7.0.9'
 

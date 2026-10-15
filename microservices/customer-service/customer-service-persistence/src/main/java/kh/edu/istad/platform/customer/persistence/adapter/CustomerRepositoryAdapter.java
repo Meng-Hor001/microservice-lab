@@ -6,6 +6,7 @@ import kh.edu.istad.platform.customer.domain.port.out.CustomerRepository;
 import kh.edu.istad.platform.customer.domain.valueobject.Email;
 import kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;
 import kh.edu.istad.platform.customer.persistence.entity.CustomerEntity;
+import kh.edu.istad.platform.customer.persistence.mapper.CustomerPersistenceMapper;
 import kh.edu.istad.platform.customer.persistence.repository.CustomerJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -19,47 +20,24 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CustomerRepositoryAdapter implements CustomerRepository {
     private final CustomerJpaRepository customerJpaRepository;
+    private final CustomerPersistenceMapper customerPersistenceMapper;
     @Override
     public Customer save(Customer customer) {
-        CustomerEntity entity = toEntity(customer);
+        CustomerEntity entity = customerPersistenceMapper.toEntity(customer);
         CustomerEntity saveEntity = customerJpaRepository.save(entity);
-        return toDomain(saveEntity);
+        return customerPersistenceMapper.toDomain(saveEntity);
     }
 
     @Override
     public Optional<Customer> findById(CustomerId customerId) {
-        return customerJpaRepository.findById(customerId.id()).map(this::toDomain);
+        return customerJpaRepository.findById(customerId.id())
+                .map(customerPersistenceMapper::toDomain);
     }
 
     @Override
     public Page<Customer> findAll(Pageable pageable) {
         return customerJpaRepository.findAll(pageable)
-                .map(this::toDomain);
+                .map(customerPersistenceMapper::toDomain);
     }
 
-    private CustomerEntity toEntity(Customer customer) {
-            CustomerEntity entity = new CustomerEntity();
-
-            entity.setCustomerId(customer.getId().id());
-            entity.setUsername(customer.getUsername());
-            entity.setFamilyName(customer.getFamilyName());
-            entity.setGivenName(customer.getGivenName());
-            entity.setEmail(customer.getEmail().value());
-            entity.setPhoneNumber(customer.getPhoneNumber().value());
-            entity.setStatus(customer.getStatus());
-
-            return entity;
-        }
-
-        private Customer toDomain(CustomerEntity entity) {
-            return Customer.Builder.builder()
-                    .id(new CustomerId(entity.getCustomerId()))
-                    .username(entity.getUsername())
-                    .familyName(entity.getFamilyName())
-                    .givenName(entity.getGivenName())
-                    .email(new Email(entity.getEmail()))
-                    .phoneNumber(new PhoneNumber(entity.getPhoneNumber()))
-                    .status(entity.getStatus())
-                    .build();
-        }
     }

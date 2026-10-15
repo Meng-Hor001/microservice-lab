@@ -4,6 +4,7 @@ import java.util.List;
 
 import kh.edu.istad.platform.business.application.dto.RegisterBusinessCommand;
 import kh.edu.istad.platform.business.application.dto.RegisterBusinessResult;
+import kh.edu.istad.platform.business.application.mapper.BusinessApplicationMapper;
 import kh.edu.istad.platform.business.application.port.out.BusinessRepository;
 import kh.edu.istad.platform.business.domain.entity.Business;
 import kh.edu.istad.platform.business.domain.exception.DomainException;
@@ -16,6 +17,7 @@ import reactor.core.publisher.Mono;
 @RequiredArgsConstructor
 public class RegisterBusinessUseCase {
     private final BusinessRepository businessRepository;
+    private final BusinessApplicationMapper businessApplicationMapper;
 
     public Mono<RegisterBusinessResult> execute(RegisterBusinessCommand command){
         return Mono.defer(() -> {
@@ -36,14 +38,7 @@ public class RegisterBusinessUseCase {
             );
 
             return businessRepository.save(business)
-                    .map(saved -> new RegisterBusinessResult(
-                            saved.id().value(),
-                            saved.name().legalName(),
-                            saved.name().displayName(),
-                            saved.contact().email(),
-                            saved.contact().phoneNumber(),
-                            saved.active()
-                    ));
+                    .map(businessApplicationMapper::toResult);
         });
     }
 
