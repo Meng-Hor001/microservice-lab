@@ -3,7 +3,6 @@ plugins {
 }
 
 dependencies {
-    implementation 'com.scalar.maven:scalar:0.4.4'
     implementation project(':business-service-restapi')
     implementation project(':business-service-persistence')
     implementation 'org.springframework.boot:spring-boot-starter-webflux'

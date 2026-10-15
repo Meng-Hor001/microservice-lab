@@ -1,12 +1,9 @@
 server:
-  port: ${BUSINESS_PORT:8082}
+  port: 8082
 spring:
+  config:
+    import: "file:./.env[.properties]"
   application:
     name: business-service
   mongodb:
-    uri: ${BUSINESS_MONGODB_URI:mongodb://localhost:27017/business_db}
-
-scalar:
-  enabled: true
-  url: /v3/api-docs
-  path: /scalar
+    uri: ${BUSINESS_MONGODB_URI}
