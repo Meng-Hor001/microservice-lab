@@ -1,10 +1,8 @@
 package kh.edu.istad.platform.payment.restapi.controller;
 
 import jakarta.validation.Valid;
-import kh.edu.istad.platform.payment.usecase.ProcessPaymentUseCase;
-import kh.edu.istad.platform.payment.domain.entity.CreditEntry;
+import kh.edu.istad.platform.payment.persistence.PaymentPersistenceService;
 import kh.edu.istad.platform.payment.domain.entity.Payment;
-import kh.edu.istad.platform.payment.domain.valueobject.CreditEntryId;
 import kh.edu.istad.platform.payment.domain.valueobject.CustomerId;
 import kh.edu.istad.platform.payment.domain.valueobject.Money;
 import kh.edu.istad.platform.payment.domain.valueobject.OrderId;
@@ -22,7 +20,7 @@ import java.time.ZonedDateTime;
 @RequiredArgsConstructor
 public class PaymentController
 {
-    private final ProcessPaymentUseCase processPaymentUseCase;
+    private final PaymentPersistenceService paymentPersistenceService;
     private final Clock paymentClock;
 
     @PostMapping
@@ -39,13 +37,8 @@ public class PaymentController
                 ZonedDateTime.now(paymentClock)
         );
 
-        var creditEntry = new CreditEntry(
-                CreditEntryId.generate(),
-                customerId,
-                new Money(request.creditBalance())
-        );
-
-        var outcome = processPaymentUseCase.execute(payment, creditEntry);
+        var outcome = paymentPersistenceService.process(
+                payment, new Money(request.creditBalance()), payment.createdAt());
 
         return new PaymentResponse(
                 outcome.payment().id().value(),
