@@ -10,6 +10,10 @@ on:
 permissions:
   contents: read
 
+concurrency:
+  group: business-service-${{ github.ref }}
+  cancel-in-progress: false
+
 jobs:
   build:
     runs-on: ubuntu-latest
@@ -33,3 +37,47 @@ jobs:
           :microservices:business-service:business-service-main:build
           --no-daemon
           --console=plain
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/Assignment-01'
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Deploy to Codespaces
+        env:
+          GH_TOKEN: ${{ secrets.CODESPACES_TOKEN }}
+          CODESPACE_NAME: ${{ vars.CODESPACE_NAME }}
+          DEPLOY_SHA: ${{ github.sha }}
+        run: |
+          gh codespace ssh -c "$CODESPACE_NAME" -- \
+            -T "bash -s -- $DEPLOY_SHA" <<'REMOTE'
+          set -euo pipefail
+
+          cd /workspaces/microservice-lab
+
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "Deployment stopped: Codespace has uncommitted changes."
+            git status --short
+            exit 1
+          fi
+
+          git fetch origin Assignment-01
+          git switch --detach "$1"
+
+          docker compose up -d --build
+
+          for attempt in {1..30}; do
+            if curl --fail --silent --show-error \
+              --max-time 5 http://localhost:8081/api/businesses; then
+              echo
+              echo "Deployment successful!"
+              exit 0
+            fi
+            sleep 3
+          done
+
+          docker compose logs --tail=100 business-service
+          exit 1
+          REMOTE
