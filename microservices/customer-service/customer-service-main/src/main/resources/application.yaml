@@ -11,9 +11,6 @@ spring:
     username: postgres
     password: 1234
     url: jdbc:postgresql://localhost:5432/microservice_db
-  jackson:
-    deserialization:
-      fail-on-unknown-properties: true
   application:
     name: microservice-lab
 server:

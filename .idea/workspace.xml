@@ -5,13 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/payment-service/payment-service-application/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/payment-service/payment-service-application/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/payment-service/payment-service-main/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/payment-service/payment-service-main/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/payment-service/payment-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/payment-service/payment-service-main/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/payment-service/payment-service-restapi/src/main/java/kh/edu/istad/platform/payment/restapi/controller/PaymentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/payment-service/payment-service-restapi/src/main/java/kh/edu/istad/platform/payment/restapi/controller/PaymentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/payment-service/payment-service-restapi/src/main/java/kh/edu/istad/platform/payment/restapi/dto/ProcessPaymentRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/payment-service/payment-service-restapi/src/main/java/kh/edu/istad/platform/payment/restapi/dto/ProcessPaymentRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/src/main/resources/application.yaml" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -191,6 +186,18 @@
         <option value="SpringBootApplicationConfigurationType" />
       </set>
     </option>
+    <option name="hiddenConfigurations">
+      <map>
+        <entry key="SpringBootApplicationConfigurationType">
+          <value>
+            <set>
+              <option value="CustomerApplicationService" />
+              <option value="CustomerApplicationService (1)" />
+            </set>
+          </value>
+        </entry>
+      </map>
+    </option>
     <option name="configurationStatuses">
       <map>
         <entry key="SpringBootApplicationConfigurationType">
@@ -199,7 +206,7 @@
               <entry key="BusinessApplication" value="STOPPED" />
               <entry key="BusinessApplicationService" value="STOPPED" />
               <entry key="CustomerApplicationService" value="STOPPED" />
-              <entry key="CustomerApplicationService (1)" value="STOPPED" />
+              <entry key="CustomerApplicationService (1)" value="FAILED" />
               <entry key="OrderApplication" value="STOPPED" />
               <entry key="PaymentApplication" value="STOPPED" />
             </map>
