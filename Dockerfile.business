@@ -1,0 +1,19 @@
+FROM eclipse-temurin:25-jdk AS builder
+
+WORKDIR /workspace
+COPY . .
+
+RUN bash ./gradlew \
+    :microservices:business-service:business-service-main:bootJar \
+    --no-daemon
+
+RUN cp microservices/business-service/business-service-main/build/libs/business-service-main-1.0.0.jar /workspace/app.jar
+
+FROM eclipse-temurin:25-jre
+
+WORKDIR /app
+COPY --from=builder /workspace/app.jar app.jar
+
+EXPOSE 8081
+
+ENTRYPOINT ["java", "-jar", "app.jar", "--server.port=8081"]

@@ -1,0 +1,10 @@
+name: microservice-lab
+
+services:
+  business-service:
+    build:
+      context: .
+      dockerfile: Dockerfile.business
+    ports:
+      - "8081:8081"
+    restart: unless-stopped
