@@ -7,7 +7,7 @@ dependencies {
     implementation project(':payment-service-application')
     implementation project(':payment-service-domain')
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    runtimeOnly 'org.postgresql:postgresql'
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-api:3.1.1'
     implementation 'com.scalar.maven:scalar:0.4.4'
+    runtimeOnly 'org.postgresql:postgresql'
 }

@@ -3,5 +3,5 @@ plugins { id 'springboot-common-conventions' }
 dependencies {
     implementation project(':payment-service-domain')
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'org.springframework.boot:spring-boot-starter-jdbc'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
 }

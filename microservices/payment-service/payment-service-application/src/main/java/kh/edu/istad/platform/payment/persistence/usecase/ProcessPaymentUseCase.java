@@ -1,4 +1,4 @@
-package kh.edu.istad.platform.payment.usecase;
+package kh.edu.istad.platform.payment.persistence.usecase;
 
 import java.time.Clock;
 import java.time.ZonedDateTime;

@@ -1,4 +1,4 @@
-package kh.edu.istad.platform.payment.usecase;
+package kh.edu.istad.platform.payment.persistence.usecase;
 
 import kh.edu.istad.platform.payment.domain.service.PaymentDomainService;
 import org.springframework.context.annotation.Bean;

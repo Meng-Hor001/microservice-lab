@@ -1,64 +1,102 @@
 package kh.edu.istad.platform.payment.persistence;
 
+import jakarta.transaction.Transactional;
 import kh.edu.istad.platform.payment.domain.entity.CreditEntry;
+import kh.edu.istad.platform.payment.domain.entity.CreditHistory;
 import kh.edu.istad.platform.payment.domain.entity.Payment;
 import kh.edu.istad.platform.payment.domain.service.PaymentDomainService;
 import kh.edu.istad.platform.payment.domain.service.PaymentOutcome;
 import kh.edu.istad.platform.payment.domain.valueobject.CreditEntryId;
 import kh.edu.istad.platform.payment.domain.valueobject.CustomerId;
 import kh.edu.istad.platform.payment.domain.valueobject.Money;
-import org.springframework.jdbc.core.JdbcTemplate;
+import kh.edu.istad.platform.payment.persistence.entity.CreditAccountEntity;
+import kh.edu.istad.platform.payment.persistence.entity.CreditHistoryEntity;
+import kh.edu.istad.platform.payment.persistence.entity.PaymentEntity;
+import kh.edu.istad.platform.payment.persistence.exception.DuplicatePaymentException;
+import kh.edu.istad.platform.payment.persistence.repository.CreditAccountJpaRepository;
+import kh.edu.istad.platform.payment.persistence.repository.CreditHistoryJpaRepository;
+import kh.edu.istad.platform.payment.persistence.repository.PaymentJpaRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.time.ZonedDateTime;
 import java.util.UUID;
 
 @Service
+@RequiredArgsConstructor
 public class PaymentPersistenceService {
-    private final JdbcTemplate jdbc;
-    private final PaymentDomainService domainService = new PaymentDomainService();
 
-    public PaymentPersistenceService(JdbcTemplate jdbc) {
-        this.jdbc = jdbc;
-    }
+    private final CreditAccountJpaRepository creditAccounts;
+    private final PaymentJpaRepository payments;
+    private final CreditHistoryJpaRepository creditHistory;
+    private final PaymentDomainService domainService;
 
     @Transactional
-    public PaymentOutcome process(Payment payment, Money openingCredit, ZonedDateTime now) {
+    public PaymentOutcome process(
+            Payment payment,
+            Money openingBalance,
+            ZonedDateTime now) {
+
         UUID customerId = payment.customerId().value();
-        UUID creditId = UUID.randomUUID();
-        jdbc.update("""
-                INSERT INTO payment_credit_accounts (id, customer_id, total_credit_amount)
-                VALUES (?, ?, ?)
-                ON CONFLICT (customer_id) DO NOTHING
-                """, creditId, customerId, openingCredit.amount());
 
-        CreditEntry credit = jdbc.queryForObject("""
-                SELECT id, total_credit_amount
-                FROM payment_credit_accounts
-                WHERE customer_id = ?
-                FOR UPDATE
-                """, (rs, row) -> new CreditEntry(
-                new CreditEntryId(rs.getObject("id", UUID.class)),
-                payment.customerId(),
-                new Money(rs.getBigDecimal("total_credit_amount"))), customerId);
+        if (payments.existsByOrderId(payment.orderId().value())) {
+            throw new DuplicatePaymentException();
+        }
 
-        PaymentOutcome outcome = domainService.process(payment, credit, now);
-        jdbc.update("""
-                INSERT INTO payments (id, order_id, customer_id, amount, status, created_at)
-                VALUES (?, ?, ?, ?, ?, ?)
-                """, outcome.payment().id().value(), outcome.payment().orderId().value(), customerId,
-                outcome.payment().price().amount(), outcome.payment().status().name(),
-                outcome.payment().createdAt().toOffsetDateTime());
-        jdbc.update("UPDATE payment_credit_accounts SET total_credit_amount = ? WHERE customer_id = ?",
-                outcome.creditEntry().totalCreditAmount().amount(), customerId);
 
-        outcome.history().ifPresent(history -> jdbc.update("""
-                INSERT INTO payment_credit_history (id, customer_id, amount, transaction_type, created_at)
-                VALUES (?, ?, ?, ?, ?)
-                """, history.id().value(), customerId, history.amount().amount(),
-                history.transactionType().name(), now.toOffsetDateTime()));
+        // Create an account only when this customer has none.
+        creditAccounts.createIfAbsent(
+                UUID.randomUUID(),
+                customerId,
+                openingBalance.amount());
+
+        CreditAccountEntity account = creditAccounts
+                .findByCustomerIdForUpdate(customerId)
+                .orElseThrow(() -> new IllegalStateException(
+                        "Could not load customer credit account"));
+
+        CreditEntry creditEntry = new CreditEntry(
+                new CreditEntryId(account.getId()),
+                new CustomerId(account.getCustomerId()),
+                new Money(account.getTotalCreditAmount()));
+
+        PaymentOutcome outcome =
+                domainService.process(payment, creditEntry, now);
+
+        savePayment(outcome.payment());
+
+        account.setTotalCreditAmount(
+                outcome.creditEntry().totalCreditAmount().amount());
+        creditAccounts.save(account);
+
+        outcome.history().ifPresent(this::saveCreditHistory);
 
         return outcome;
     }
+
+    private void savePayment(Payment payment) {
+        PaymentEntity entity = new PaymentEntity();
+        entity.setId(payment.id().value());
+        entity.setOrderId(payment.orderId().value());
+        entity.setCustomerId(payment.customerId().value());
+        entity.setAmount(payment.price().amount());
+        entity.setStatus(payment.status().name());
+        entity.setCreatedAt(payment.createdAt().toOffsetDateTime());
+
+        payments.save(entity);
+    }
+
+    private void saveCreditHistory(CreditHistory history) {
+        CreditHistoryEntity entity = new CreditHistoryEntity();
+        entity.setId(history.id().value());
+        entity.setCustomerId(history.customerId().value());
+        entity.setAmount(history.amount().amount());
+        entity.setTransactionType(history.transactionType().name());
+        entity.setCreatedAt(OffsetDateTime.now(ZoneOffset.UTC));
+
+        creditHistory.save(entity);
+    }
+
 }

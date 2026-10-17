@@ -1,10 +1,15 @@
 spring:
-  application:
-    name: payment-service
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
   datasource:
-    url: jdbc:postgresql://localhost:5432/microservice_db
-    username: postgres
-    password: 1234
     driver-class-name: org.postgresql.Driver
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    url: ${POSTGRES_URL}
 server:
   port: 8484

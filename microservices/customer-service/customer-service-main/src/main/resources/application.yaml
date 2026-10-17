@@ -1,22 +1,18 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     show-sql: true
     properties:
       hibernate:
         format_sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: postgres
-    password: 1234
-    url: jdbc:postgresql://localhost:5432/microservice_db
+    username: ${POSTGRES_USERNAME}
+    password: ${POSTGRES_PASSWORD}
+    url: ${POSTGRES_URL}
   application:
     name: microservice-lab
 server:
   port: 9292
 
-scalar:
-  enabled: true
-  url: /v3/api-docs
-  path: /scalar
