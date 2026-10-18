@@ -38,7 +38,8 @@ public class PaymentController
         );
 
         var outcome = paymentPersistenceService.process(
-                payment, new Money(request.creditBalance()), payment.createdAt());
+                payment,
+                payment.createdAt());
 
         return new PaymentResponse(
                 outcome.payment().id().value(),

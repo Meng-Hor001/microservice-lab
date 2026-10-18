@@ -15,11 +15,7 @@ public record ProcessPaymentRequest(
 
         @NotNull
         @DecimalMin("0.01")
-        BigDecimal amount,
+        BigDecimal amount
 
-        @NotNull
-        @DecimalMin("0.01")
-        // Used as the opening balance only when this customer has no saved credit account.
-        BigDecimal creditBalance
 ) {
 }

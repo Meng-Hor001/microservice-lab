@@ -21,6 +21,7 @@ public interface CustomerWebMapper {
     @Mapping(target = "customerId", source = "id.id")
     @Mapping(target = "email", source = "email.value")
     @Mapping(target = "phoneNumber", source = "phoneNumber.value")
+    @Mapping(target = "creditBalance", ignore = true)
     CustomerResponse toResponse(Customer customer);
 
     @Mapping(target = "customerId", source = "customer.id.id")

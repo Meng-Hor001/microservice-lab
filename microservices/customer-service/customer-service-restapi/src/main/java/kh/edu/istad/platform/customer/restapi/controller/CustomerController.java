@@ -5,6 +5,7 @@ import kh.edu.istad.platform.customer.domain.dto.UpdateCustomerCommand;
 import kh.edu.istad.platform.customer.domain.event.CustomerDeactivatedEvent;
 import kh.edu.istad.platform.customer.domain.usecase.DeactivateCustomerUseCase;
 import kh.edu.istad.platform.customer.domain.usecase.UpdateCustomerUseCase;
+import kh.edu.istad.platform.customer.restapi.client.PaymentCreditClient;
 import kh.edu.istad.platform.customer.restapi.dto.*;
 import kh.edu.istad.platform.customer.restapi.mapper.CustomerWebMapper;
 import kh.edu.istad.platform.customer.domain.dto.InitiateCustomerResult;
@@ -31,6 +32,7 @@ public class CustomerController {
     private final UpdateCustomerUseCase updateCustomerUseCase;
     private final DeactivateCustomerUseCase deactivateCustomerUseCase;
     private final GetAllCustomersUseCase getAllCustomersUseCase;
+    private final PaymentCreditClient paymentCreditClient;
 
     @GetMapping
     public PagedModel<CustomerResponse> getAllCustomers(
@@ -39,8 +41,23 @@ public class CustomerController {
             Pageable pageable
     ){
         var customers = getAllCustomersUseCase.execute(pageable);
-        var responses = customers.map(customerWebMapper::toResponse);
+        var mapped = customers.map(customerWebMapper::toResponse);
 
+        var customerIds = mapped.getContent().stream()
+                .map(CustomerResponse::customerId)
+                .toList();
+
+        var balances = paymentCreditClient.getBalances(customerIds);
+
+        var responses = mapped.map(customer -> new CustomerResponse(
+                customer.customerId(),
+                customer.username(),
+                customer.familyName(),
+                customer.givenName(),
+                customer.email(),
+                customer.phoneNumber(),
+                balances.get(customer.customerId())
+        ));
         return new PagedModel<>(responses);
     }
     @ResponseStatus(HttpStatus.CREATED)

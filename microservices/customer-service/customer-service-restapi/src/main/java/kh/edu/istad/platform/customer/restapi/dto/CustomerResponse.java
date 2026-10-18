@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.customer.restapi.dto;
 
+import java.math.BigDecimal;
 import java.util.UUID;
 
 public record CustomerResponse(
@@ -8,6 +9,7 @@ public record CustomerResponse(
         String familyName,
         String givenName,
         String email,
-        String phoneNumber
+        String phoneNumber,
+        BigDecimal creditBalance
 ) {
 }

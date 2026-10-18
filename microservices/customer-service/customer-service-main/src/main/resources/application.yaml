@@ -1,7 +1,11 @@
+payment-service:
+  base-url: ${PAYMENT_SERVICE_BASE_URL:http://localhost:8484}
+
+
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     show-sql: true
     properties:
       hibernate:
@@ -15,4 +19,6 @@ spring:
     name: microservice-lab
 server:
   port: 9292
+
+
 
