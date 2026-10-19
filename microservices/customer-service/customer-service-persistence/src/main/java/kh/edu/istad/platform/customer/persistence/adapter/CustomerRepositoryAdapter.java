@@ -21,6 +21,7 @@ import java.util.Optional;
 public class CustomerRepositoryAdapter implements CustomerRepository {
     private final CustomerJpaRepository customerJpaRepository;
     private final CustomerPersistenceMapper customerPersistenceMapper;
+
     @Override
     public Customer save(Customer customer) {
         CustomerEntity entity = customerPersistenceMapper.toEntity(customer);
@@ -39,5 +40,4 @@ public class CustomerRepositoryAdapter implements CustomerRepository {
         return customerJpaRepository.findAll(pageable)
                 .map(customerPersistenceMapper::toDomain);
     }
-
-    }
+}

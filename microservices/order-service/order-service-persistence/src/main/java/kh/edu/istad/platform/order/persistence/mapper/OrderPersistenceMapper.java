@@ -24,6 +24,7 @@ public interface OrderPersistenceMapper {
     @Mapping(target = "postalCode", source = "streetAddress.postalCode")
     @Mapping(target = "city", source = "streetAddress.city")
     @Mapping(target = "price", source = "price.amount")
+    @Mapping(target = "businessApprovalId", ignore = true)
     OrderEntity toEntity(Order order);
 
     @Mapping(target = "itemId", source = "orderItemId.id")

@@ -26,6 +26,9 @@ public class OrderEntity {
     @Column(nullable = false)
     private UUID businessId;
 
+    @Column(name = "business_approval_id")
+    private UUID businessApprovalId;
+
     @Column(nullable = false,unique = true)
     private UUID trackingId;
 

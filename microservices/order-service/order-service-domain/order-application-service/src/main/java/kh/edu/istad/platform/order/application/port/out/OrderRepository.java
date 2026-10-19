@@ -12,4 +12,12 @@ public interface OrderRepository {
     Page<Order> findAll(Pageable pageable);
 
     Order save (Order order);
+
+    void applyApproval(
+            java.util.UUID orderId,
+            java.util.UUID approvalId,
+            java.util.UUID businessId,
+            String status,
+            java.util.List<String> failureMessages
+    );
 }
