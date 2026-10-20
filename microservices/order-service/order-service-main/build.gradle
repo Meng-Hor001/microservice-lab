@@ -1,7 +1,8 @@
-plugins{
+plugins {
     id 'springboot-common-conventions'
 }
 
-dependencies {
 
+dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
 }
