@@ -14,20 +14,5 @@ import java.util.UUID;
 @Component
 @RequiredArgsConstructor
 public class DeactivateCustomerUseCase {
-    private final CustomerRepository customerRepository;
-    private final CustomerDomainService customerDomainService;
 
-    public CustomerDeactivatedEvent execute(UUID customerId){
-        var customer = customerRepository.findById(
-                new CustomerId(customerId)
-        ).orElseThrow(
-                ()-> new CustomerNotFoundException(customerId)
-        );
-
-        var event = customerDomainService.deactivateCustomer(customer);
-
-        customerRepository.save(customer);
-
-        return event;
-    }
 }

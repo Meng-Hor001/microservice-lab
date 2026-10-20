@@ -9,7 +9,8 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
+
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -38,60 +39,6 @@ public class RestAdvisor extends ResponseEntityExceptionHandler {
         );
     }
 
-    @Override
-    protected ResponseEntity<Object> handleMethodArgumentNotValid(
-            MethodArgumentNotValidException exception,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
-    ) {
-        Map<String, String> errors = new LinkedHashMap<>();
-
-        exception.getBindingResult()
-                .getFieldErrors()
-                .forEach(error -> errors.putIfAbsent(
-                        error.getField(),
-                        error.getDefaultMessage() == null
-                                ? "Invalid value"
-                                : error.getDefaultMessage()
-                ));
-
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                status,
-                "Please correct the invalid request fields."
-        );
-
-        problem.setProperty("errors", errors);
-
-        return handleExceptionInternal(
-                exception,
-                problem,
-                headers,
-                status,
-                request
-        );
-    }
-
-    @Override
-    protected ResponseEntity<Object> handleHttpMessageNotReadable(
-            HttpMessageNotReadableException exception,
-            HttpHeaders headers,
-            HttpStatusCode status,
-            WebRequest request
-    ) {
-        ProblemDetail problem = ProblemDetail.forStatusAndDetail(
-                status,
-                "The request body is missing or contains invalid JSON."
-        );
-
-        return handleExceptionInternal(
-                exception,
-                problem,
-                headers,
-                status,
-                request
-        );
-    }
 
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleUnexpectedException(Exception exception) {
@@ -104,4 +51,4 @@ public class RestAdvisor extends ResponseEntityExceptionHandler {
     }
 }
 
-}
+
