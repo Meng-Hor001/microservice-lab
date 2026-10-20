@@ -1,0 +1,7 @@
+plugins{
+    id 'springboot-common-conventions'
+}
+
+dependencies {
+
+}
