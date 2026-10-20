@@ -7,6 +7,8 @@ public record CustomerUpdateRequest(
         String familyName,
 
         @NotBlank
-        String givenName
+        String givenName,
+
+        String segmentId
 ) {
 }

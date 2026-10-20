@@ -5,39 +5,37 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/CreateCustomerUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/config/MongoConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/CustomerIdReadConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/CustomerIdWriteConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailReadConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailWriteConverter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/CustomerPersistenceMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerMongoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/exception/SegmentNotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/SegmentRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/SegmentCrudUseCase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/CustomerSegment.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/valueobject/SegmentName.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerSegmentDocument.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/SegmentRepositoryAdapter.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/SegmentPersistenceMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/query/DynamicMongoQuery.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerSegmentMongoRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerSegmentController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/SegmentRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/InitiateCustomerResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/CreateCustomerResult.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/CreateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/CreateCustomerUseCase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/DeactivateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/DeactivateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/GetAllCustomersUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/QueryCustomersUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/InitiateCustomerUseCase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/QueryCustomersUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/QueryCustomersUseCase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/entity/CustomerEntity.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerJpaRepository.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerMongoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerMongoRepository.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/config/PaginationConfig.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/config/PaginationConfig.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerInitiateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CreateCustomerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CreateCustomerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CreateCustomerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerResponse.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerUpdateRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/mapper/CustomerWebMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/mapper/CustomerWebMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/src/main/java/kh/edu/istad/platform/customer/CustomerApplicationService.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/src/main/resources/application.yaml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -50,7 +48,7 @@
     </colors>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="592" />
+    <option name="cachedIndexableFilesCount" value="442" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -92,78 +90,83 @@
         <option value="Enum" />
         <option value="Exception" />
         <option value="Record" />
-        <option value="Interface" />
         <option value="Class" />
+        <option value="Interface" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="Assignment-02" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="HttpClientOnboardingState"><![CDATA[{
-  "isOnboardingCommentShown": true
-}]]></component>
+  <component name="HttpClientOnboardingState">{
+  &quot;isOnboardingCommentShown&quot;: true
+}</component>
   <component name="McpProjectServerCommands">
     <commands />
     <urls />
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="2.4361571219089193E-75" />
-      <entry key="MS500" value="1.235788625177552E-15" />
-      <entry key="S2" value="2.65877149970344E-4" />
-      <entry key="S5" value="0.05556009435281073" />
-      <entry key="S10" value="0.36736573925856386" />
-      <entry key="S30" value="1.99932559832821" />
-      <entry key="S60" value="3.5832614155125344" />
-      <entry key="M2" value="4.954601123302566" />
-      <entry key="M5" value="6.198132705699533" />
-      <entry key="M10" value="8.667519346159805" />
-      <entry key="M15" value="13.567244476613388" />
-      <entry key="M30" value="36.58523942966122" />
-      <entry key="H1" value="93.41536787501276" />
-      <entry key="H2" value="200.35598843763321" />
-      <entry key="H4" value="334.99563803759196" />
-      <entry key="D1" value="558.8527892604274" />
-      <entry key="W1" value="614.9716827184002" />
+      <entry key="MS100" value="7.350000026754533E-87" />
+      <entry key="MS500" value="5.932771428306535E-18" />
+      <entry key="S2" value="5.054648452274055E-5" />
+      <entry key="S5" value="0.0232136608604698" />
+      <entry key="S10" value="0.20488393154289694" />
+      <entry key="S30" value="1.0888460572880283" />
+      <entry key="S60" value="1.9236465731663277" />
+      <entry key="M2" value="2.8718869296724736" />
+      <entry key="M5" value="6.3112022767001195" />
+      <entry key="M10" value="13.853727481229402" />
+      <entry key="M15" value="23.25288806307165" />
+      <entry key="M30" value="57.98707881048489" />
+      <entry key="H1" value="128.93856990338728" />
+      <entry key="H2" value="253.5521396592577" />
+      <entry key="H4" value="423.3880626792089" />
+      <entry key="D1" value="745.9664261361587" />
+      <entry key="W1" value="833.9920595707838" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.000000000022407" />
-      <entry key="S5" value="1.00009148702612" />
-      <entry key="S10" value="1.019559748811917" />
-      <entry key="S30" value="1.9219302624014571" />
-      <entry key="S60" value="3.520075894801394" />
-      <entry key="M2" value="5.191971510138636" />
-      <entry key="M5" value="6.801214790357009" />
-      <entry key="M10" value="9.331425316956258" />
-      <entry key="M15" value="14.27717754151616" />
-      <entry key="M30" value="39.160788298437396" />
-      <entry key="H1" value="104.33452801496206" />
-      <entry key="H2" value="225.92708594125727" />
-      <entry key="H4" value="374.62310828839924" />
-      <entry key="D1" value="615.6843166459718" />
-      <entry key="W1" value="675.3601612876432" />
+      <entry key="MS500" value="1.0000000000113545" />
+      <entry key="S2" value="1.0022178031663573" />
+      <entry key="S5" value="1.1390563896253532" />
+      <entry key="S10" value="1.6568322735206782" />
+      <entry key="S30" value="3.3590426117694876" />
+      <entry key="S60" value="4.976334200852891" />
+      <entry key="M2" value="6.9099968891294" />
+      <entry key="M5" value="10.67558995605742" />
+      <entry key="M10" value="16.752262155664248" />
+      <entry key="M15" value="24.57012854775206" />
+      <entry key="M30" value="54.14287742316086" />
+      <entry key="H1" value="118.32217126723964" />
+      <entry key="H2" value="243.11038095282737" />
+      <entry key="H4" value="420.6925688257396" />
+      <entry key="D1" value="760.5743788301712" />
+      <entry key="W1" value="853.1723479037735" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="4.333175770402872E-8" />
-      <entry key="MS500" value="0.033679160782615916" />
-      <entry key="S2" value="0.428652927374174" />
-      <entry key="S5" value="0.7675100653728926" />
-      <entry key="S10" value="1.2225177637334814" />
-      <entry key="S30" value="3.80393289392244" />
-      <entry key="S60" value="7.003164987992564" />
-      <entry key="M2" value="10.076943959591315" />
-      <entry key="M5" value="12.964286459688429" />
-      <entry key="M10" value="17.97481816021146" />
-      <entry key="M15" value="27.819292726166196" />
-      <entry key="M30" value="75.71001088130289" />
-      <entry key="H1" value="197.69956955718268" />
-      <entry key="H2" value="426.227055386954" />
-      <entry key="H4" value="709.5719196777216" />
-      <entry key="D1" value="1174.524271315651" />
-      <entry key="W1" value="1290.329833951766" />
+      <entry key="MS100" value="0.027969533466499132" />
+      <entry key="MS500" value="0.4890317367240641" />
+      <entry key="S2" value="0.8372145661961669" />
+      <entry key="S5" value="1.0513679510690932" />
+      <entry key="S10" value="1.7212377384850928" />
+      <entry key="S30" value="4.316540838752624" />
+      <entry key="S60" value="6.804882387156911" />
+      <entry key="M2" value="9.719211356399498" />
+      <entry key="M5" value="16.945680183301345" />
+      <entry key="M10" value="30.570046466375047" />
+      <entry key="M15" value="47.78650113763934" />
+      <entry key="M30" value="112.08834668591129" />
+      <entry key="H1" value="247.21257477154197" />
+      <entry key="H2" value="496.60916690328736" />
+      <entry key="H4" value="844.0322889568149" />
+      <entry key="D1" value="1506.5257681283515" />
+      <entry key="W1" value="1687.1619877079002" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -175,45 +178,45 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.Build microservice-lab.executor": "Run",
-    "Gradle.Upgrade Gradle wrapper.executor": "Run",
-    "Gradle.customer-service [dependencies].executor": "Run",
-    "HTTP Request.generated-requests | #3.executor": "Run",
-    "HTTP Request.generated-requests | #4.executor": "Run",
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "RequestMappingsPanelOrder0": "0",
-    "RequestMappingsPanelOrder1": "1",
-    "RequestMappingsPanelWidth0": "75",
-    "RequestMappingsPanelWidth1": "75",
-    "RunOnceActivity.MCP Project settings loaded": "true",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
-    "Spring Boot.BusinessApplicationService.executor": "Run",
-    "Spring Boot.CustomerApplicationService (1).executor": "Run",
-    "Spring Boot.CustomerApplicationService.executor": "Run",
-    "codeWithMe.voiceChat.enabledByDefault": "false",
-    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
-    "dart.analysis.tool.window.visible": "false",
-    "git-widget-placeholder": "MongoDB",
-    "junie.onboarding.icon.badge.shown": "true",
-    "kotlin-language-version-configured": "true",
-    "node.js.detected.package.eslint": "true",
-    "node.js.detected.package.jshint": "true",
-    "node.js.detected.package.tslint": "true",
-    "node.js.selected.package.eslint": "(autodetect)",
-    "node.js.selected.package.jshint": "",
-    "node.js.selected.package.tslint": "(autodetect)",
-    "nodejs_package_manager_path": "npm",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0",
-    "settings.editor.selected.configurable": "preferences.pluginManager",
-    "to.speed.mode.migration.done": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Gradle.Build microservice-lab.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.customer-service [dependencies].executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,
+    &quot;HTTP Request.generated-requests | #4.executor&quot;: &quot;Run&quot;,
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
+    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
+    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
+    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
+    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
+    &quot;Spring Boot.BusinessApplicationService.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CustomerApplicationService (1).executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.CustomerApplicationService.executor&quot;: &quot;Run&quot;,
+    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
+    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
+    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;MongoDB&quot;,
+    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
+    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
+    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
+    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
+    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
+    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
+    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -237,13 +240,6 @@
             <set />
           </value>
         </entry>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <set>
-              <option value="CustomerApplicationService" />
-            </set>
-          </value>
-        </entry>
         <entry key="TomeeConfiguration">
           <value>
             <set />
@@ -265,19 +261,9 @@
     </option>
     <option name="configurationStatuses">
       <map>
-        <entry key="HttpClient.HttpRequestRunConfigurationType">
-          <value>
-            <map>
-              <entry key="generated-requests | #3" value="STOPPED" />
-              <entry key="generated-requests | #4" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
         <entry key="SpringBootApplicationConfigurationType">
           <value>
             <map>
-              <entry key="BusinessApplicationService" value="STOPPED" />
-              <entry key="CustomerApplicationService" value="STOPPED" />
               <entry key="CustomerApplicationService (1)" value="STOPPED" />
             </map>
           </value>

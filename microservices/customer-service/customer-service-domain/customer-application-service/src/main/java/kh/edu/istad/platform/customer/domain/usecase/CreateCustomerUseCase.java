@@ -15,8 +15,13 @@ public class CreateCustomerUseCase {
 
     private final CustomerRepository customerRepository;
 
+    private final SegmentCrudUseCase segments;
+
     public Mono<Customer> create(Customer customer) {
-        customer.initiateCustomer();
-        return customerRepository.save(customer);
+        return Mono.defer(() -> {
+            customer.initiateCustomer();
+            return (customer.getSegmentId() == null ? Mono.empty() : segments.findById(customer.getSegmentId()))
+                    .then(Mono.defer(() -> customerRepository.save(customer)));
+        });
     }
 }

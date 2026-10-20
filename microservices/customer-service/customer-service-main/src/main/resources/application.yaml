@@ -1,7 +1,6 @@
 spring:
   mongodb:
     uri: mongodb+srv://menghorit_db_user:Hor1111223344rr@cluster0.piy0irw.mongodb.net/business_db?retryWrites=true&w=majority
-    authentication-database: admin
   application:
     name: microservice-lab
 server:

@@ -31,4 +31,6 @@ public class CustomerDocument {
 
     private CustomerStatus status;
 
+    private String segmentId;
+
 }

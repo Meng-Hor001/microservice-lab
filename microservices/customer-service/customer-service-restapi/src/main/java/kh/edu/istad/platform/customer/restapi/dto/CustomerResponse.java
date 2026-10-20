@@ -8,6 +8,7 @@ public record CustomerResponse(
         String familyName,
         String givenName,
         String email,
-        String phoneNumber
+        String phoneNumber,
+        String segmentId
 ) {
 }

@@ -7,6 +7,7 @@ import kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;
 import kh.edu.istad.platform.customer.restapi.dto.CreateCustomerRequest;
 import kh.edu.istad.platform.customer.restapi.dto.CustomerInitiateResponse;
 import kh.edu.istad.platform.customer.domain.dto.InitiateCustomerCommand;
+import kh.edu.istad.platform.customer.restapi.dto.CustomerResponse;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 
@@ -16,9 +17,16 @@ public interface CustomerWebMapper {
 
     CustomerInitiateResponse toResponse(CreateCustomerResult result);
 
+    @Mapping(target = "id", ignore = true)
+    @Mapping(target = "status", ignore = true)
     @Mapping(source = "phoneNumber", target = "phoneNumber.value")
     @Mapping(source = "email", target = "email.value")
     Customer toDomain (CreateCustomerRequest request);
+
+    @Mapping(source = "id.id", target = "customerId")
+    @Mapping(source = "email.value", target = "email")
+    @Mapping(source = "phoneNumber.value", target = "phoneNumber")
+    CustomerResponse toResponse(Customer customer);
 
     default Email toEmail(String email){
         return new Email(email);

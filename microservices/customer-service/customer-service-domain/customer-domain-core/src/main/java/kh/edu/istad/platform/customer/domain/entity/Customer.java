@@ -18,6 +18,7 @@ public class Customer extends AggregateRoot<CustomerId> {
     private final Email email;
     private final PhoneNumber phoneNumber;
     private CustomerStatus status;
+    private String segmentId;
 
     public static Builder builder() {
         return new Builder();
@@ -31,6 +32,7 @@ public class Customer extends AggregateRoot<CustomerId> {
         email = builder.email;
         phoneNumber = builder.phoneNumber;
         status = builder.status;
+        segmentId = builder.segmentId;
     }
 
 
@@ -47,20 +49,25 @@ public class Customer extends AggregateRoot<CustomerId> {
         if (super.getId() != null){
             throw new CustomerDomainException("Customer id must be null");
         }
+        if (username == null || username.isBlank() || familyName == null || familyName.isBlank()
+                || givenName == null || givenName.isBlank() || email == null || email.value() == null
+                || email.value().isBlank() || phoneNumber == null || phoneNumber.value() == null || phoneNumber.value().isBlank()) {
+            throw new CustomerDomainException("Customer username, names, email and phone number are required");
+        }
         if (status != null){
             throw new CustomerDomainException("Customer status must be null");
         }
     }
 
     public void updateCustomer(String familyName, String givenName){
-        if (familyName == null || givenName == null){
-            throw new CustomerDomainException("familyName and giveName must not be null");
+        if (familyName == null || familyName.isBlank() || givenName == null || givenName.isBlank()){
+            throw new CustomerDomainException("familyName and givenName must not be blank");
         }
         this.familyName = familyName;
         this.givenName = givenName;
     }
 
-public void deactivateCustomer(){
+    public void deactivateCustomer(){
         if (status != CustomerStatus.ACTIVE){
             throw new CustomerDomainException(" Only active customers can be deactivated");
         }
@@ -74,6 +81,7 @@ public void deactivateCustomer(){
         private Email email;
         private PhoneNumber phoneNumber;
         private CustomerStatus status;
+        private String segmentId;
 
         private Builder() {
         }
@@ -112,6 +120,8 @@ public void deactivateCustomer(){
             return this;
         }
 
+        public Builder segmentId(String val) { segmentId = val; return this; }
+
         public Builder status(CustomerStatus val) {
             status = val;
             return this;
@@ -126,6 +136,10 @@ public void deactivateCustomer(){
             return id;
         }
     }
+
+    public String getSegmentId() { return segmentId; }
+
+    public void assignSegment(String segmentId) { this.segmentId = segmentId; }
 
     public String getUsername() {
         return username;

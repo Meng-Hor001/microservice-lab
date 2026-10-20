@@ -1,4 +1,5 @@
 package kh.edu.istad.platform.customer.restapi.dto;
+import jakarta.validation.constraints.Email;
 
 import jakarta.validation.constraints.NotBlank;
 
@@ -14,9 +15,12 @@ public record CreateCustomerRequest(
         String givenName,
 
         @NotBlank
+        @Email
         String email,
 
         @NotBlank
-        String phoneNumber
+        String phoneNumber,
+
+        String segmentId
 ){
 }

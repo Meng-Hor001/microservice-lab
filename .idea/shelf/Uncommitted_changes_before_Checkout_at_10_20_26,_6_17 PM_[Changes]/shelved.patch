@@ -1,0 +1,363 @@
+Index: microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/CustomerPersistenceMapper.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kh.edu.istad.platform.customer.persistence.mapper;\n\nimport kh.edu.istad.common.domain.valueobject.CustomerId;\nimport kh.edu.istad.platform.customer.domain.dto.InitiateCustomerCommand;\nimport kh.edu.istad.platform.customer.domain.entity.Customer;\nimport kh.edu.istad.platform.customer.persistence.Document.CustomerDocument;\nimport org.mapstruct.*;\n\nimport java.util.UUID;\n\n@Mapper(componentModel = MappingConstants.ComponentModel.SPRING)\npublic interface CustomerPersistenceMapper {\n\n    CustomerDocument toDocument(Customer customer);\n\n\n    Customer toDomain(CustomerDocument customerDocument);\n\n    @BeanMapping(ignoreByDefault = true)\n    @Mapping(target = \"familyName\", source = \"familyName\")\n    @Mapping(target = \"givenName\", source = \"givenName\")\n    @Mapping(target = \"status\", source = \"status\")\n    void updateDocument(Customer customer,\n                        @MappingTarget CustomerDocument document);\n\n\n    default String map(CustomerId value) {\n        return value == null ? null : value.id().toString();\n    }\n\n    default CustomerId map(String value) {\n        return value == null ? null : new CustomerId(UUID.fromString(value));\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/CustomerPersistenceMapper.java b/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/CustomerPersistenceMapper.java
+--- a/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/CustomerPersistenceMapper.java	(revision 930b31eb07ac07f7d5eb27c4d2a9be13a3fee4fe)
++++ b/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/CustomerPersistenceMapper.java	(date 1792494857381)
+@@ -20,6 +20,7 @@
+     @Mapping(target = "familyName", source = "familyName")
+     @Mapping(target = "givenName", source = "givenName")
+     @Mapping(target = "status", source = "status")
++    @Mapping(target = "segmentId", source = "segmentId")
+     void updateDocument(Customer customer,
+                         @MappingTarget CustomerDocument document);
+ 
+Index: microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kh.edu.istad.platform.customer.persistence.adapter;\n\nimport kh.edu.istad.common.domain.valueobject.CustomerId;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerFilter;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerStatistic;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerStatusCount;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerSummary;\nimport kh.edu.istad.platform.customer.domain.entity.Customer;\nimport kh.edu.istad.platform.customer.domain.exception.CustomerNotFoundException;\nimport kh.edu.istad.platform.customer.domain.port.out.CustomerRepository;\nimport kh.edu.istad.platform.customer.persistence.Document.CustomerDocument;\nimport kh.edu.istad.platform.customer.persistence.mapper.CustomerPersistenceMapper;\nimport kh.edu.istad.platform.customer.persistence.repository.CustomerMongoRepository;\nimport lombok.RequiredArgsConstructor;\nimport org.bson.Document;\nimport org.springframework.stereotype.Repository;\nimport reactor.core.publisher.Flux;\nimport reactor.core.publisher.Mono;\n\n@Repository\n@RequiredArgsConstructor\npublic class CustomerReactiveRepositoryAdapter implements CustomerRepository {\n\n    private final CustomerMongoRepository customerMongoRepository;\n    private final CustomerPersistenceMapper customerPersistenceMapper;\n\n    @Override\n    public Mono<Customer> save(Customer customer) {\n        CustomerDocument customerDocument = customerPersistenceMapper.toDocument(customer);\n        Mono<CustomerDocument> result = customerMongoRepository.save(customerDocument);\n        return result.map(customerPersistenceMapper::toDomain);\n    }\n\n    @Override\n    public Flux<Customer> findAll() {\n        return customerMongoRepository.findAll().map(customerPersistenceMapper::toDomain);\n    }\n\n    @Override\n    public Mono<Customer> findById(CustomerId id) {\n        return customerMongoRepository.findById(id.id().toString()).map(customerPersistenceMapper::toDomain);\n    }\n\n    @Override\n    public Mono<Void> deleteById(CustomerId id) {\n        return customerMongoRepository.deleteById(id.id().toString());\n    }\n\n    @Override\n    public Mono<Customer> findByUsername(String username) {\n        return customerMongoRepository.findByUsername(username).map(customerPersistenceMapper::toDomain);\n    }\n\n    @Override\n    public Mono<Customer> update(Customer customer) {\n\n        var customerId = customer.getId().id();\n        return customerMongoRepository.findById(customerId.toString())\n                .switchIfEmpty(\n                        Mono.error(new CustomerNotFoundException(customerId))\n                )\n                .flatMap(existingDocument -> {\n                    customerPersistenceMapper.updateDocument(\n                            customer,\n                            existingDocument\n                    );\n\n                    return customerMongoRepository.save(existingDocument)\n                            .map(customerPersistenceMapper::toDomain);\n                })\n                .map(customerPersistenceMapper::toDomain);\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java b/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java
+--- a/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java	(revision 930b31eb07ac07f7d5eb27c4d2a9be13a3fee4fe)
++++ b/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java	(date 1792493713552)
+@@ -1,10 +1,6 @@
+ package kh.edu.istad.platform.customer.persistence.adapter;
+ 
+ import kh.edu.istad.common.domain.valueobject.CustomerId;
+-import kh.edu.istad.platform.customer.domain.dto.CustomerFilter;
+-import kh.edu.istad.platform.customer.domain.dto.CustomerStatistic;
+-import kh.edu.istad.platform.customer.domain.dto.CustomerStatusCount;
+-import kh.edu.istad.platform.customer.domain.dto.CustomerSummary;
+ import kh.edu.istad.platform.customer.domain.entity.Customer;
+ import kh.edu.istad.platform.customer.domain.exception.CustomerNotFoundException;
+ import kh.edu.istad.platform.customer.domain.port.out.CustomerRepository;
+@@ -12,7 +8,6 @@
+ import kh.edu.istad.platform.customer.persistence.mapper.CustomerPersistenceMapper;
+ import kh.edu.istad.platform.customer.persistence.repository.CustomerMongoRepository;
+ import lombok.RequiredArgsConstructor;
+-import org.bson.Document;
+ import org.springframework.stereotype.Repository;
+ import reactor.core.publisher.Flux;
+ import reactor.core.publisher.Mono;
+@@ -67,8 +62,7 @@
+ 
+                     return customerMongoRepository.save(existingDocument)
+                             .map(customerPersistenceMapper::toDomain);
+-                })
+-                .map(customerPersistenceMapper::toDomain);
++                });
+     }
+ 
+ }
+Index: microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kh.edu.istad.platform.customer.domain.entity;\n\n\nimport kh.edu.istad.common.domain.entity.AggregateRoot;\nimport kh.edu.istad.common.domain.exception.CustomerDomainException;\nimport kh.edu.istad.common.domain.valueobject.CustomerId;\nimport kh.edu.istad.platform.customer.domain.valueobject.CustomerStatus;\nimport kh.edu.istad.platform.customer.domain.valueobject.Email;\nimport kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;\n\nimport java.util.Objects;\nimport java.util.UUID;\n\npublic class Customer extends AggregateRoot<CustomerId> {\n    private final String username;\n    private String familyName;\n    private String givenName;\n    private final Email email;\n    private final PhoneNumber phoneNumber;\n    private CustomerStatus status;\n\n    public static Builder builder() {\n        return new Builder();\n    }\n\n    private Customer(Builder builder) {\n        super.setId(builder.id);\n        username = builder.username;\n        familyName = builder.familyName;\n        givenName = builder.givenName;\n        email = builder.email;\n        phoneNumber = builder.phoneNumber;\n        status = builder.status;\n    }\n\n\n    // Domain Critical Logic\n    public void initiateCustomer(){\n        validateCustomer();\n\n\n        super.setId(new CustomerId(UUID.randomUUID()));\n        status = CustomerStatus.ACTIVE;\n    }\n\n    public void validateCustomer(){\n        if (super.getId() != null){\n            throw new CustomerDomainException(\"Customer id must be null\");\n        }\n        if (status != null){\n            throw new CustomerDomainException(\"Customer status must be null\");\n        }\n    }\n\n    public void updateCustomer(String familyName, String givenName){\n        if (familyName == null || givenName == null){\n            throw new CustomerDomainException(\"familyName and giveName must not be null\");\n        }\n        this.familyName = familyName;\n        this.givenName = givenName;\n    }\n\npublic void deactivateCustomer(){\n        if (status != CustomerStatus.ACTIVE){\n            throw new CustomerDomainException(\" Only active customers can be deactivated\");\n        }\n        status = CustomerStatus.INACTIVE;\n}\n    public static final class Builder {\n        private CustomerId id;\n        private String username;\n        private String familyName;\n        private String givenName;\n        private Email email;\n        private PhoneNumber phoneNumber;\n        private CustomerStatus status;\n\n        private Builder() {\n        }\n\n        public static Builder builder() {\n            return new Builder();\n        }\n\n        public Builder id(CustomerId val) {\n            id = val;\n            return this;\n        }\n\n        public Builder username(String val) {\n            username = val;\n            return this;\n        }\n\n        public Builder familyName(String val) {\n            familyName = val;\n            return this;\n        }\n\n        public Builder givenName(String val) {\n            givenName = val;\n            return this;\n        }\n\n        public Builder email(Email val) {\n            email = val;\n            return this;\n        }\n\n        public Builder phoneNumber(PhoneNumber val) {\n            phoneNumber = val;\n            return this;\n        }\n\n        public Builder status(CustomerStatus val) {\n            status = val;\n            return this;\n        }\n\n        public Customer build() {\n            return new Customer(this);\n        }\n\n\n        public CustomerId getId() {\n            return id;\n        }\n    }\n\n    public String getUsername() {\n        return username;\n    }\n\n    public String getFamilyName() {\n        return familyName;\n    }\n\n    public String getGivenName() {\n        return givenName;\n    }\n\n    public Email getEmail() {\n        return email;\n    }\n\n    public PhoneNumber getPhoneNumber() {\n        return phoneNumber;\n    }\n\n    public CustomerStatus getStatus() {\n        return status;\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java b/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java
+--- a/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java	(revision 930b31eb07ac07f7d5eb27c4d2a9be13a3fee4fe)
++++ b/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java	(date 1792494823133)
+@@ -18,6 +18,7 @@
+     private final Email email;
+     private final PhoneNumber phoneNumber;
+     private CustomerStatus status;
++    private String segmentId;
+ 
+     public static Builder builder() {
+         return new Builder();
+@@ -31,6 +32,7 @@
+         email = builder.email;
+         phoneNumber = builder.phoneNumber;
+         status = builder.status;
++        segmentId = builder.segmentId;
+     }
+ 
+ 
+@@ -50,6 +52,7 @@
+         if (status != null){
+             throw new CustomerDomainException("Customer status must be null");
+         }
++        assignSegment(segmentId);
+     }
+ 
+     public void updateCustomer(String familyName, String givenName){
+@@ -67,6 +70,7 @@
+         status = CustomerStatus.INACTIVE;
+ }
+     public static final class Builder {
++        public String segmentId;
+         private CustomerId id;
+         private String username;
+         private String familyName;
+@@ -117,6 +121,11 @@
+             return this;
+         }
+ 
++        public Builder segmentId(String val) {
++            this.segmentId = segmentId;
++            return this;
++        }
++
+         public Customer build() {
+             return new Customer(this);
+         }
+@@ -150,4 +159,18 @@
+     public CustomerStatus getStatus() {
+         return status;
+     }
++
++    public String getSegmentId() {
++        return segmentId;
++    }
++
++    public void assignSegment(String segmentId){
++        if (segmentId != null && segmentId.isBlank()){
++            throw new CustomerDomainException(
++                    "segmentId must not be blank"
++            );
++        }
++        this.segmentId = segmentId;
++    }
++
+ }
+Index: microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kh.edu.istad.platform.customer.domain.usecase;\n\nimport kh.edu.istad.common.domain.exception.CustomerDomainException;\nimport kh.edu.istad.common.domain.valueobject.CustomerId;\nimport kh.edu.istad.platform.customer.domain.dto.UpdateCustomerCommand;\nimport kh.edu.istad.platform.customer.domain.entity.Customer;\nimport kh.edu.istad.platform.customer.domain.event.CustomerUpdatedEvent;\nimport kh.edu.istad.platform.customer.domain.exception.CustomerNotFoundException;\nimport kh.edu.istad.platform.customer.domain.port.out.CustomerRepository;\nimport kh.edu.istad.platform.customer.domain.service.CustomerDomainService;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.stereotype.Component;\nimport org.springframework.stereotype.Service;\n\n@Service\n@RequiredArgsConstructor\npublic class UpdateCustomerUseCase {\n    private final CustomerRepository customerRepository;\n\n\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java b/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java
+--- a/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java	(revision 930b31eb07ac07f7d5eb27c4d2a9be13a3fee4fe)
++++ b/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java	(date 1792493713530)
+@@ -11,6 +11,7 @@
+ import lombok.RequiredArgsConstructor;
+ import org.springframework.stereotype.Component;
+ import org.springframework.stereotype.Service;
++import reactor.core.publisher.Mono;
+ 
+ @Service
+ @RequiredArgsConstructor
+@@ -18,5 +19,16 @@
+     private final CustomerRepository customerRepository;
+ 
+ 
++    public Mono<Customer> update(UpdateCustomerCommand command){
++        var id = new CustomerId(command.customerId());
+ 
++        return customerRepository.findById(id)
++                .switchIfEmpty(Mono.error(
++                        new CustomerNotFoundException(command.customerId())))
++                .flatMap(customer -> {
++                    customer.updateCustomer(command.familyName(),
++                            command.givenName());
++                    return customerRepository.update(customer);
++                });
++    }
+ }
+Index: microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package kh.edu.istad.platform.customer.restapi.controller;\n\nimport kh.edu.istad.platform.customer.domain.dto.CustomerFilter;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerStatistic;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerStatusCount;\nimport kh.edu.istad.platform.customer.domain.dto.CustomerSummary;\nimport kh.edu.istad.platform.customer.domain.entity.Customer;\nimport kh.edu.istad.platform.customer.domain.usecase.QueryCustomersUseCase;\nimport kh.edu.istad.platform.customer.domain.valueobject.CustomerStatus;\nimport kh.edu.istad.platform.customer.domain.valueobject.SegmentName;\nimport kh.edu.istad.platform.customer.restapi.dto.*;\nimport kh.edu.istad.platform.customer.restapi.mapper.CustomerWebMapper;\nimport kh.edu.istad.platform.customer.domain.usecase.CreateCustomerUseCase;\nimport lombok.RequiredArgsConstructor;\nimport org.springframework.http.HttpStatus;\nimport org.springframework.web.bind.annotation.*;\n\nimport org.springframework.web.server.ResponseStatusException;\nimport reactor.core.publisher.Flux;\nimport reactor.core.publisher.Mono;\n\n@RestController\n@RequiredArgsConstructor\n@RequestMapping(\"/api/customers\")\npublic class CustomerController {\n\n    private final CreateCustomerUseCase createCustomerUseCase;\n    private final CustomerWebMapper customerWebMapper;\n    private final QueryCustomersUseCase queryCustomersUseCase;\n\n\n    @GetMapping\n    public Flux<CustomerSummary> search(\n            @RequestParam(required = false) String keyword,\n            @RequestParam(required = false) CustomerStatus status,\n            @RequestParam(required = false) SegmentName segment,\n            @RequestParam(defaultValue = \"0\") int page,\n            @RequestParam(defaultValue = \"10\") int size\n    ) {\n        if (page < 0 || size < 1 || size > 100) {\n            throw new ResponseStatusException(\n                    HttpStatus.BAD_REQUEST,\n                    \"page must be >= 0 and size must be between 1 and 100\"\n            );\n        }\n        return queryCustomersUseCase.search(\n                new CustomerFilter(keyword, status, segment, page, size)\n        );\n    }\n\n    @GetMapping(\"/report\")\n    public Flux<CustomerStatusCount> report() {\n        return queryCustomersUseCase.report();\n    }\n\n    @GetMapping(\"/statistics\")\n    public Mono<CustomerStatistic> statistic() {\n        return queryCustomersUseCase.statistic();\n    }\n//    @GetMapping\n//    public Flux<Customer> findAll(){\n//        return queryCustomersUseCase.findAll();\n//    }\n    @ResponseStatus(HttpStatus.CREATED)\n    @PostMapping\n    public Mono<Customer> create (@RequestBody CreateCustomerRequest request){\n        return createCustomerUseCase.create(customerWebMapper.toDomain(request));\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java b/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java
+--- a/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java	(revision 930b31eb07ac07f7d5eb27c4d2a9be13a3fee4fe)
++++ b/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java	(date 1792493713496)
+@@ -57,10 +57,7 @@
+     public Mono<CustomerStatistic> statistic() {
+         return queryCustomersUseCase.statistic();
+     }
+-//    @GetMapping
+-//    public Flux<Customer> findAll(){
+-//        return queryCustomersUseCase.findAll();
+-//    }
++
+     @ResponseStatus(HttpStatus.CREATED)
+     @PostMapping
+     public Mono<Customer> create (@RequestBody CreateCustomerRequest request){
+Index: .idea/workspace.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<project version=\"4\">\n  <component name=\"AutoImportSettings\">\n    <option name=\"autoReloadType\" value=\"SELECTIVE\" />\n  </component>\n  <component name=\"ChangeListManager\">\n    <list default=\"true\" id=\"a6806565-d453-49e0-9026-df07b9880914\" name=\"Changes\" comment=\"\">\n      <change beforePath=\"$PROJECT_DIR$/.idea/workspace.xml\" beforeDir=\"false\" afterPath=\"$PROJECT_DIR$/.idea/workspace.xml\" afterDir=\"false\" />\n    </list>\n    <option name=\"SHOW_DIALOG\" value=\"false\" />\n    <option name=\"HIGHLIGHT_CONFLICTS\" value=\"true\" />\n    <option name=\"HIGHLIGHT_NON_ACTIVE_CHANGELIST\" value=\"false\" />\n    <option name=\"LAST_RESOLUTION\" value=\"IGNORE\" />\n  </component>\n  <component name=\"DatabaseLocalColorSettings\">\n    <colors>\n      <entry key=\"07e6868d-ce7a-4038-b383-e0963e7a0673\" value=\"\" />\n    </colors>\n  </component>\n  <component name=\"EmbeddingIndexingInfo\">\n    <option name=\"cachedIndexableFilesCount\" value=\"427\" />\n    <option name=\"fileBasedEmbeddingIndicesEnabled\" value=\"true\" />\n  </component>\n  <component name=\"ExternalProjectsData\">\n    <projectState path=\"$PROJECT_DIR$\">\n      <ProjectState />\n    </projectState>\n  </component>\n  <component name=\"ExternalProjectsManager\">\n    <system id=\"GRADLE\">\n      <state>\n        <task path=\"$PROJECT_DIR$\">\n          <activation />\n        </task>\n        <task path=\"$PROJECT_DIR$/microservices/customer-service\">\n          <activation />\n        </task>\n        <projects_view>\n          <tree_state>\n            <expand>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"microservice-lab\" type=\"f1a62948:ProjectNode\" />\n              </path>\n              <path>\n                <item name=\"\" type=\"6a2764b6:ExternalProjectsStructure$RootNode\" />\n                <item name=\"microservice-lab\" type=\"f1a62948:ProjectNode\" />\n                <item name=\"microservices\" type=\"2d1252cf:ModuleNode\" />\n              </path>\n            </expand>\n            <select />\n          </tree_state>\n        </projects_view>\n      </state>\n    </system>\n  </component>\n  <component name=\"FileTemplateManagerImpl\">\n    <option name=\"RECENT_TEMPLATES\">\n      <list>\n        <option value=\"Exception\" />\n        <option value=\"Enum\" />\n        <option value=\"Record\" />\n        <option value=\"Class\" />\n        <option value=\"Interface\" />\n      </list>\n    </option>\n  </component>\n  <component name=\"Git.Settings\">\n    <option name=\"RECENT_GIT_ROOT_PATH\" value=\"$PROJECT_DIR$\" />\n  </component>\n  <component name=\"HttpClientOnboardingState\">{\n  &quot;isOnboardingCommentShown&quot;: true\n}</component>\n  <component name=\"McpProjectServerCommands\">\n    <commands />\n    <urls />\n  </component>\n  <component name=\"NextEditCompletionFeaturesState\">\n    <decayedCancelled>\n      <entry key=\"MS100\" value=\"3.656317620399427E-78\" />\n      <entry key=\"MS500\" value=\"3.255434187042348E-16\" />\n      <entry key=\"S2\" value=\"1.394888632790531E-4\" />\n      <entry key=\"S5\" value=\"0.03986814313889661\" />\n      <entry key=\"S10\" value=\"0.32182083429541963\" />\n      <entry key=\"S30\" value=\"1.6347715026308964\" />\n      <entry key=\"S60\" value=\"2.885064951872232\" />\n      <entry key=\"M2\" value=\"4.083958556359179\" />\n      <entry key=\"M5\" value=\"6.627430680204736\" />\n      <entry key=\"M10\" value=\"13.992142792072709\" />\n      <entry key=\"M15\" value=\"23.573576240689267\" />\n      <entry key=\"M30\" value=\"53.78198011227625\" />\n      <entry key=\"H1\" value=\"111.25475845431222\" />\n      <entry key=\"H2\" value=\"219.99591584460882\" />\n      <entry key=\"H4\" value=\"375.1326776271297\" />\n      <entry key=\"D1\" value=\"673.0359823889551\" />\n      <entry key=\"W1\" value=\"754.2433041527061\" />\n    </decayedCancelled>\n    <decayedSelected>\n      <entry key=\"MS100\" value=\"1.0\" />\n      <entry key=\"MS500\" value=\"1.000000110304888\" />\n      <entry key=\"S2\" value=\"1.0184827577203721\" />\n      <entry key=\"S5\" value=\"1.243204051746117\" />\n      <entry key=\"S10\" value=\"1.7549729821446092\" />\n      <entry key=\"S30\" value=\"3.6480568728323814\" />\n      <entry key=\"S60\" value=\"5.48574763471049\" />\n      <entry key=\"M2\" value=\"7.29670482860236\" />\n      <entry key=\"M5\" value=\"11.133192926553418\" />\n      <entry key=\"M10\" value=\"20.581782038963397\" />\n      <entry key=\"M15\" value=\"31.400674327180486\" />\n      <entry key=\"M30\" value=\"62.99339586378893\" />\n      <entry key=\"H1\" value=\"123.88282814234543\" />\n      <entry key=\"H2\" value=\"243.50127502938193\" />\n      <entry key=\"H4\" value=\"413.91263295774144\" />\n      <entry key=\"D1\" value=\"736.2145394207005\" />\n      <entry key=\"W1\" value=\"823.2205561481753\" />\n    </decayedSelected>\n    <decayedShown>\n      <entry key=\"MS100\" value=\"0.038473262917028635\" />\n      <entry key=\"MS500\" value=\"0.5212329408572577\" />\n      <entry key=\"S2\" value=\"0.8657065601650907\" />\n      <entry key=\"S5\" value=\"1.2034481524380682\" />\n      <entry key=\"S10\" value=\"2.00912492796498\" />\n      <entry key=\"S30\" value=\"5.208919447058268\" />\n      <entry key=\"S60\" value=\"8.306249097579133\" />\n      <entry key=\"M2\" value=\"11.334732842085973\" />\n      <entry key=\"M5\" value=\"17.728513291931993\" />\n      <entry key=\"M10\" value=\"34.53681165634308\" />\n      <entry key=\"M15\" value=\"54.93129348236675\" />\n      <entry key=\"M30\" value=\"116.72493261978774\" />\n      <entry key=\"H1\" value=\"235.08301220189472\" />\n      <entry key=\"H2\" value=\"463.44013679415104\" />\n      <entry key=\"H4\" value=\"788.9953943061874\" />\n      <entry key=\"D1\" value=\"1409.2354857707903\" />\n      <entry key=\"W1\" value=\"1577.4614544966785\" />\n    </decayedShown>\n  </component>\n  <component name=\"ProjectColorInfo\">{\n  &quot;customColor&quot;: &quot;&quot;,\n  &quot;associatedIndex&quot;: 0\n}</component>\n  <component name=\"ProjectId\" id=\"3KMB5g8GCaBqkl1j1wpyxFxONgF\" />\n  <component name=\"ProjectViewState\">\n    <option name=\"hideEmptyMiddlePackages\" value=\"true\" />\n    <option name=\"showLibraryContents\" value=\"true\" />\n  </component>\n  <component name=\"PropertiesComponent\">{\n  &quot;keyToString&quot;: {\n    &quot;Gradle.Build microservice-lab.executor&quot;: &quot;Run&quot;,\n    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,\n    &quot;Gradle.customer-service [dependencies].executor&quot;: &quot;Run&quot;,\n    &quot;HTTP Request.generated-requests | #3.executor&quot;: &quot;Run&quot;,\n    &quot;HTTP Request.generated-requests | #4.executor&quot;: &quot;Run&quot;,\n    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,\n    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,\n    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,\n    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,\n    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,\n    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,\n    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,\n    &quot;Spring Boot.BusinessApplicationService.executor&quot;: &quot;Run&quot;,\n    &quot;Spring Boot.CustomerApplicationService (1).executor&quot;: &quot;Run&quot;,\n    &quot;Spring Boot.CustomerApplicationService.executor&quot;: &quot;Run&quot;,\n    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,\n    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,\n    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,\n    &quot;git-widget-placeholder&quot;: &quot;Assignment-02&quot;,\n    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,\n    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,\n    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,\n    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,\n    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,\n    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,\n    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,\n    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,\n    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,\n    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,\n    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,\n    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;\n  }\n}</component>\n  <component name=\"RunDashboard\">\n    <option name=\"configurationTypes\">\n      <set>\n        <option value=\"SpringBootApplicationConfigurationType\" />\n      </set>\n    </option>\n    <option name=\"hiddenConfigurations\">\n      <map>\n        <entry key=\"#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory\">\n          <value>\n            <set />\n          </value>\n        </entry>\n        <entry key=\"HttpClient.HttpRequestRunConfigurationType\">\n          <value>\n            <set />\n          </value>\n        </entry>\n        <entry key=\"JBossConfiguration\">\n          <value>\n            <set />\n          </value>\n        </entry>\n        <entry key=\"SpringBootApplicationConfigurationType\">\n          <value>\n            <set>\n              <option value=\"CustomerApplicationService\" />\n            </set>\n          </value>\n        </entry>\n        <entry key=\"TomeeConfiguration\">\n          <value>\n            <set />\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"shownConfigurations\">\n      <map>\n        <entry key=\"HttpClient.HttpRequestRunConfigurationType\">\n          <value>\n            <set>\n              <option value=\"generated-requests | #3\" />\n              <option value=\"generated-requests | #4\" />\n            </set>\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"configurationStatuses\">\n      <map>\n        <entry key=\"HttpClient.HttpRequestRunConfigurationType\">\n          <value>\n            <map>\n              <entry key=\"generated-requests | #3\" value=\"STOPPED\" />\n              <entry key=\"generated-requests | #4\" value=\"STOPPED\" />\n            </map>\n          </value>\n        </entry>\n        <entry key=\"SpringBootApplicationConfigurationType\">\n          <value>\n            <map>\n              <entry key=\"BusinessApplicationService\" value=\"STOPPED\" />\n              <entry key=\"CustomerApplicationService\" value=\"STOPPED\" />\n              <entry key=\"CustomerApplicationService (1)\" value=\"STOPPED\" />\n            </map>\n          </value>\n        </entry>\n      </map>\n    </option>\n    <option name=\"excludedNewTypes\">\n      <set>\n        <option value=\"#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory\" />\n        <option value=\"HttpClient.HttpRequestRunConfigurationType\" />\n        <option value=\"JBossConfiguration\" />\n        <option value=\"TomeeConfiguration\" />\n      </set>\n    </option>\n  </component>\n  <component name=\"RunManager\" selected=\"Spring Boot.CustomerApplicationService (1)\">\n    <configuration name=\"customer-service [dependencies]\" type=\"GradleRunConfiguration\" factoryName=\"Gradle\" temporary=\"true\">\n      <ExternalSystemSettings>\n        <option name=\"executionName\" />\n        <option name=\"externalProjectPath\" value=\"$PROJECT_DIR$/microservices/customer-service\" />\n        <option name=\"externalSystemIdString\" value=\"GRADLE\" />\n        <option name=\"scriptParameters\" />\n        <option name=\"taskDescriptions\">\n          <list />\n        </option>\n        <option name=\"taskNames\">\n          <list>\n            <option value=\"dependencies\" />\n          </list>\n        </option>\n        <option name=\"vmOptions\" />\n      </ExternalSystemSettings>\n      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>\n      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>\n      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>\n      <DebugAllEnabled>false</DebugAllEnabled>\n      <RunAsTest>false</RunAsTest>\n      <GradleProfilingDisabled>false</GradleProfilingDisabled>\n      <GradleCoverageDisabled>false</GradleCoverageDisabled>\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"generated-requests | #3\" type=\"HttpClient.HttpRequestRunConfigurationType\" factoryName=\"HTTP Request\" temporary=\"true\" nameIsGenerated=\"true\" path=\"$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http\" executionIdentifier=\"#3\" index=\"3\" runType=\"Run single request\">\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"generated-requests | #4\" type=\"HttpClient.HttpRequestRunConfigurationType\" factoryName=\"HTTP Request\" temporary=\"true\" nameIsGenerated=\"true\" path=\"$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http\" executionIdentifier=\"#4\" index=\"4\" runType=\"Run single request\">\n      <method v=\"2\" />\n    </configuration>\n    <configuration name=\"BusinessApplicationService\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\n      <module name=\"microservices.business-service.main\" />\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"kh.edu.istad.platform.business.BusinessApplicationService\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"CustomerApplicationService (1)\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" temporary=\"true\" nameIsGenerated=\"true\">\n      <module name=\"microservices.customer-service.customer-service-main.main\" />\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"kh.edu.istad.platform.customer.CustomerApplicationService\" />\n      <extension name=\"coverage\">\n        <pattern>\n          <option name=\"PATTERN\" value=\"kh.edu.istad.platform.customer.*\" />\n          <option name=\"ENABLED\" value=\"true\" />\n        </pattern>\n      </extension>\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <configuration name=\"CustomerApplicationService\" type=\"SpringBootApplicationConfigurationType\" factoryName=\"Spring Boot\" nameIsGenerated=\"true\">\n      <module name=\"microservices.customer-service.customer-service-main.main\" />\n      <option name=\"SPRING_BOOT_MAIN_CLASS\" value=\"kh.edu.istad.platform.customer.CustomerApplicationService\" />\n      <method v=\"2\">\n        <option name=\"Make\" enabled=\"true\" />\n      </method>\n    </configuration>\n    <list>\n      <item itemvalue=\"Gradle.customer-service [dependencies]\" />\n      <item itemvalue=\"HTTP Request.generated-requests | #3\" />\n      <item itemvalue=\"HTTP Request.generated-requests | #4\" />\n      <item itemvalue=\"Spring Boot.BusinessApplicationService\" />\n      <item itemvalue=\"Spring Boot.CustomerApplicationService\" />\n      <item itemvalue=\"Spring Boot.CustomerApplicationService (1)\" />\n    </list>\n    <recent_temporary>\n      <list>\n        <item itemvalue=\"Spring Boot.CustomerApplicationService (1)\" />\n        <item itemvalue=\"HTTP Request.generated-requests | #4\" />\n        <item itemvalue=\"HTTP Request.generated-requests | #3\" />\n        <item itemvalue=\"Gradle.customer-service [dependencies]\" />\n      </list>\n    </recent_temporary>\n  </component>\n  <component name=\"SharedIndexes\">\n    <attachedChunks>\n      <set>\n        <option value=\"bundled-jdk-30f59d01ecdd-a203e0a19954-intellij.indexing.shared.core-IU-262.10968.63\" />\n        <option value=\"bundled-js-predefined-d6986cc7102b-4abd2a77f808-JavaScript-IU-262.10968.63\" />\n      </set>\n    </attachedChunks>\n  </component>\n  <component name=\"TaskManager\">\n    <task active=\"true\" id=\"Default\" summary=\"Default task\">\n      <changelist id=\"a6806565-d453-49e0-9026-df07b9880914\" name=\"Changes\" comment=\"\" />\n      <created>1791357376126</created>\n      <option name=\"number\" value=\"Default\" />\n      <option name=\"presentableId\" value=\"Default\" />\n      <updated>1791357376126</updated>\n    </task>\n    <servers />\n  </component>\n  <component name=\"TypeScriptGeneratedFilesManager\">\n    <option name=\"version\" value=\"3\" />\n  </component>\n  <component name=\"XSLT-Support.FileAssociations.UIState\">\n    <expand />\n    <select />\n  </component>\n</project>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/.idea/workspace.xml b/.idea/workspace.xml
+--- a/.idea/workspace.xml	(revision 930b31eb07ac07f7d5eb27c4d2a9be13a3fee4fe)
++++ b/.idea/workspace.xml	(date 1792494823446)
+@@ -6,6 +6,10 @@
+   <component name="ChangeListManager">
+     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
+       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" afterDir="false" />
++      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" afterDir="false" />
+     </list>
+     <option name="SHOW_DIALOG" value="false" />
+     <option name="HIGHLIGHT_CONFLICTS" value="true" />
+@@ -77,61 +81,61 @@
+   </component>
+   <component name="NextEditCompletionFeaturesState">
+     <decayedCancelled>
+-      <entry key="MS100" value="3.656317620399427E-78" />
+-      <entry key="MS500" value="3.255434187042348E-16" />
+-      <entry key="S2" value="1.394888632790531E-4" />
+-      <entry key="S5" value="0.03986814313889661" />
+-      <entry key="S10" value="0.32182083429541963" />
+-      <entry key="S30" value="1.6347715026308964" />
+-      <entry key="S60" value="2.885064951872232" />
+-      <entry key="M2" value="4.083958556359179" />
+-      <entry key="M5" value="6.627430680204736" />
+-      <entry key="M10" value="13.992142792072709" />
+-      <entry key="M15" value="23.573576240689267" />
+-      <entry key="M30" value="53.78198011227625" />
+-      <entry key="H1" value="111.25475845431222" />
+-      <entry key="H2" value="219.99591584460882" />
+-      <entry key="H4" value="375.1326776271297" />
+-      <entry key="D1" value="673.0359823889551" />
+-      <entry key="W1" value="754.2433041527061" />
++      <entry key="MS100" value="7.304388824528878E-153" />
++      <entry key="MS500" value="4.8741407162025015E-31" />
++      <entry key="S2" value="4.3341838976623515E-8" />
++      <entry key="S5" value="0.0019538631796303728" />
++      <entry key="S10" value="0.09445477892494071" />
++      <entry key="S30" value="1.8729655332229318" />
++      <entry key="S60" value="5.230447285048053" />
++      <entry key="M2" value="11.847035956413789" />
++      <entry key="M5" value="25.411038154591587" />
++      <entry key="M10" value="38.991879266898174" />
++      <entry key="M15" value="50.01035469743317" />
++      <entry key="M30" value="80.91957756007318" />
++      <entry key="H1" value="139.26960997825216" />
++      <entry key="H2" value="249.30389084058302" />
++      <entry key="H4" value="409.5919329364392" />
++      <entry key="D1" value="727.4731559717975" />
++      <entry key="W1" value="815.8703030939321" />
+     </decayedCancelled>
+     <decayedSelected>
+-      <entry key="MS100" value="1.0" />
+-      <entry key="MS500" value="1.000000110304888" />
+-      <entry key="S2" value="1.0184827577203721" />
+-      <entry key="S5" value="1.243204051746117" />
+-      <entry key="S10" value="1.7549729821446092" />
+-      <entry key="S30" value="3.6480568728323814" />
+-      <entry key="S60" value="5.48574763471049" />
+-      <entry key="M2" value="7.29670482860236" />
+-      <entry key="M5" value="11.133192926553418" />
+-      <entry key="M10" value="20.581782038963397" />
+-      <entry key="M15" value="31.400674327180486" />
+-      <entry key="M30" value="62.99339586378893" />
+-      <entry key="H1" value="123.88282814234543" />
+-      <entry key="H2" value="243.50127502938193" />
+-      <entry key="H4" value="413.91263295774144" />
+-      <entry key="D1" value="736.2145394207005" />
+-      <entry key="W1" value="823.2205561481753" />
++      <entry key="MS100" value="1.0000011905007828" />
++      <entry key="MS500" value="1.0653350062628228" />
++      <entry key="S2" value="1.5055760526033215" />
++      <entry key="S5" value="1.762064517701699" />
++      <entry key="S10" value="1.9161039069151196" />
++      <entry key="S30" value="2.707243403160735" />
++      <entry key="S60" value="4.106082006230656" />
++      <entry key="M2" value="7.070857410704918" />
++      <entry key="M5" value="13.864863837417964" />
++      <entry key="M10" value="24.026829770990325" />
++      <entry key="M15" value="34.51684817545424" />
++      <entry key="M30" value="66.14655590850853" />
++      <entry key="H1" value="127.74278642488464" />
++      <entry key="H2" value="248.11602386087097" />
++      <entry key="H4" value="423.8739415074952" />
++      <entry key="D1" value="767.9212723332424" />
++      <entry key="W1" value="862.7323864587382" />
+     </decayedSelected>
+     <decayedShown>
+-      <entry key="MS100" value="0.038473262917028635" />
+-      <entry key="MS500" value="0.5212329408572577" />
+-      <entry key="S2" value="0.8657065601650907" />
+-      <entry key="S5" value="1.2034481524380682" />
+-      <entry key="S10" value="2.00912492796498" />
+-      <entry key="S30" value="5.208919447058268" />
+-      <entry key="S60" value="8.306249097579133" />
+-      <entry key="M2" value="11.334732842085973" />
+-      <entry key="M5" value="17.728513291931993" />
+-      <entry key="M10" value="34.53681165634308" />
+-      <entry key="M15" value="54.93129348236675" />
+-      <entry key="M30" value="116.72493261978774" />
+-      <entry key="H1" value="235.08301220189472" />
+-      <entry key="H2" value="463.44013679415104" />
+-      <entry key="H4" value="788.9953943061874" />
+-      <entry key="D1" value="1409.2354857707903" />
+-      <entry key="W1" value="1577.4614544966785" />
++      <entry key="MS100" value="0.005524277614286373" />
++      <entry key="MS500" value="0.376146082695551" />
++      <entry key="S2" value="1.1588020587372174" />
++      <entry key="S5" value="1.5882805610118385" />
++      <entry key="S10" value="1.9074529432686733" />
++      <entry key="S30" value="4.503733689680935" />
++      <entry key="S60" value="9.25979758420765" />
++      <entry key="M2" value="18.84084740578917" />
++      <entry key="M5" value="39.212257556791684" />
++      <entry key="M10" value="62.964378463597974" />
++      <entry key="M15" value="84.47513826575924" />
++      <entry key="M30" value="147.01374229989574" />
++      <entry key="H1" value="266.95787370528404" />
++      <entry key="H2" value="497.3632517259838" />
++      <entry key="H4" value="833.4156550883199" />
++      <entry key="D1" value="1495.3789120724011" />
++      <entry key="W1" value="1678.6001925056519" />
+     </decayedShown>
+   </component>
+   <component name="ProjectColorInfo">{
+@@ -203,13 +207,6 @@
+         <entry key="JBossConfiguration">
+           <value>
+             <set />
+-          </value>
+-        </entry>
+-        <entry key="SpringBootApplicationConfigurationType">
+-          <value>
+-            <set>
+-              <option value="CustomerApplicationService" />
+-            </set>
+           </value>
+         </entry>
+         <entry key="TomeeConfiguration">
+@@ -227,27 +224,6 @@
+               <option value="generated-requests | #3" />
+               <option value="generated-requests | #4" />
+             </set>
+-          </value>
+-        </entry>
+-      </map>
+-    </option>
+-    <option name="configurationStatuses">
+-      <map>
+-        <entry key="HttpClient.HttpRequestRunConfigurationType">
+-          <value>
+-            <map>
+-              <entry key="generated-requests | #3" value="STOPPED" />
+-              <entry key="generated-requests | #4" value="STOPPED" />
+-            </map>
+-          </value>
+-        </entry>
+-        <entry key="SpringBootApplicationConfigurationType">
+-          <value>
+-            <map>
+-              <entry key="BusinessApplicationService" value="STOPPED" />
+-              <entry key="CustomerApplicationService" value="STOPPED" />
+-              <entry key="CustomerApplicationService (1)" value="STOPPED" />
+-            </map>
+           </value>
+         </entry>
+       </map>

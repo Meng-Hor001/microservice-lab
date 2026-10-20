@@ -2,6 +2,7 @@ package kh.edu.istad.platform.customer.restapi.exception;
 
 import kh.edu.istad.common.domain.exception.CustomerDomainException;
 import kh.edu.istad.platform.customer.domain.exception.CustomerNotFoundException;
+import kh.edu.istad.platform.customer.domain.exception.SegmentNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -9,7 +10,7 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
-import org.springframework.web.reactive.result.method.annotation.ResponseEntityExceptionHandler;
+import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
 
 import java.util.LinkedHashMap;
@@ -49,6 +50,17 @@ public class RestAdvisor extends ResponseEntityExceptionHandler {
                 "An unexpected error occurred. Please try again later."
         );
     }
+
+    @ExceptionHandler(SegmentNotFoundException.class)
+    public ProblemDetail handleSegmentNotFound(
+            SegmentNotFoundException exception
+    ) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.NOT_FOUND,
+                exception.getMessage()
+        );
+    }
+
 }
 
 
