@@ -14,25 +14,6 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class UpdateCustomerUseCase {
-    private final CustomerRepository customerRepository;
-    private final CustomerDomainService customerDomainService;
 
-    public CustomerUpdatedEvent execute(UpdateCustomerCommand command){
-        // TODO : I want to write something unhappen
-        // 1. Load the existing customer
-        Customer customer = customerRepository.findById(
-                        new CustomerId(command.customerId()))
-                .orElseThrow(()-> new CustomerNotFoundException(command.customerId());
 
-        //2. Update the names and create the event
-        CustomerUpdatedEvent event = customerDomainService.updateCustomer(
-                customer,
-                command.familyName(),
-                command.givenName()
-        );
-
-        //3. Save the update customer
-        customerRepository.save(customer);
-        return event;
-    }
 }

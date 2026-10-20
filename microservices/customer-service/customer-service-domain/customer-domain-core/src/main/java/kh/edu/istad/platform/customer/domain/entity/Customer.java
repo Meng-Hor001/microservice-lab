@@ -19,6 +19,10 @@ public class Customer extends AggregateRoot<CustomerId> {
     private final PhoneNumber phoneNumber;
     private CustomerStatus status;
 
+    public static Builder builder() {
+        return new Builder();
+    }
+
     private Customer(Builder builder) {
         super.setId(builder.id);
         username = builder.username;

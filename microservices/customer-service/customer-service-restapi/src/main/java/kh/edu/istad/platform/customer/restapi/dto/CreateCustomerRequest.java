@@ -2,7 +2,7 @@ package kh.edu.istad.platform.customer.restapi.dto;
 
 import jakarta.validation.constraints.NotBlank;
 
-public record CustomerInitiateRequest (
+public record CreateCustomerRequest(
 
         @NotBlank
         String username,
