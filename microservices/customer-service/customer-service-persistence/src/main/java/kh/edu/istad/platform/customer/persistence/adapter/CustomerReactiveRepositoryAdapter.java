@@ -1,4 +1,6 @@
 package kh.edu.istad.platform.customer.persistence.adapter;
+import kh.edu.istad.platform.customer.domain.exception.DuplicateResourceException;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.aggregation.Aggregation;
@@ -82,9 +84,15 @@ public class CustomerReactiveRepositoryAdapter implements CustomerRepository {
 
     @Override
     public Mono<Customer> save(Customer customer) {
-        CustomerDocument customerDocument = customerPersistenceMapper.toDocument(customer);
-        Mono<CustomerDocument> result = customerMongoRepository.save(customerDocument);
-        return result.map(customerPersistenceMapper::toDomain);
+        return customerMongoRepository
+                .save(customerPersistenceMapper.toDocument(customer))
+                .map(customerPersistenceMapper::toDomain)
+                .onErrorMap(
+                        DuplicateKeyException.class,
+                        error -> new DuplicateResourceException(
+                                "Customer username or email already exists"
+                        )
+                );
     }
 
     @Override

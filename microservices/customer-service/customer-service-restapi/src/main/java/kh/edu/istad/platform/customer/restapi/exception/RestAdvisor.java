@@ -2,6 +2,7 @@ package kh.edu.istad.platform.customer.restapi.exception;
 
 import kh.edu.istad.common.domain.exception.CustomerDomainException;
 import kh.edu.istad.platform.customer.domain.exception.CustomerNotFoundException;
+import kh.edu.istad.platform.customer.domain.exception.DuplicateResourceException;
 import kh.edu.istad.platform.customer.domain.exception.SegmentNotFoundException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.*;
@@ -57,6 +58,14 @@ public class RestAdvisor extends ResponseEntityExceptionHandler {
     ) {
         return ProblemDetail.forStatusAndDetail(
                 HttpStatus.NOT_FOUND,
+                exception.getMessage()
+        );
+    }
+
+    @ExceptionHandler(DuplicateResourceException.class)
+    public ProblemDetail handleDuplicate(DuplicateResourceException exception) {
+        return ProblemDetail.forStatusAndDetail(
+                HttpStatus.CONFLICT,
                 exception.getMessage()
         );
     }

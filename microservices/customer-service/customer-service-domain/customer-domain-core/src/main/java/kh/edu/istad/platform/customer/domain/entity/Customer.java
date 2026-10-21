@@ -12,11 +12,11 @@ import java.util.Objects;
 import java.util.UUID;
 
 public class Customer extends AggregateRoot<CustomerId> {
-    private final String username;
+    private  String username;
     private String familyName;
     private String givenName;
-    private final Email email;
-    private final PhoneNumber phoneNumber;
+    private  Email email;
+    private  PhoneNumber phoneNumber;
     private CustomerStatus status;
     private String segmentId;
 
@@ -36,7 +36,6 @@ public class Customer extends AggregateRoot<CustomerId> {
     }
 
 
-    // Domain Critical Logic
     public void initiateCustomer(){
         validateCustomer();
 
@@ -59,10 +58,47 @@ public class Customer extends AggregateRoot<CustomerId> {
         }
     }
 
-    public void updateCustomer(String familyName, String givenName){
+    public void updateCustomer(
+            String username,
+            String familyName,
+            String givenName,
+            Email email,
+            PhoneNumber phoneNumber){
         if (familyName == null || familyName.isBlank() || givenName == null || givenName.isBlank()){
             throw new CustomerDomainException("familyName and givenName must not be blank");
         }
+
+        if (username == null || username.isBlank()) {
+            throw new CustomerDomainException("Username is required");
+        }
+
+        if (email == null || email.value() == null || email.value().isBlank()) {
+            throw new CustomerDomainException("Email is required");
+        }
+
+        if (phoneNumber == null
+                || phoneNumber.value() == null
+                || phoneNumber.value().isBlank()) {
+            throw new CustomerDomainException("Phone number is required");
+        }
+
+        updateCustomer(familyName, givenName);
+
+        this.username = username.trim();
+        this.email = new Email(email.value().trim());
+        this.phoneNumber = new PhoneNumber(phoneNumber.value().trim());
+        this.familyName = familyName;
+        this.givenName = givenName;
+    }
+
+    public void updateCustomer(String familyName, String givenName) {
+        if (familyName == null || familyName.isBlank()
+                || givenName == null || givenName.isBlank()) {
+            throw new CustomerDomainException(
+                    "familyName and givenName must not be blank"
+            );
+        }
+
         this.familyName = familyName;
         this.givenName = givenName;
     }

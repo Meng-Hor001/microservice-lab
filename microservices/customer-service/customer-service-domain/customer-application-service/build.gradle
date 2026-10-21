@@ -6,4 +6,7 @@ dependencies {
     api 'kh.edu.istad:customer-domain-core'
     implementation 'io.projectreactor:reactor-core'
     api 'io.projectreactor:reactor-core'
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }

@@ -1,4 +1,6 @@
 package kh.edu.istad.platform.customer.domain.usecase;
+import kh.edu.istad.platform.customer.domain.valueobject.Email;
+import kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;
 import reactor.core.publisher.Mono;
 import java.util.UUID;
 
@@ -20,14 +22,30 @@ public class UpdateCustomerUseCase {
     private final CustomerRepository repository;
     private final SegmentCrudUseCase segments;
 
-    public Mono<Customer> update(UUID id, String familyName, String givenName, String segmentId) {
-        return queries.findById(id).flatMap(customer -> {
-            customer.updateCustomer(familyName, givenName);
-            customer.assignSegment(segmentId);
-            return (segmentId == null ? Mono.empty() : segments.findById(segmentId))
-                    .then(Mono.defer(() -> repository.save(customer)));
-        });
+    public Mono<Customer> update(UUID id, UpdateCustomerCommand command) {
+        return queries.findById(id)
+                .flatMap(customer -> {
+                    Mono<Void> segmentValidation =
+                            command.segmentId() == null
+                                    ? Mono.empty()
+                                    : segments.findById(command.segmentId()).then();
+
+                    return segmentValidation.then(Mono.defer(() -> {
+                        customer.updateCustomer(
+                                command.username(),
+                                command.familyName(),
+                                command.givenName(),
+                                new Email(command.email()),
+                                new PhoneNumber(command.phoneNumber())
+                        );
+
+                        customer.assignSegment(command.segmentId());
+
+                        return repository.save(customer);
+                    }));
+                });
     }
+
 
 
 

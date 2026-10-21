@@ -7,6 +7,7 @@ import kh.edu.istad.platform.customer.domain.valueobject.Email;
 import kh.edu.istad.platform.customer.domain.valueobject.PhoneNumber;
 import lombok.*;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Getter
@@ -19,12 +20,14 @@ public class CustomerDocument {
     @Id
     private String id;
 
+    @Indexed(unique = true)
     private  String username;
 
     private String familyName;
 
     private String givenName;
 
+    @Indexed(unique = true)
     private  Email email;
 
     private  PhoneNumber phoneNumber;

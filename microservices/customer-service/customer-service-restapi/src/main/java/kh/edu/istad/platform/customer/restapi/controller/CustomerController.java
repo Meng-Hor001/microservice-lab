@@ -6,7 +6,6 @@ import kh.edu.istad.platform.customer.domain.dto.CustomerStatistics;
 import java.util.UUID;
 import jakarta.validation.Valid;
 
-import kh.edu.istad.platform.customer.domain.entity.Customer;
 import kh.edu.istad.platform.customer.domain.usecase.QueryCustomersUseCase;
 import kh.edu.istad.platform.customer.restapi.dto.*;
 import kh.edu.istad.platform.customer.restapi.mapper.CustomerWebMapper;
@@ -30,32 +29,29 @@ public class CustomerController {
     private final DeactivateCustomerUseCase deactivations;
 
     @GetMapping("/{id}")
-    public Mono<CustomerResponse> findById(@PathVariable UUID id) {
+    public Mono<CustomerResponse> findById(@PathVariable("id") UUID id) {
         return queryCustomersUseCase.findById(id)
                 .map(customerWebMapper::toResponse);
     }
 
+
     @PutMapping("/{id}")
     public Mono<CustomerResponse> update(
-            @PathVariable UUID id,
+            @PathVariable("id") UUID id,
             @Valid @RequestBody CustomerUpdateRequest request
     ) {
-        return updates.update(
-                id,
-                request.familyName(),
-                request.givenName(),
-                request.segmentId()
-        ).map(customerWebMapper::toResponse);
+        return updates.update(id, customerWebMapper.toCommand(request))
+                .map(customerWebMapper::toResponse);
     }
 
     @DeleteMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public Mono<Void> delete(@PathVariable UUID id) {
+    public Mono<Void> delete(@PathVariable("id") UUID id) {
         return queryCustomersUseCase.delete(id);
     }
 
     @PatchMapping("/{id}/deactivate")
-    public Mono<CustomerResponse> deactivate(@PathVariable UUID id) {
+    public Mono<CustomerResponse> deactivate(@PathVariable("id") UUID id) {
         return deactivations.deactivate(id)
                 .map(customerWebMapper::toResponse);
     }
@@ -68,11 +64,11 @@ public class CustomerController {
 
     @GetMapping
     public Flux<CustomerResponse> findAll(
-            @RequestParam(required = false) String keyword,
-            @RequestParam(required = false) CustomerStatus status,
-            @RequestParam(required = false) String segmentId,
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "10") int size
+            @RequestParam(name = "keyword", required = false) String keyword,
+            @RequestParam(name = "status", required = false) CustomerStatus status,
+            @RequestParam(name = "segmentId", required = false) String segmentId,
+            @RequestParam(name = "page", defaultValue = "0") int page,
+            @RequestParam(name = "size", defaultValue = "10") int size
     ) {
         return queryCustomersUseCase
                 .search(keyword, status, segmentId, page, size)

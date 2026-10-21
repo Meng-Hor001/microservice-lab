@@ -6,10 +6,10 @@ import org.springframework.core.convert.converter.Converter;
 import org.springframework.data.convert.WritingConverter;
 
 @WritingConverter
-public class EmailWriteConverter implements Converter<Email, BsonString> {
+public class EmailWriteConverter implements Converter<Email, String> {
 
     @Override
-    public BsonString convert(Email source) {
-        return new BsonString(source.value());
+    public String convert(Email source) {
+        return source.value();
     }
 }

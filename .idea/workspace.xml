@@ -5,33 +5,23 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/exception/SegmentNotFoundException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/SegmentRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/SegmentCrudUseCase.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/CustomerSegment.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/valueobject/SegmentName.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerSegmentDocument.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/SegmentRepositoryAdapter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/mapper/SegmentPersistenceMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/query/DynamicMongoQuery.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerSegmentMongoRepository.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerSegmentController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/SegmentRequest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/exception/DuplicateResourceException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/config/MongoIndexInitializer.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/port/out/CustomerRepository.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/CreateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/CreateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/DeactivateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/DeactivateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/QueryCustomersUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/QueryCustomersUseCase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/UpdateCustomerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/UpdateCustomerCommand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerSegmentDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerSegmentDocument.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerMongoRepository.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/repository/CustomerMongoRepository.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/SegmentRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/SegmentRepositoryAdapter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailReadConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailReadConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailWriteConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailWriteConverter.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/test/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/test/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapterTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CreateCustomerRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CreateCustomerRequest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerSegmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerSegmentController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerResponse.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerUpdateRequest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" afterDir="false" />
@@ -48,7 +38,7 @@
     </colors>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="442" />
+    <option name="cachedIndexableFilesCount" value="417" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -88,10 +78,10 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="Enum" />
-        <option value="Exception" />
         <option value="Record" />
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
+        <option value="Exception" />
       </list>
     </option>
   </component>
@@ -112,61 +102,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="7.350000026754533E-87" />
-      <entry key="MS500" value="5.932771428306535E-18" />
-      <entry key="S2" value="5.054648452274055E-5" />
-      <entry key="S5" value="0.0232136608604698" />
-      <entry key="S10" value="0.20488393154289694" />
-      <entry key="S30" value="1.0888460572880283" />
-      <entry key="S60" value="1.9236465731663277" />
-      <entry key="M2" value="2.8718869296724736" />
-      <entry key="M5" value="6.3112022767001195" />
-      <entry key="M10" value="13.853727481229402" />
-      <entry key="M15" value="23.25288806307165" />
-      <entry key="M30" value="57.98707881048489" />
-      <entry key="H1" value="128.93856990338728" />
-      <entry key="H2" value="253.5521396592577" />
-      <entry key="H4" value="423.3880626792089" />
-      <entry key="D1" value="745.9664261361587" />
-      <entry key="W1" value="833.9920595707838" />
+      <entry key="MS100" value="3.8233470862854353E-44" />
+      <entry key="MS500" value="2.072472349898591E-9" />
+      <entry key="S2" value="0.006749279798626268" />
+      <entry key="S5" value="0.1430643281361853" />
+      <entry key="S10" value="0.49035926213488046" />
+      <entry key="S30" value="1.5027463686411096" />
+      <entry key="S60" value="2.100041115932495" />
+      <entry key="M2" value="2.503951354019418" />
+      <entry key="M5" value="3.079501113641995" />
+      <entry key="M10" value="6.2346986237273665" />
+      <entry key="M15" value="11.974562256325058" />
+      <entry key="M30" value="38.079426865663315" />
+      <entry key="H1" value="102.49484405029737" />
+      <entry key="H2" value="226.41290944114178" />
+      <entry key="H4" value="403.77433439502994" />
+      <entry key="D1" value="756.8545746029387" />
+      <entry key="W1" value="855.8880314953134" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0000000000113545" />
-      <entry key="S2" value="1.0022178031663573" />
-      <entry key="S5" value="1.1390563896253532" />
-      <entry key="S10" value="1.6568322735206782" />
-      <entry key="S30" value="3.3590426117694876" />
-      <entry key="S60" value="4.976334200852891" />
-      <entry key="M2" value="6.9099968891294" />
-      <entry key="M5" value="10.67558995605742" />
-      <entry key="M10" value="16.752262155664248" />
-      <entry key="M15" value="24.57012854775206" />
-      <entry key="M30" value="54.14287742316086" />
-      <entry key="H1" value="118.32217126723964" />
-      <entry key="H2" value="243.11038095282737" />
-      <entry key="H4" value="420.6925688257396" />
-      <entry key="D1" value="760.5743788301712" />
-      <entry key="W1" value="853.1723479037735" />
+      <entry key="MS500" value="1.0" />
+      <entry key="S2" value="1.0000765913777432" />
+      <entry key="S5" value="1.0287791115540745" />
+      <entry key="S10" value="1.230250273569822" />
+      <entry key="S30" value="1.9633683803942414" />
+      <entry key="S60" value="2.3863228942257173" />
+      <entry key="M2" value="2.666359422890074" />
+      <entry key="M5" value="3.323847456803978" />
+      <entry key="M10" value="7.001965187689219" />
+      <entry key="M15" value="12.817474165748326" />
+      <entry key="M30" value="36.73358945506284" />
+      <entry key="H1" value="95.36218282370008" />
+      <entry key="H2" value="217.4346743066321" />
+      <entry key="H4" value="400.61761804005505" />
+      <entry key="D1" value="770.2607087232639" />
+      <entry key="W1" value="874.0280236617436" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.027969533466499132" />
-      <entry key="MS500" value="0.4890317367240641" />
-      <entry key="S2" value="0.8372145661961669" />
-      <entry key="S5" value="1.0513679510690932" />
-      <entry key="S10" value="1.7212377384850928" />
-      <entry key="S30" value="4.316540838752624" />
-      <entry key="S60" value="6.804882387156911" />
-      <entry key="M2" value="9.719211356399498" />
-      <entry key="M5" value="16.945680183301345" />
-      <entry key="M10" value="30.570046466375047" />
-      <entry key="M15" value="47.78650113763934" />
-      <entry key="M30" value="112.08834668591129" />
-      <entry key="H1" value="247.21257477154197" />
-      <entry key="H2" value="496.60916690328736" />
-      <entry key="H4" value="844.0322889568149" />
-      <entry key="D1" value="1506.5257681283515" />
-      <entry key="W1" value="1687.1619877079002" />
+      <entry key="MS100" value="1.4022196716272385E-4" />
+      <entry key="MS500" value="0.16957554110716716" />
+      <entry key="S2" value="0.6454087863364999" />
+      <entry key="S5" value="0.9728881143998732" />
+      <entry key="S10" value="1.5548407549721146" />
+      <entry key="S30" value="3.338931157009429" />
+      <entry key="S60" value="4.401194343664077" />
+      <entry key="M2" value="5.1204260898011835" />
+      <entry key="M5" value="6.379061137714675" />
+      <entry key="M10" value="13.215284038745658" />
+      <entry key="M15" value="24.768298380631414" />
+      <entry key="M30" value="74.7820157543699" />
+      <entry key="H1" value="197.81694903857786" />
+      <entry key="H2" value="443.79949552818965" />
+      <entry key="H4" value="804.3458384362673" />
+      <entry key="D1" value="1527.1000565020504" />
+      <entry key="W1" value="1729.9135767629537" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
