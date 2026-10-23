@@ -18,20 +18,15 @@
       <user-name>postgres</user-name>
       <schema-mapping>
         <introspection-scope>
-          <node negative="1">
-            <node kind="database" qname="@">
-              <node kind="schema" qname="@" />
-            </node>
-            <node kind="database" qname="microservice_db">
-              <node kind="schema" qname="public" />
-            </node>
+          <node kind="database" qname="@">
+            <node kind="schema" qname="@" />
           </node>
         </introspection-scope>
       </schema-mapping>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </DataSourceFromHistory>
-  <DataSourceFromHistory isRemovedFromProject="false">
+  <DataSourceFromHistory isRemovedFromProject="true">
     <data-source source="LOCAL" name="microservice_db@127.0.0.1" uuid="1598285f-3f1d-47b1-9d46-ed2fa0ec1462">
       <database-info product="PostgreSQL" version="17.11 (Debian 17.11-1.pgdg13+2)" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.7.3" dbms="POSTGRES" exact-version="17.11" exact-driver-version="42.7">
         <identifier-quote-string>&quot;</identifier-quote-string>
@@ -61,7 +56,7 @@
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
   </DataSourceFromHistory>
-  <DataSourceFromHistory isRemovedFromProject="false">
+  <DataSourceFromHistory isRemovedFromProject="true">
     <data-source source="LOCAL" name="Supabase Microservice Lab" uuid="723df42f-ef33-47a6-a2b1-d1b9478f28c4">
       <database-info product="PostgreSQL" version="17.11" jdbc-version="4.2" driver-name="PostgreSQL JDBC Driver" driver-version="42.7.3" dbms="POSTGRES" exact-version="17.11" exact-driver-version="42.7">
         <identifier-quote-string>&quot;</identifier-quote-string>
@@ -85,7 +80,12 @@
               <node kind="schema" qname="@" />
             </node>
             <node kind="database" qname="microservice_lab">
-              <node kind="schema" qname="public" />
+              <node kind="schema">
+                <name qname="public" />
+                <name qname="customer" />
+                <name qname="orders" />
+                <name qname="payment" />
+              </node>
             </node>
           </node>
         </introspection-scope>

@@ -39,7 +39,7 @@ public class InitiateCustomerUseCase {
         customerDomainService.initiateCustomer(customer);
 
 
-        // 3. Store the customer in the in memory-map Map that has been created already
+        // 3. Persist the customer through the repository
         Customer saveCustomer = customerRepository.save(customer);
 
 
