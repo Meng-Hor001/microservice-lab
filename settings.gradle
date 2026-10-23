@@ -4,4 +4,3 @@ rootProject.name = 'microservice-lab'
 includeBuild 'istad-common'
 includeBuild 'microservices'
 
-

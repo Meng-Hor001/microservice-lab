@@ -5,40 +5,63 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/exception/DuplicateResourceException.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/config/MongoIndexInitializer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/UpdateCustomerCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/dto/UpdateCustomerCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/UpdateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-domain-core/src/main/java/kh/edu/istad/platform/customer/domain/entity/Customer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerDocument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerSegmentDocument.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/Document/CustomerSegmentDocument.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerReactiveRepositoryAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/SegmentRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/SegmentRepositoryAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailReadConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailReadConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailWriteConverter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/convert/EmailWriteConverter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/test/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/test/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapterTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerSegmentController.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/controller/CustomerSegmentController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerResponse.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerResponse.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerUpdateRequest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/dto/CustomerUpdateRequest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/exception/RestAdvisor.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/mapper/CustomerWebMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/mapper/CustomerWebMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/event/OrderCancelledEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/event/OrderCreatedEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/event/OrderPaidEvent.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/valueobject/OrderId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/valueobject/OrderStatus.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/valueobject/ProductId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/valueobject/StreetAddress.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Business.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Customer.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Order.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/OrderItem.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/entity/Product.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/exception/OrderDomainException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/BusinessId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/OrderId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/OrderItemId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-domain/order-domain-core/src/main/java/kh/edu/istad/platform/order/domain/valueobject/TrackingId.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/order-service-main/src/main/java/kh/edu/istad/platform/order/OrderApplicationService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/microservices/order-service/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.local.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/microservice_db.DMyGuA.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/microservice_db.DMyGuA/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/microservice_db.DMyGuA/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/microservice_db.DMyGuA/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/postgres.edMnLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/postgres.edMnLQ/schema/information_schema.FNRwLQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/postgres.edMnLQ/schema/pg_catalog.0S1ZNQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/07e6868d-ce7a-4038-b383-e0963e7a0673/storage_v2/_src_/database/postgres.edMnLQ/schema/public.abK9xQ.meta" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/2026-10-20T091934.400.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-client.cookies" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/httpRequests/http-requests-log.http" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_20_26,_6_17 PM_[Changes]/shelved.patch" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_20_26,_6_17 PM_[Changes]1/shelved.patch" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_20_26__6_17PM__Changes_.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/valueobject/Money.java" beforeDir="false" afterPath="$PROJECT_DIR$/istad-common/istad-common-domain/src/main/java/kh/edu/istad/common/domain/valueobject/Money.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/business-service/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/business-service/settings.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/business-service/src/main/java/kh/edu/istad/platform/business/BusinessApplicationService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/business-service/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/order-service/order-service-main/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/settings.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="DatabaseLocalColorSettings">
-    <colors>
-      <entry key="07e6868d-ce7a-4038-b383-e0963e7a0673" value="" />
-    </colors>
-  </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="417" />
+    <option name="cachedIndexableFilesCount" value="382" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -77,11 +100,11 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Interface" />
+        <option value="Exception" />
         <option value="Enum" />
         <option value="Record" />
-        <option value="Interface" />
         <option value="Class" />
-        <option value="Exception" />
       </list>
     </option>
   </component>
@@ -102,61 +125,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="3.8233470862854353E-44" />
-      <entry key="MS500" value="2.072472349898591E-9" />
-      <entry key="S2" value="0.006749279798626268" />
-      <entry key="S5" value="0.1430643281361853" />
-      <entry key="S10" value="0.49035926213488046" />
-      <entry key="S30" value="1.5027463686411096" />
-      <entry key="S60" value="2.100041115932495" />
-      <entry key="M2" value="2.503951354019418" />
-      <entry key="M5" value="3.079501113641995" />
-      <entry key="M10" value="6.2346986237273665" />
-      <entry key="M15" value="11.974562256325058" />
-      <entry key="M30" value="38.079426865663315" />
-      <entry key="H1" value="102.49484405029737" />
-      <entry key="H2" value="226.41290944114178" />
-      <entry key="H4" value="403.77433439502994" />
-      <entry key="D1" value="756.8545746029387" />
-      <entry key="W1" value="855.8880314953134" />
+      <entry key="MS100" value="0.0" />
+      <entry key="MS500" value="3.6646382850842364E-84" />
+      <entry key="S2" value="2.5227184137624808E-21" />
+      <entry key="S5" value="1.1205368518490767E-8" />
+      <entry key="S10" value="2.0216161970733644E-4" />
+      <entry key="S30" value="0.1641554146642681" />
+      <entry key="S60" value="1.105975328279165" />
+      <entry key="M2" value="4.258609103099806" />
+      <entry key="M5" value="15.971102792702606" />
+      <entry key="M10" value="33.480130442141004" />
+      <entry key="M15" value="49.913657376066205" />
+      <entry key="M30" value="95.8079090934458" />
+      <entry key="H1" value="172.51815672600145" />
+      <entry key="H2" value="304.772571789939" />
+      <entry key="H4" value="509.7777867913225" />
+      <entry key="D1" value="989.5608204048809" />
+      <entry key="W1" value="1139.0362215310017" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000765913777432" />
-      <entry key="S5" value="1.0287791115540745" />
-      <entry key="S10" value="1.230250273569822" />
-      <entry key="S30" value="1.9633683803942414" />
-      <entry key="S60" value="2.3863228942257173" />
-      <entry key="M2" value="2.666359422890074" />
-      <entry key="M5" value="3.323847456803978" />
-      <entry key="M10" value="7.001965187689219" />
-      <entry key="M15" value="12.817474165748326" />
-      <entry key="M30" value="36.73358945506284" />
-      <entry key="H1" value="95.36218282370008" />
-      <entry key="H2" value="217.4346743066321" />
-      <entry key="H4" value="400.61761804005505" />
-      <entry key="D1" value="770.2607087232639" />
-      <entry key="W1" value="874.0280236617436" />
+      <entry key="MS500" value="1.0000133019750905" />
+      <entry key="S2" value="1.0603922029430155" />
+      <entry key="S5" value="1.328755308478563" />
+      <entry key="S10" value="1.6651243838431866" />
+      <entry key="S30" value="2.9183512803154725" />
+      <entry key="S60" value="4.741896750097917" />
+      <entry key="M2" value="8.53655563037701" />
+      <entry key="M5" value="20.575938184544224" />
+      <entry key="M10" value="39.71959205792897" />
+      <entry key="M15" value="58.261306579180996" />
+      <entry key="M30" value="107.09328453191173" />
+      <entry key="H1" value="180.88173239214308" />
+      <entry key="H2" value="305.68870539495816" />
+      <entry key="H4" value="507.78047889205874" />
+      <entry key="D1" value="996.4355916201788" />
+      <entry key="W1" value="1150.1973050723914" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="1.4022196716272385E-4" />
-      <entry key="MS500" value="0.16957554110716716" />
-      <entry key="S2" value="0.6454087863364999" />
-      <entry key="S5" value="0.9728881143998732" />
-      <entry key="S10" value="1.5548407549721146" />
-      <entry key="S30" value="3.338931157009429" />
-      <entry key="S60" value="4.401194343664077" />
-      <entry key="M2" value="5.1204260898011835" />
-      <entry key="M5" value="6.379061137714675" />
-      <entry key="M10" value="13.215284038745658" />
-      <entry key="M15" value="24.768298380631414" />
-      <entry key="M30" value="74.7820157543699" />
-      <entry key="H1" value="197.81694903857786" />
-      <entry key="H2" value="443.79949552818965" />
-      <entry key="H4" value="804.3458384362673" />
-      <entry key="D1" value="1527.1000565020504" />
-      <entry key="W1" value="1729.9135767629537" />
+      <entry key="MS100" value="2.0727822542687564E-6" />
+      <entry key="MS500" value="0.07300053894189297" />
+      <entry key="S2" value="0.5598552324654487" />
+      <entry key="S5" value="1.0485511657559003" />
+      <entry key="S10" value="1.4887433508369396" />
+      <entry key="S30" value="2.981486815161208" />
+      <entry key="S60" value="5.754024615060222" />
+      <entry key="M2" value="12.685562311906896" />
+      <entry key="M5" value="36.421224986285075" />
+      <entry key="M10" value="73.07995752014166" />
+      <entry key="M15" value="108.06414089431719" />
+      <entry key="M30" value="202.8092316741124" />
+      <entry key="H1" value="353.32578474908996" />
+      <entry key="H2" value="610.3977571053761" />
+      <entry key="H4" value="1017.5032783640299" />
+      <entry key="D1" value="1985.977511857881" />
+      <entry key="W1" value="2289.23038416654" />
     </decayedShown>
   </component>
   <component name="ProjectColorInfo">{
@@ -187,12 +210,15 @@
     &quot;Spring Boot.BusinessApplicationService.executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.CustomerApplicationService (1).executor&quot;: &quot;Run&quot;,
     &quot;Spring Boot.CustomerApplicationService.executor&quot;: &quot;Run&quot;,
+    &quot;Spring Boot.OrderApplicationService.executor&quot;: &quot;Run&quot;,
     &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
     &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
     &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;MongoDB&quot;,
+    &quot;deletionFromPopupRequiresConfirmation&quot;: &quot;false&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Assignment-02&quot;,
     &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;/home/menghor/Documents/microservice/microservice-lab/.env&quot;,
     &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
     &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
@@ -200,13 +226,21 @@
     &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
     &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
     &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;,
     &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
     &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$" />
+    </key>
+    <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="kh.edu.istad.common.domain.event" />
+    </key>
+  </component>
   <component name="RunDashboard">
     <option name="configurationTypes">
       <set>
@@ -237,29 +271,6 @@
         </entry>
       </map>
     </option>
-    <option name="shownConfigurations">
-      <map>
-        <entry key="HttpClient.HttpRequestRunConfigurationType">
-          <value>
-            <set>
-              <option value="generated-requests | #3" />
-              <option value="generated-requests | #4" />
-            </set>
-          </value>
-        </entry>
-      </map>
-    </option>
-    <option name="configurationStatuses">
-      <map>
-        <entry key="SpringBootApplicationConfigurationType">
-          <value>
-            <map>
-              <entry key="CustomerApplicationService (1)" value="STOPPED" />
-            </map>
-          </value>
-        </entry>
-      </map>
-    </option>
     <option name="excludedNewTypes">
       <set>
         <option value="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" />
@@ -269,47 +280,15 @@
       </set>
     </option>
   </component>
-  <component name="RunManager" selected="Spring Boot.CustomerApplicationService (1)">
-    <configuration name="customer-service [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/microservices/customer-service" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dependencies" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <GradleProfilingDisabled>false</GradleProfilingDisabled>
-      <GradleCoverageDisabled>false</GradleCoverageDisabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #3" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#3" index="3" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="generated-requests | #4" type="HttpClient.HttpRequestRunConfigurationType" factoryName="HTTP Request" temporary="true" nameIsGenerated="true" path="$APPLICATION_CONFIG_DIR$/scratches/generated-requests.http" executionIdentifier="#4" index="4" runType="Run single request">
-      <method v="2" />
-    </configuration>
-    <configuration name="BusinessApplicationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="microservices.business-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.business.BusinessApplicationService" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CustomerApplicationService (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <module name="microservices.customer-service.customer-service-main.main" />
+  <component name="RunManager" selected="Spring Boot.OrderApplicationService">
+    <configuration name="CustomerApplicationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/.env" />
+      </option>
+      <module name="kh.edu.istad.microservices.customer-service.customer-service-main.main" />
+      <selectedOptions>
+        <option name="environmentVariables" />
+      </selectedOptions>
       <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.customer.CustomerApplicationService" />
       <extension name="coverage">
         <pattern>
@@ -321,27 +300,33 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="CustomerApplicationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="microservices.customer-service.customer-service-main.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.customer.CustomerApplicationService" />
+    <configuration name="OrderApplicationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="envFilePaths">
+        <option value="$PROJECT_DIR$/.env" />
+      </option>
+      <module name="microservices.order-service.order-service-main.main" />
+      <selectedOptions>
+        <option name="environmentVariables" />
+      </selectedOptions>
+      <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.order.OrderApplicationService" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="kh.edu.istad.platform.order.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.customer-service [dependencies]" />
-      <item itemvalue="HTTP Request.generated-requests | #3" />
-      <item itemvalue="HTTP Request.generated-requests | #4" />
-      <item itemvalue="Spring Boot.BusinessApplicationService" />
+      <item itemvalue="Spring Boot.OrderApplicationService" />
       <item itemvalue="Spring Boot.CustomerApplicationService" />
-      <item itemvalue="Spring Boot.CustomerApplicationService (1)" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="Spring Boot.CustomerApplicationService (1)" />
-        <item itemvalue="HTTP Request.generated-requests | #4" />
-        <item itemvalue="HTTP Request.generated-requests | #3" />
-        <item itemvalue="Gradle.customer-service [dependencies]" />
+        <item itemvalue="Spring Boot.OrderApplicationService" />
+        <item itemvalue="Spring Boot.CustomerApplicationService" />
       </list>
     </recent_temporary>
   </component>

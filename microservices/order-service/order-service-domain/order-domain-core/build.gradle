@@ -1,0 +1,8 @@
+plugins {
+    id 'java-common-conventions'
+}
+
+dependencies {
+    api 'kh.edu.istad:istad-common-domain'
+}
+

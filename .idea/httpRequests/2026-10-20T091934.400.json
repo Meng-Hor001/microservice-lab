@@ -1,6 +1,0 @@
-{
-  "detail": "The request body is missing or contains invalid JSON.",
-  "instance": "/api/customers",
-  "status": 400,
-  "title": "Bad Request"
-}

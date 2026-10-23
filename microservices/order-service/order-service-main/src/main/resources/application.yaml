@@ -1,0 +1,7 @@
+spring:
+  mongodb:
+    uri: ${MONGO_URL}
+  application:
+    name: microservice-lab
+server:
+  port: 9191
