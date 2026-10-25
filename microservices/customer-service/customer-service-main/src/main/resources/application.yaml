@@ -20,6 +20,11 @@ eureka:
   instance:
     hostname: localhost
     instance-id: ${spring.application.name}:${server.port}
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health, info
 server:
   port: 9292
 

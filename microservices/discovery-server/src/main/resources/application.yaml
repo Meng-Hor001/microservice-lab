@@ -7,6 +7,8 @@ eureka:
   server:
     enable-self-preservation: false
   client:
+    healthcheck:
+      enabled: true
     register-with-eureka: false
     fetch-registry: false
     service-url:
