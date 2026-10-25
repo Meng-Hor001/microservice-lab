@@ -2,7 +2,14 @@ plugins {
     id 'spring-common-conventions'
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.4'
+    }
+}
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
+
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
     implementation 'org.springdoc:springdoc-openapi-starter-common:3.1.1'
     api 'kh.edu.istad:customer-application-service'

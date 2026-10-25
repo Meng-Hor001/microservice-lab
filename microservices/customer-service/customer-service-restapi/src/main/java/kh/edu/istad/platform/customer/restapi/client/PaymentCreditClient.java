@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.customer.restapi.client;
 
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -18,14 +19,16 @@ import java.util.UUID;
 public class PaymentCreditClient {
     private final RestClient client;
 
-    public PaymentCreditClient() {
+    public PaymentCreditClient(
+            @LoadBalanced RestClient.Builder builder
+    ) {
 
         var factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(Duration.ofSeconds(3));
         factory.setReadTimeout(Duration.ofSeconds(5));
 
-        client = RestClient.builder()
-                .baseUrl("http://localhost:8484")
+        client = builder
+                .baseUrl("http://payment-service")
                 .requestFactory(factory)
                 .build();
     }

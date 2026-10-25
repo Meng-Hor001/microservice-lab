@@ -1,4 +1,6 @@
 spring:
+  application:
+    name: payment-service
   jpa:
     hibernate:
       ddl-auto: update
@@ -11,5 +13,12 @@ spring:
     username: postgres
     password: 1234
     url: jdbc:postgresql://localhost:5432/microservice_db
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+  instance:
+    hostname: localhost
+    instance-id: ${spring.application.name}:${server.port}
 server:
   port: 8484

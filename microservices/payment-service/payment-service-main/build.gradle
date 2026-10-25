@@ -2,7 +2,15 @@ plugins {
     id 'springboot-common-conventions'
 }
 
+dependencyManagement {
+    imports {
+        mavenBom 'org.springframework.cloud:spring-cloud-dependencies:2025.1.4'
+    }
+}
+
 dependencies {
+    implementation 'org.springframework.cloud:spring-cloud-starter-netflix-eureka-client'
+
     implementation project(':payment-service-restapi')
     implementation project(':payment-service-application')
     implementation project(':payment-service-domain')
