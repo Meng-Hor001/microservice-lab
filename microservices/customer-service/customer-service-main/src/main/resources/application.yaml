@@ -1,7 +1,3 @@
-payment-service:
-  base-url: ${PAYMENT_SERVICE_BASE_URL:http://localhost:8484}
-
-
 spring:
   jpa:
     hibernate:
@@ -12,9 +8,9 @@ spring:
         format_sql: true
   datasource:
     driver-class-name: org.postgresql.Driver
-    username: ${POSTGRES_USERNAME}
-    password: ${POSTGRES_PASSWORD}
-    url: ${POSTGRES_URL}
+    username: postgres
+    password: 1234
+    url: jdbc:postgresql://localhost:5432/microservice_db
   application:
     name: microservice-lab
 server:

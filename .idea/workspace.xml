@@ -5,12 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="a6806565-d453-49e0-9026-df07b9880914" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.env" beforeDir="false" afterPath="$PROJECT_DIR$/.env" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/data_sources_history.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/InitiateCustomerUseCase.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-domain/customer-application-service/src/main/java/kh/edu/istad/platform/customer/domain/usecase/InitiateCustomerUseCase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/main/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/test/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapterTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-persistence/src/test/java/kh/edu/istad/platform/customer/persistence/adapter/CustomerRepositoryAdapterTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-main/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/client/PaymentCreditClient.java" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/customer-service/customer-service-restapi/src/main/java/kh/edu/istad/platform/customer/restapi/client/PaymentCreditClient.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/payment-service/payment-service-main/src/main/resources/application.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/payment-service/payment-service-main/src/main/resources/application.yaml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/product-service/build.gradle" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/microservices/settings.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/microservices/settings.gradle" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -25,7 +28,7 @@
     </colors>
   </component>
   <component name="EmbeddingIndexingInfo">
-    <option name="cachedIndexableFilesCount" value="595" />
+    <option name="cachedIndexableFilesCount" value="795" />
     <option name="fileBasedEmbeddingIndicesEnabled" value="true" />
   </component>
   <component name="ExternalProjectsData">
@@ -36,6 +39,9 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
             <expand />
@@ -65,61 +71,61 @@
   </component>
   <component name="NextEditCompletionFeaturesState">
     <decayedCancelled>
-      <entry key="MS100" value="1.0" />
-      <entry key="MS500" value="1.0" />
-      <entry key="S2" value="1.0000000325673144" />
-      <entry key="S5" value="1.0010118421789278" />
-      <entry key="S10" value="1.031809489366085" />
-      <entry key="S30" value="1.3196741726439423" />
-      <entry key="S60" value="1.6160472430916373" />
-      <entry key="M2" value="1.9812791763845503" />
-      <entry key="M5" value="2.560653881077442" />
-      <entry key="M10" value="3.864096912667074" />
-      <entry key="M15" value="5.945365440820107" />
-      <entry key="M30" value="14.817776827715534" />
-      <entry key="H1" value="36.8862210820864" />
-      <entry key="H2" value="96.88621745632344" />
-      <entry key="H4" value="250.3694601428733" />
-      <entry key="D1" value="845.7812752075371" />
-      <entry key="W1" value="1085.6405103086947" />
+      <entry key="MS100" value="1.0000000000000122" />
+      <entry key="MS500" value="1.0016515083737842" />
+      <entry key="S2" value="1.2015905627963155" />
+      <entry key="S5" value="1.5273440877785338" />
+      <entry key="S10" value="1.7535524003791167" />
+      <entry key="S30" value="2.4654740979424803" />
+      <entry key="S60" value="3.34178062662398" />
+      <entry key="M2" value="4.718345681198052" />
+      <entry key="M5" value="7.374915022444793" />
+      <entry key="M10" value="9.897086060258488" />
+      <entry key="M15" value="12.294087027745721" />
+      <entry key="M30" value="21.152741624736535" />
+      <entry key="H1" value="42.894624877077185" />
+      <entry key="H2" value="102.13129750637374" />
+      <entry key="H4" value="254.5933431444413" />
+      <entry key="D1" value="852.1015052572715" />
+      <entry key="W1" value="1094.1489744056669" />
     </decayedCancelled>
     <decayedSelected>
       <entry key="MS100" value="0.0" />
-      <entry key="MS500" value="0.0" />
-      <entry key="S2" value="0.0" />
-      <entry key="S5" value="7.00704027878394E-139" />
-      <entry key="S10" value="8.370806579287293E-70" />
-      <entry key="S30" value="9.424444668395552E-24" />
-      <entry key="S60" value="3.069940336360852E-12" />
-      <entry key="M2" value="1.756608272481643E-6" />
-      <entry key="M5" value="0.006601895015006386" />
-      <entry key="M10" value="0.32224589456383934" />
-      <entry key="M15" value="1.7423466595406936" />
-      <entry key="M30" value="11.988838365543305" />
-      <entry key="H1" value="42.037634902489394" />
-      <entry key="H2" value="126.94986700959116" />
-      <entry key="H4" value="338.74270803574336" />
-      <entry key="D1" value="1109.4309771550859" />
-      <entry key="W1" value="1409.2439366942494" />
+      <entry key="MS500" value="3.804422673756591E-227" />
+      <entry key="S2" value="2.4835458968814764E-57" />
+      <entry key="S5" value="2.2804936964265478E-23" />
+      <entry key="S10" value="4.775451493237627E-12" />
+      <entry key="S30" value="1.6839847180836882E-4" />
+      <entry key="S60" value="0.012976843676688592" />
+      <entry key="M2" value="0.11391613082361536" />
+      <entry key="M5" value="0.422063779373328" />
+      <entry key="M10" value="0.8521076131138259" />
+      <entry key="M15" value="2.035186356579531" />
+      <entry key="M30" value="11.167628135960744" />
+      <entry key="H1" value="39.89921367151403" />
+      <entry key="H2" value="123.19311677240972" />
+      <entry key="H4" value="333.36626738515366" />
+      <entry key="D1" value="1106.929669033665" />
+      <entry key="W1" value="1409.60783536038" />
     </decayedSelected>
     <decayedShown>
-      <entry key="MS100" value="0.9526379980439373" />
-      <entry key="MS500" value="0.9903428719330246" />
-      <entry key="S2" value="0.9975769577415982" />
-      <entry key="S5" value="1.0000407852709783" />
-      <entry key="S10" value="1.0313067699903087" />
-      <entry key="S30" value="1.319453172713234" />
-      <entry key="S60" value="1.615907603600031" />
-      <entry key="M2" value="1.9811893544348582" />
-      <entry key="M5" value="2.567069653503932" />
-      <entry key="M10" value="4.184952324946758" />
-      <entry key="M15" value="7.683748203683538" />
-      <entry key="M30" value="26.794846332267504" />
-      <entry key="H1" value="78.90454416843876" />
-      <entry key="H2" value="223.80886314479142" />
-      <entry key="H4" value="589.0771228722352" />
-      <entry key="D1" value="1955.1930292448112" />
-      <entry key="W1" value="2494.8809418849123" />
+      <entry key="MS100" value="0.907519155317172" />
+      <entry key="MS500" value="0.9823987687264703" />
+      <entry key="S2" value="1.195774530214015" />
+      <entry key="S5" value="1.524382632245291" />
+      <entry key="S10" value="1.7518495745745837" />
+      <entry key="S30" value="2.464766603437657" />
+      <entry key="S60" value="3.353058604829816" />
+      <entry key="M2" value="4.827659436088437" />
+      <entry key="M5" value="7.790819570876043" />
+      <entry key="M10" value="10.743710656801037" />
+      <entry key="M15" value="14.322821810561782" />
+      <entry key="M30" value="32.30823043068722" />
+      <entry key="H1" value="82.77485011952179" />
+      <entry key="H2" value="225.29764281512087" />
+      <entry key="H4" value="587.9249368444013" />
+      <entry key="D1" value="1959.011963385236" />
+      <entry key="W1" value="2503.7532992970573" />
     </decayedShown>
   </component>
   <component name="ProblemsViewState">
@@ -134,55 +140,56 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;Gradle.Build microservice-lab.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.Tests in 'microservices.payment-service.payment-service-domain.payment-application-service.test'.executor&quot;: &quot;Debug&quot;,
-    &quot;Gradle.Upgrade Gradle wrapper.executor&quot;: &quot;Run&quot;,
-    &quot;Gradle.customer-service [dependencies].executor&quot;: &quot;Run&quot;,
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;RequestMappingsPanelOrder0&quot;: &quot;0&quot;,
-    &quot;RequestMappingsPanelOrder1&quot;: &quot;1&quot;,
-    &quot;RequestMappingsPanelWidth0&quot;: &quot;75&quot;,
-    &quot;RequestMappingsPanelWidth1&quot;: &quot;75&quot;,
-    &quot;RunOnceActivity.MCP Project settings loaded&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.typescript.service.memoryLimit.init&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;Spring Boot.BusinessApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.BusinessApplicationService.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CustomerApplicationService (1).executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.CustomerApplicationService.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.OrderApplication.executor&quot;: &quot;Run&quot;,
-    &quot;Spring Boot.PaymentApplication.executor&quot;: &quot;Run&quot;,
-    &quot;codeWithMe.voiceChat.enabledByDefault&quot;: &quot;false&quot;,
-    &quot;com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1&quot;: &quot;true&quot;,
-    &quot;dart.analysis.tool.window.visible&quot;: &quot;false&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;Assignment-01&quot;,
-    &quot;junie.onboarding.icon.badge.shown&quot;: &quot;true&quot;,
-    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
-    &quot;last_opened_file_path&quot;: &quot;/home/menghor/Documents/microservice/microservice-lab/.env&quot;,
-    &quot;node.js.detected.package.eslint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.jshint&quot;: &quot;true&quot;,
-    &quot;node.js.detected.package.tslint&quot;: &quot;true&quot;,
-    &quot;node.js.selected.package.eslint&quot;: &quot;(autodetect)&quot;,
-    &quot;node.js.selected.package.jshint&quot;: &quot;&quot;,
-    &quot;node.js.selected.package.tslint&quot;: &quot;(autodetect)&quot;,
-    &quot;nodejs_package_manager_path&quot;: &quot;npm&quot;,
-    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
-    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
-    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;,
-    &quot;run.configurations.included.in.services&quot;: &quot;true&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;,
-    &quot;to.speed.mode.migration.done&quot;: &quot;true&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Gradle.Build microservice-lab.executor": "Run",
+    "Gradle.Tests in 'microservices.payment-service.payment-service-domain.payment-application-service.test'.executor": "Debug",
+    "Gradle.Upgrade Gradle wrapper.executor": "Run",
+    "Gradle.customer-service [dependencies].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RequestMappingsPanelOrder0": "0",
+    "RequestMappingsPanelOrder1": "1",
+    "RequestMappingsPanelWidth0": "75",
+    "RequestMappingsPanelWidth1": "75",
+    "RunOnceActivity.MCP Project settings loaded": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "Spring Boot.BusinessApplication.executor": "Run",
+    "Spring Boot.BusinessApplicationService.executor": "Run",
+    "Spring Boot.CustomerApplicationService (1).executor": "Run",
+    "Spring Boot.CustomerApplicationService.executor": "Run",
+    "Spring Boot.OrderApplication.executor": "Run",
+    "Spring Boot.PaymentApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "dart.analysis.tool.window.visible": "false",
+    "deletionFromPopupRequiresConfirmation": "false",
+    "git-widget-placeholder": "Assignment-03",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "last_opened_file_path": "/home/menghor/Documents/microservice/microservice-lab/.env",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.jshint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.jshint": "",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "run.configurations.included.in.services": "true",
+    "settings.editor.selected.configurable": "preferences.pluginManager",
+    "to.speed.mode.migration.done": "true"
   },
-  &quot;keyToStringList&quot;: {
-    &quot;DatabaseDriversLRU&quot;: [
-      &quot;postgresql&quot;
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "postgresql"
     ]
   }
-}</component>
+}]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$" />
@@ -249,9 +256,7 @@
           <value>
             <map>
               <entry key="BusinessApplication" value="STOPPED" />
-              <entry key="BusinessApplicationService" value="STOPPED" />
               <entry key="CustomerApplicationService" value="FAILED" />
-              <entry key="CustomerApplicationService (1)" value="FAILED" />
               <entry key="OrderApplication" value="FAILED" />
               <entry key="PaymentApplication" value="FAILED" />
             </map>
@@ -272,56 +277,6 @@
     </option>
   </component>
   <component name="RunManager" selected="Spring Boot.PaymentApplication">
-    <configuration name="Tests in 'microservices.payment-service.payment-service-domain.payment-application-service.test'" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" value="" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value=":microservices:payment-service:payment-service-domain:payment-application-service:test" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>false</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>true</RunAsTest>
-      <GradleProfilingDisabled>false</GradleProfilingDisabled>
-      <GradleCoverageDisabled>false</GradleCoverageDisabled>
-      <method v="2" />
-    </configuration>
-    <configuration name="customer-service [dependencies]" type="GradleRunConfiguration" factoryName="Gradle" temporary="true">
-      <ExternalSystemSettings>
-        <option name="executionName" />
-        <option name="externalProjectPath" value="$PROJECT_DIR$/microservices/customer-service" />
-        <option name="externalSystemIdString" value="GRADLE" />
-        <option name="scriptParameters" />
-        <option name="taskDescriptions">
-          <list />
-        </option>
-        <option name="taskNames">
-          <list>
-            <option value="dependencies" />
-          </list>
-        </option>
-        <option name="vmOptions" />
-      </ExternalSystemSettings>
-      <ExternalSystemDebugServerProcess>true</ExternalSystemDebugServerProcess>
-      <ExternalSystemReattachDebugProcess>true</ExternalSystemReattachDebugProcess>
-      <ExternalSystemDebugDisabled>false</ExternalSystemDebugDisabled>
-      <DebugAllEnabled>false</DebugAllEnabled>
-      <RunAsTest>false</RunAsTest>
-      <GradleProfilingDisabled>false</GradleProfilingDisabled>
-      <GradleCoverageDisabled>false</GradleCoverageDisabled>
-      <method v="2" />
-    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="microservices.customer-service.customer-service-domain.customer-application-service.main" />
       <method v="2">
@@ -343,33 +298,6 @@
       </selectedOptions>
       <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.business.BusinessApplication" />
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BusinessApplicationService" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" nameIsGenerated="true">
-      <module name="microservices.business-service.main" />
-      <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.business.BusinessApplicationService" />
-      <option name="VM_PARAMETERS" value="--enable-native-access=ALL-UNNAMED' " />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="CustomerApplicationService (1)" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
-      <option name="envFilePaths">
-        <option value="$PROJECT_DIR$/.env" />
-      </option>
-      <module name="microservices.customer-service.customer-service-main.main" />
-      <selectedOptions>
-        <option name="environmentVariables" />
-      </selectedOptions>
-      <option name="SPRING_BOOT_MAIN_CLASS" value="kh.edu.istad.platform.customer.CustomerApplicationService" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="kh.edu.istad.platform.customer.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -408,22 +336,11 @@
       </method>
     </configuration>
     <list>
-      <item itemvalue="Gradle.Tests in 'microservices.payment-service.payment-service-domain.payment-application-service.test'" />
-      <item itemvalue="Gradle.customer-service [dependencies]" />
-      <item itemvalue="Spring Boot.BusinessApplicationService" />
       <item itemvalue="Spring Boot.BusinessApplication" />
       <item itemvalue="Spring Boot.CustomerApplicationService" />
       <item itemvalue="Spring Boot.OrderApplication" />
       <item itemvalue="Spring Boot.PaymentApplication" />
-      <item itemvalue="Spring Boot.CustomerApplicationService (1)" />
     </list>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Spring Boot.CustomerApplicationService (1)" />
-        <item itemvalue="Gradle.Tests in 'microservices.payment-service.payment-service-domain.payment-application-service.test'" />
-        <item itemvalue="Gradle.customer-service [dependencies]" />
-      </list>
-    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>

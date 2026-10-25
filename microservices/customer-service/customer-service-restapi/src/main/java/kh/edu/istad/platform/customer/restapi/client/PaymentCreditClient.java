@@ -1,8 +1,5 @@
 package kh.edu.istad.platform.customer.restapi.client;
 
-
-
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -21,15 +18,14 @@ import java.util.UUID;
 public class PaymentCreditClient {
     private final RestClient client;
 
-    public PaymentCreditClient(
-            @Value("${payment-service.base-url}") String baseUrl) {
+    public PaymentCreditClient() {
 
         var factory = new SimpleClientHttpRequestFactory();
         factory.setConnectTimeout(Duration.ofSeconds(3));
         factory.setReadTimeout(Duration.ofSeconds(5));
 
         client = RestClient.builder()
-                .baseUrl(baseUrl)
+                .baseUrl("http://localhost:8484")
                 .requestFactory(factory)
                 .build();
     }
