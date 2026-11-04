@@ -1,0 +1,69 @@
+[versions]
+java-version = "25"
+spring-boot-gradle-plugin ="4.1.1"
+dependency-management-plugin = "1.1.7"
+springdoc = "3.2.0"
+reactor-core = "3.8.8"
+spring-boot-starter-webmvc = "4.1.2"
+spring-boot-starter-data-mongodb-reactive = "4.1.2"
+spring-boot-starter-data-jpa = "4.1.2"
+spring-boot-starter-webflux = "4.1.2"
+spring-boot-starter-webclient = "4.1.2"
+spring-cloud-starter-loadbalancer = "5.0.4"
+spring-cloud-starter-consul-config = "5.0.4"
+spring-boot-starter-liquibase = "4.1.2"
+liquibase-core = "5.0.4"
+spring-boot-starter-actuator = "4.1.2"
+spring-cloud-starter-consul-discovery = "5.0.4"
+
+[libraries]
+#Spring-boot
+spring-boot-gradle-plugin = {module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot-gradle-plugin"}
+spring-boot-dependency-management-plugin = {module = "io.spring.gradle:dependency-management-plugin", version.ref = "dependency-management-plugin"}
+spring-boot-starter-data-r2dbc = {module = "org.springframework.boot:spring-boot-starter-data-r2dbc"}
+spring-boot-starter-webmvc = {module = "org.springframework.boot:spring-boot-starter-webmvc", version.ref = "spring-boot-starter-webmvc"}
+spring-boot-starter-data-jpa = {module = "org.springframework.boot:spring-boot-starter-data-jpa" ,version.ref = "spring-boot-starter-data-jpa"}
+spring-boot-starter-data-mongodb-reactive = {module ="org.springframework.boot:spring-boot-starter-data-mongodb-reactive", version.ref = "spring-boot-starter-data-mongodb-reactive"}
+spring-boot-starter-webflux = {module = "org.springframework.boot:spring-boot-starter-webflux", version.ref = "spring-boot-starter-webflux"}
+spring-boot-starter-webclient = {module = "org.springframework.boot:spring-boot-starter-webclient", version.ref = "spring-boot-starter-webclient"}
+spring-boot-starter-liquibase = {module = "org.springframework.boot:spring-boot-starter-liquibase", version.ref = "spring-boot-starter-liquibase"}
+liquibase-core = {module = "org.liquibase:liquibase-core", version.ref = "liquibase-core"}
+spring-boot-starter-actuator = {module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot-starter-actuator"}
+spring-cloud-starter-consul-discovery = {module = "org.springframework.cloud:spring-cloud-starter-consul-discovery", version.ref = "spring-cloud-starter-consul-discovery"}
+
+#Spring docs
+springdoc-openapi-starter-webflux-ui = {module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springdoc"}
+springdoc-openapi-starter-webmvc-ui = {module ="org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc"}
+
+#Spring cloud
+spring-cloud-starter-loadbalancer = {module = "org.springframework.cloud:spring-cloud-starter-loadbalancer", version.ref = "spring-cloud-starter-loadbalancer"}
+spring-cloud-starter-consul-config = {module = "org.springframework.cloud:spring-cloud-starter-consul-config", version.ref = "spring-cloud-starter-consul-config"}
+
+
+#Order Application Service
+order-application-service = {module = "kh.edu.istad:order-application-service"}
+order-domain-core = {module = "kh.edu.istad:order-domain-core"}
+order-service-persistence ={module = "kh.edu.istad:order-service-persistence"}
+order-service-client ={module = "kh.edu.istad:order-service-client"}
+
+#Customer Application Service
+customer-application-service = {module = "kh.edu.istad:customer-application-service"}
+customer-domain-core = {module = "kh.edu.istad:customer-domain-core"}
+customer-service-message = {module = "kh.edu.istad:customer-service-message"}
+customer-service-persistence = {module = "kh.edu.istad:customer-service-persistence"}
+customer-service-restapi = {module = "kh.edu.istad:customer-service-restapi"}
+
+#Common
+istad-common-domain = {module = "kh.edu.istad:istad-common-domain"}
+#Projectreactor
+reactor-core = {module = "io.projectreactor:reactor-core", version.ref = "reactor-core"}
+
+[bundles]
+gradle-dependency-management = [
+    "spring-boot-gradle-plugin",
+    "spring-boot-dependency-management-plugin"
+]
+
+[plugins]
+java-common-convention = {id = "java-common-conventions"}
+spring-common-convention = {id = "spring-common-conventions"}

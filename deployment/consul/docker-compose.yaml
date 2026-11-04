@@ -1,0 +1,21 @@
+volumes:
+  consul_vol:
+
+networks:
+  ite-net:
+    external: true
+
+services:
+  consul-server:
+    image: hashicorp/consul:1.21.3
+    container_name: consul-server
+    restart: always
+    networks:
+      - ite-net
+    ports:
+      - "8500:8500"
+    #      - "8600:8600/tcp"
+    #      - "8600:8600/udp"
+    command: "agent -server -ui -client=0.0.0.0 -data-dir='/consul/data' -node=consul-server -bootstrap-expect=1"
+    volumes:
+      - consul_vol:/consul/data

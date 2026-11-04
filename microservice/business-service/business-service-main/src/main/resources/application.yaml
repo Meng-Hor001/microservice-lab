@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: business-service
+server:
+  port: 9191

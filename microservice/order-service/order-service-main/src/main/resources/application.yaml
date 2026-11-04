@@ -1,0 +1,54 @@
+server:
+  port: 9091
+spring:
+  security:
+    oauth2:
+      client:
+        registration:
+          customer-service:
+            provider: platform-auth
+            client-id: order-service
+            client-secret: ${ORDER_SERVICE_CLIENT_SECRET}
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: client_credentials
+            scope:
+              - customers.read
+        provider:
+          platform-auth:
+            token-uri: http://localhost:9000/oauth2/token
+
+  application:
+    name: order-service
+  profiles:
+    active: dev
+  config:
+    import:
+      - "optional:consul:"
+  cloud:
+    consul:
+      config:
+        enabled: true
+        format: yaml
+        watch:
+          enabled: false
+      discovery:
+        health-check-url: http://host.docker.internal:${server.port}/actuator/health
+        prefer-ip-address: true
+        service-name: ${spring.application.name}
+        instance-id: ${spring.application.name}-${random.value}
+  r2dbc:
+    url: r2dbc:postgresql://localhost:5432/order_db
+    username: postgres
+    password: 1234
+
+  liquibase:
+    enabled: true
+    change-log: classpath:/db/changelog/db.changelog-master.yaml
+    url: jdbc:postgresql://localhost:5432/order_db
+    user: postgres
+    password: 1234
+    driver-class-name: org.postgresql.Driver
+
+
+
+

@@ -1,0 +1,22 @@
+server:
+  port: 9090
+
+spring:
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: http://localhost:9000
+          audiences:
+            - customer-service
+  application:
+    name: customer-service
+
+  cloud:
+    consul:
+      discovery:
+        instance-id: ${spring.application.name}-${random.value}
+
+
+  mongodb:
+    uri: mongodb+srv://menghorit_db_user:Hor1111223344rr@cluster0.piy0irw.mongodb.net/CustomerDocument?retryWrites=true&w=majority

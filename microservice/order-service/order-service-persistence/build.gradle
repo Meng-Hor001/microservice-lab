@@ -1,0 +1,12 @@
+plugins {
+    id 'spring-common-conventions'
+}
+
+dependencies {
+    api libs.order.application.service
+    api libs.spring.boot.starter.data.r2dbc
+    testImplementation 'org.springframework.boot:spring-boot-starter-data-r2dbc-test'
+    testImplementation 'io.projectreactor:reactor-test'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testRuntimeOnly 'org.postgresql:r2dbc-postgresql'
+}

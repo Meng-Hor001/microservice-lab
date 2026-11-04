@@ -1,0 +1,33 @@
+plugins {
+    id 'spring-cloud-common-conventions'
+}
+
+dependencies {
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.liquibase:liquibase-core'
+    implementation 'org.springframework.boot:spring-boot-starter-liquibase'
+    runtimeOnly 'org.postgresql:postgresql'
+    runtimeOnly 'org.postgresql:r2dbc-postgresql'
+
+    implementation 'org.springframework.cloud:spring-cloud-starter-consul-config'
+    implementation 'org.springframework.cloud:spring-cloud-starter-consul-discovery'
+
+    implementation 'kh.edu.istad:order-domain-core'
+    implementation 'kh.edu.istad:order-service-client'
+    implementation 'kh.edu.istad:order-application-service'
+    implementation 'kh.edu.istad:order-service-persistence'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
+    implementation 'org.springframework.boot:spring-boot-starter-webflux'
+    implementation 'org.springframework.boot:spring-boot-starter-actuator'
+
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.springframework.boot:spring-boot-starter-webflux-test'
+}
+
+tasks.named('test') {
+    useJUnitPlatform()
+}
+
+
