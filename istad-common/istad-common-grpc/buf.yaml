@@ -1,0 +1,10 @@
+version: v2
+modules:
+  - path: src/main/proto
+    name: buf.build/menghor-001/grpc
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE

@@ -1,0 +1,34 @@
+plugins {
+    id 'java-common-conventions'
+    id 'com.google.protobuf' version '0.9.6'
+}
+
+def grpcVersion = '1.85.0'
+def protobufVersion = '4.33.0'
+
+dependencies {
+    api "com.google.protobuf:protobuf-java:${protobufVersion}"
+
+    // Runtime for generated gRPC stubs
+    api "io.grpc:grpc-protobuf:${grpcVersion}"
+    api "io.grpc:grpc-stub:${grpcVersion}"
+}
+protobuf {
+    protoc {
+        artifact = "com.google.protobuf:protoc:${protobufVersion}"
+    }
+
+    plugins {
+        grpc {
+            artifact = "io.grpc:protoc-gen-grpc-java:${grpcVersion}"
+        }
+    }
+
+    generateProtoTasks {
+        all().configureEach { task ->
+            task.plugins {
+                grpc {}
+            }
+        }
+    }
+}
