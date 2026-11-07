@@ -1,0 +1,12 @@
+plugins {
+    id 'java-common-conventions'
+}
+
+dependencies {
+    implementation libs.iam.application.service
+    implementation 'org.springframework.security:spring-security-crypto'
+}
+
+test {
+    useJUnitPlatform()
+}

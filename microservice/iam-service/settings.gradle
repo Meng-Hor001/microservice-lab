@@ -1,0 +1,30 @@
+pluginManagement {
+    includeBuild('../../build-logic')
+
+    repositories {
+        gradlePluginPortal()
+        mavenCentral()
+    }
+}
+
+
+dependencyResolutionManagement {
+    repositories {
+        mavenCentral()
+    }
+    versionCatalogs {
+        libs {
+            from(files("../../gradle/libs.versions.toml"))
+        }
+    }
+}
+
+rootProject.name = "iam-service"
+
+include 'iam-service-domain:iam-domain-core'
+include 'iam-service-domain:iam-application-service'
+include 'iam-service-main'
+include 'iam-service-restapi'
+include 'iam-service-web'
+include 'iam-service-infrastructure'
+include 'iam-service-persistence'

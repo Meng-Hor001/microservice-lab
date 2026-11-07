@@ -1,0 +1,19 @@
+plugins {
+    id 'spring-boot-common-conventions'
+}
+
+
+
+dependencies {
+    implementation libs.iam.application.service
+
+    implementation libs.spring.boot.starter.webmvc
+
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
+    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+}
+
+test {
+    useJUnitPlatform()
+}

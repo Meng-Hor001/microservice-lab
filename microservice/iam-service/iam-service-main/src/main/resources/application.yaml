@@ -1,0 +1,20 @@
+spring:
+  profiles:
+    active: local
+  application:
+    name: iam-service
+
+  jpa:
+    hibernate:
+      ddl-auto: validate
+  datasource:
+    url: jdbc:postgresql://localhost:5432/service_db
+    password: 1234
+    username: postgres
+
+  liquibase:
+    enabled: true
+    change-log: db.changelog/db.changelog-master.yaml
+
+server:
+  port: 9999

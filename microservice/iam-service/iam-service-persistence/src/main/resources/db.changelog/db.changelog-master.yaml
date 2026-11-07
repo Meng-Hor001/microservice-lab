@@ -1,0 +1,11 @@
+databaseChangeLog:
+  - include:
+      file: db.changelog/change/001-role-permission-schema.sql
+  - include:
+      file: db.changelog/change/002-seed-roles-permission.sql
+  - include:
+      file: db.changelog/change/003-create-users.sql
+  - include:
+      file: db.changelog/change/004-create-user-assignments.sql
+  - include:
+      file: db.changelog/change/005-create-identities.sql

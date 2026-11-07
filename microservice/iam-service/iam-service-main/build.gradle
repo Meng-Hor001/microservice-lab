@@ -1,0 +1,22 @@
+plugins {
+    id 'spring-boot-common-conventions'
+}
+
+dependencies {
+    implementation libs.iam.domain.core
+    implementation libs.iam.application.service
+    implementation libs.iam.service.persistence
+    implementation libs.iam.service.infrstructure
+    implementation libs.iam.service.web
+    implementation libs.iam.service.restapi
+
+
+
+    implementation libs.spring.boot.starter.liquibase
+    implementation libs.spring.boot.starter.data.jpa
+    runtimeOnly 'org.postgresql:postgresql'
+}
+
+test {
+    useJUnitPlatform()
+}

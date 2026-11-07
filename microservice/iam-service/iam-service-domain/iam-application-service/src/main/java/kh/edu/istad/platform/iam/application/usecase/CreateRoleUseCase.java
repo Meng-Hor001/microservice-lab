@@ -1,0 +1,50 @@
+package kh.edu.istad.platform.iam.application.usecase;
+
+import kh.edu.istad.platform.iam.application.dto.CreateRoleCommand;
+import kh.edu.istad.platform.iam.application.dto.RoleResult;
+import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
+import kh.edu.istad.platform.iam.application.port.out.RoleRepository;
+import kh.edu.istad.platform.iam.domain.entity.Role;
+import kh.edu.istad.platform.iam.domain.exception.DuplicateRoleException;
+
+import java.time.Clock;
+import java.util.Objects;
+
+
+public final class CreateRoleUseCase {
+    private final RoleRepository roles;
+    private final CurrentActorProvider actorProvider;
+    private final Clock clock;
+
+    public CreateRoleUseCase(
+            RoleRepository roles,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ) {
+        this.roles = Objects.requireNonNull(roles);
+        this.actorProvider = Objects.requireNonNull(actorProvider);
+        this.clock = Objects.requireNonNull(clock);
+    }
+
+    public RoleResult execute(CreateRoleCommand command) {
+        Objects.requireNonNull(command, "Command is required");
+
+        if (roles.existsByName(command.name())) {
+            throw new DuplicateRoleException(command.name());
+        }
+
+        var now = clock.instant();
+        String actor = actorProvider.currentActor();
+
+        Role role = Role.builder()
+                .name(command.name())
+                .description(command.description())
+                .system(false)
+                .active(true)
+                .createdAt(now)
+                .createdBy(actor)
+                .build();
+
+        return RoleResult.from(roles.save(role));
+    }
+}
