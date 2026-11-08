@@ -69,7 +69,8 @@ public class RoleRepositoryAdapter implements RoleRepository {
 
     @Override
     public Optional<Long> findIdByUuid(UUID uuid) {
-        return Optional.empty();
+        return repository.findByUuidAndDeletedFalse(uuid)
+                .map(RoleJpaEntity::getId);
     }
 
     @Override

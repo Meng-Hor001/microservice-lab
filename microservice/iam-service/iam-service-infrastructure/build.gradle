@@ -4,7 +4,8 @@ plugins {
 
 dependencies {
     implementation libs.iam.application.service
-    implementation 'org.springframework.security:spring-security-crypto'
+    implementation libs.spring.security.crypto
+    implementation 'org.springframework:spring-context'
 }
 
 test {

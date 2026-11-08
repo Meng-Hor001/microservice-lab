@@ -168,4 +168,15 @@ public class PermissionUseCaseConfig {
     public ListUserUseCase listUserUseCase(UserRepository users){
         return new ListUserUseCase( users);
     }
+
+    @Bean
+    public GrantPermissionToUserUseCase grantPermissionToUserUseCase(
+            UserRepository users,
+            PermissionRepository permissions,
+            UserPermissionAssignmentRepository assignments,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ){
+        return new GrantPermissionToUserUseCase(users, permissions, assignments, actorProvider, clock);
+    }
 }

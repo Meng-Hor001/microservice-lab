@@ -5,7 +5,6 @@ plugins {
 
 dependencies {
     api libs.iam.domain.core
-    api libs.iam.service.infrstructure
 }
 
 test {
