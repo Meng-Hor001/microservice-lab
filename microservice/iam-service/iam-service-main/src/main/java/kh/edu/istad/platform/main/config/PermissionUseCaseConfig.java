@@ -4,6 +4,7 @@ package kh.edu.istad.platform.main.config;
 import kh.edu.istad.platform.iam.application.port.out.*;
 import kh.edu.istad.platform.iam.application.usecase.*;
 import kh.edu.istad.platform.iam.application.port.out.PasswordHasher;
+import kh.edu.istad.platform.iam.domain.service.AuthorityCalculator;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -14,11 +15,6 @@ public class PermissionUseCaseConfig {
     @Bean
     public Clock clock(){
         return Clock.systemUTC();
-    }
-
-    @Bean
-    public CurrentActorProvider currentActorProvider(){
-        return () -> "system";
     }
 
     @Bean
@@ -97,11 +93,12 @@ public class PermissionUseCaseConfig {
 
     @Bean
     public CreateRoleUseCase createRoleUseCase(
+            AssignmentPermissionsToRoleUseCase permissionsAssignments,
             RoleRepository roleRepository,
             CurrentActorProvider actorProvider,
             Clock clock
     ){
-        return new CreateRoleUseCase(roleRepository, actorProvider, clock);
+        return new CreateRoleUseCase(permissionsAssignments,roleRepository, actorProvider, clock);
     }
 
     @Bean
@@ -178,5 +175,93 @@ public class PermissionUseCaseConfig {
             Clock clock
     ){
         return new GrantPermissionToUserUseCase(users, permissions, assignments, actorProvider, clock);
+    }
+
+    @Bean
+    public AuthorityCalculator authorityCalculator(){
+        return new AuthorityCalculator();
+    }
+
+    @Bean
+    public GetUserAuthoritiesUseCase getUserAuthoritiesUseCase(
+            UserRepository users,
+            RoleRepository roles,
+            PermissionRepository permissions,
+            UserRoleAssignmentRepository userRoles,
+            RolePermissionAssignmentRepository rolePermissions,
+            UserPermissionAssignmentRepository userPermissions,
+            AuthorityCalculator calculator,
+            Clock clock
+    ) {
+        return new GetUserAuthoritiesUseCase(
+                users,
+                roles,
+                permissions,
+                userRoles,
+                rolePermissions,
+                userPermissions,
+                calculator,
+                clock
+        );
+    }
+
+    @Bean
+    public LoadUserForAuthenticationUseCase loadUserForAuthenticationUseCase(
+            UserRepository users
+    ) {
+        return new LoadUserForAuthenticationUseCase(users);
+    }
+
+    @Bean
+    public RecordLoginAttemptUseCase recordLoginAttemptUseCase(
+            UserRepository users,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ) {
+        return new RecordLoginAttemptUseCase(users, actorProvider, clock);
+    }
+
+    @Bean
+    public LinkIdentityUseCase linkIdentityUseCase(
+            UserRepository users,
+            IdentityRepository identities,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ) {
+        return new LinkIdentityUseCase(
+                users, identities, actorProvider, clock
+        );
+    }
+
+    @Bean
+    public FindOrProvisionFederatedUserUseCase findOrProvisionFederatedUserUseCase(
+            UserRepository users,
+            IdentityRepository identities,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ) {
+        return new FindOrProvisionFederatedUserUseCase(
+                users, identities, actorProvider, clock
+        );
+    }
+
+    @Bean
+    public UnlinkIdentityUseCase unlinkIdentityUseCase(
+            UserRepository users,
+            IdentityRepository identities,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ) {
+        return new UnlinkIdentityUseCase(
+                users, identities, actorProvider, clock
+        );
+    }
+
+
+    @Bean
+    public ListUserIdentitiesUseCase listUserIdentitiesUseCase(
+            IdentityRepository identities
+    ) {
+        return new ListUserIdentitiesUseCase(identities);
     }
 }

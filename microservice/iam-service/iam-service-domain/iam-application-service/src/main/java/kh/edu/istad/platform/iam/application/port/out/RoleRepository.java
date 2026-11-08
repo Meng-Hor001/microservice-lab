@@ -12,6 +12,8 @@ public interface RoleRepository {
 
     Optional<Role> findByUuid(UUID uuid);
 
+    Optional<Role> findById(Long id);
+
     Role save(Role role);
 
 

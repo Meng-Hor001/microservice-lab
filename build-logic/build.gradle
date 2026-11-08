@@ -10,4 +10,5 @@ repositories {
 dependencies {
     implementation libs.spring.boot.gradle.plugin
     implementation libs.spring.boot.dependency.management.plugin
+    implementation 'com.google.protobuf:protobuf-gradle-plugin:0.9.6'
 }

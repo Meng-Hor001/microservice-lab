@@ -18,6 +18,17 @@ dependencyManagement {
 dependencies {
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
 }
+
+dependencies {
+    annotationProcessor 'org.mapstruct:mapstruct-processor:1.6.3'
+    implementation 'org.mapstruct:mapstruct:1.6.3'
+    annotationProcessor 'org.projectlombok:lombok-mapstruct-binding:0.2.0'
+    compileOnly 'org.projectlombok:lombok'
+    annotationProcessor 'org.projectlombok:lombok'
+
+    implementation 'org.springframework.boot:spring-boot-starter-logging'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+}
 tasks.withType(Test).configureEach {
     useJUnitPlatform()
 }

@@ -4,7 +4,10 @@ plugins {
 }
 
 dependencies {
-    implementation "kh.edu.istad:order-application-service"
+    implementation 'build.buf.gen:menghor-001_grpc_grpc_java:1.85.1.1.20261106125231.d5f15abf1e02'
+    implementation 'com.google.protobuf:protobuf-java:4.36.2'
+    implementation 'org.springframework.boot:spring-boot-starter-grpc-client'
+    implementation project(':order-service-domain:order-application-service')
     implementation 'org.springframework.boot:spring-boot-starter-webclient'
     implementation 'org.springframework.cloud:spring-cloud-starter-loadbalancer'
     testImplementation 'io.projectreactor:reactor-test'

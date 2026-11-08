@@ -7,10 +7,10 @@ import java.util.List;
 import java.util.UUID;
 
 public record GrantPermissionToUserCommand(
-        UUID userId,
+        UUID userUuid,
         List<UUID> permissionUuids,
         PermissionEffect effect,
-        Instant expiredAt,
+        Instant expiresAt,
         String reason
 ) {
     public GrantPermissionToUserCommand{

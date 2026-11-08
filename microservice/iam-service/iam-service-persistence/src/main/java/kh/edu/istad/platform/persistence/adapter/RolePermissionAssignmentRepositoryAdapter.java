@@ -25,6 +25,14 @@ public class RolePermissionAssignmentRepositoryAdapter implements RolePermission
     private final RolePermissionMapper mapper;
 
     @Override
+    public List<RolePermission> findByRoleIds(List<Long> roleIds) {
+        if (roleIds == null || roleIds.isEmpty()) return List.of();
+        return assignments.findByRoleIdInAndRevokedAtIsNull(roleIds).stream()
+                .map(mapper::toDomain)
+                .toList();
+    }
+
+    @Override
     @Transactional
     public List<RolePermission> saveAll(List<RolePermission> assignmentsToSave) {
         var entities = assignmentsToSave.stream()

@@ -18,35 +18,35 @@ import java.util.Map;
 @EnableWebFluxSecurity
 public class CustomerSecurityConfig {
 
-    @Bean
-    SecurityWebFilterChain customerSecurity(ServerHttpSecurity http) {
-        var converter = new ReactiveJwtAuthenticationConverter();
-
-        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
-            Map<String, Object> realmAccess = jwt.getClaim("realm_access");
-
-            if (realmAccess == null
-                    || !(realmAccess.get("roles") instanceof List<?> roles)) {
-                return Flux.empty();
-            }
-
-            return Flux.fromIterable(roles)
-                    .ofType(String.class)
-                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role));
-        });
-
-        return http
-                .csrf(ServerHttpSecurity.CsrfSpec::disable)
-                .authorizeExchange(auth -> auth
-                        .pathMatchers("/actuator/health", "/actuator/health/**")
-                        .permitAll()
-                        .pathMatchers(HttpMethod.GET, "/api/customers/**")
-                        .hasAuthority("SCOPE_customers.read")
-                        .anyExchange().denyAll())
-                .oauth2ResourceServer(oauth -> oauth
-                        .jwt(Customizer.withDefaults()))
-                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
-                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
-                .build();
-    }
+//    @Bean
+//    SecurityWebFilterChain customerSecurity(ServerHttpSecurity http) {
+//        var converter = new ReactiveJwtAuthenticationConverter();
+//
+//        converter.setJwtGrantedAuthoritiesConverter(jwt -> {
+//            Map<String, Object> realmAccess = jwt.getClaim("realm_access");
+//
+//            if (realmAccess == null
+//                    || !(realmAccess.get("roles") instanceof List<?> roles)) {
+//                return Flux.empty();
+//            }
+//
+//            return Flux.fromIterable(roles)
+//                    .ofType(String.class)
+//                    .map(role -> new SimpleGrantedAuthority("ROLE_" + role));
+//        });
+//
+//        return http
+//                .csrf(ServerHttpSecurity.CsrfSpec::disable)
+//                .authorizeExchange(auth -> auth
+//                        .pathMatchers("/actuator/health", "/actuator/health/**")
+//                        .permitAll()
+//                        .pathMatchers(HttpMethod.GET, "/api/customers/**")
+//                        .hasAuthority("SCOPE_customers.read")
+//                        .anyExchange().denyAll())
+//                .oauth2ResourceServer(oauth -> oauth
+//                        .jwt(Customizer.withDefaults()))
+//                .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
+//                .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
+//                .build();
+//    }
 }

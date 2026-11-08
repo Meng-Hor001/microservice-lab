@@ -12,7 +12,9 @@ public interface PermissionRepository {
 
     boolean existsByName(String name);
 
-    Optional<Permission> findByUuid(UUID id);
+    Optional<Permission> findByUuid(UUID uuid);
+
+    Optional<Permission> findById(Long id);
 
     PageResult<Permission> findAll(PermissionFilterQuery query);
 

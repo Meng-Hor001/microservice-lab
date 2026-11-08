@@ -38,6 +38,13 @@ public class RoleRepositoryAdapter implements RoleRepository {
     }
 
     @Override
+    public Optional<Role> findById(Long id) {
+        return repository.findById(id)
+                .filter(entity -> !entity.isDeleted())
+                .map(mapper::toDomain);
+    }
+
+    @Override
     @Transactional
     public Role save(Role role) {
         RoleJpaEntity entity;

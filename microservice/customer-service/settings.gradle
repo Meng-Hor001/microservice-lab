@@ -7,9 +7,15 @@ pluginManagement {
     }
 }
 
+includeBuild('../../istad-common')
+
 dependencyResolutionManagement {
     repositories {
         mavenCentral()
+        maven {
+            name = 'buf'
+            url = 'https://buf.build/gen/maven'
+        }
     }
 
     versionCatalogs {

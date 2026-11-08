@@ -45,6 +45,13 @@ public class UserRepositoryAdapter implements UserRepository {
     }
 
     @Override
+    public Optional<User> findById(Long id) {
+        return repository.findById(id)
+                .filter(user -> !user.isDeleted())
+                .map(mapper::toDomain);
+    }
+
+    @Override
     public Optional<User> findByUsernameOrEmail(String usernameOrEmail) {
         return repository.findByUsernameOrEmailAndDeletedFalse(usernameOrEmail)
                 .map(mapper::toDomain);

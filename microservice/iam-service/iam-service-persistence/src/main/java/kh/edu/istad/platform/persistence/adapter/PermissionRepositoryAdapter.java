@@ -32,8 +32,14 @@ public class PermissionRepositoryAdapter implements PermissionRepository {
     }
 
     @Override
-    public Optional<Permission> findByUuid(UUID id) {
-        return repository.findByUuidAndDeletedFalse(id)
+    public Optional<Permission> findByUuid(UUID uuid) {
+        return repository.findByUuidAndDeletedFalse(uuid).map(mapper::toDomain);
+    }
+
+    @Override
+    public Optional<Permission> findById(Long id) {
+        return repository.findById(id)
+                .filter(entity -> !entity.isDeleted())
                 .map(mapper::toDomain);
     }
 

@@ -2,6 +2,11 @@ server:
   port: 9090
 
 spring:
+  profiles:
+    active: local
+  grpc:
+    server:
+      port: 9091
   security:
     oauth2:
       resourceserver:
@@ -20,3 +25,4 @@ spring:
 
   mongodb:
     uri: mongodb+srv://menghorit_db_user:Hor1111223344rr@cluster0.piy0irw.mongodb.net/CustomerDocument?retryWrites=true&w=majority
+

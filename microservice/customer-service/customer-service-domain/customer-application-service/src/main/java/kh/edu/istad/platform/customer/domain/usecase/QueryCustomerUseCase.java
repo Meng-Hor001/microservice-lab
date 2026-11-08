@@ -22,6 +22,10 @@ public class QueryCustomerUseCase {
         return customerRepository.findById(id);
     }
 
+    public Mono<Customer> findByUsername(String username) {
+        return customerRepository.findByUsername(username);
+    }
+
     public Flux<Customer> query(){
         return customerRepository.query();
     }

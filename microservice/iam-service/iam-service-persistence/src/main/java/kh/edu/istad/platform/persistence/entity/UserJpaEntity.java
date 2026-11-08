@@ -1,6 +1,8 @@
 package kh.edu.istad.platform.persistence.entity;
 
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcTypeCode;
+import org.hibernate.type.SqlTypes;
 import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -85,7 +87,8 @@ public class UserJpaEntity {
     @Column(name = "address_postal_code", length = 20)
     private String addressPostalCode;
 
-    @Column(name = "address_country", length = 2)
+    @JdbcTypeCode(SqlTypes.CHAR)
+    @Column(name = "address_country", length = 2, columnDefinition = "char(2)")
     private String addressCountry;
 
     @Column(nullable = false)

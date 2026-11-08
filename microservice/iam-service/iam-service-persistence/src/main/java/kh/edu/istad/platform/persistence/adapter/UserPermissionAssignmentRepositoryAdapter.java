@@ -52,7 +52,11 @@ public class UserPermissionAssignmentRepositoryAdapter implements UserPermission
     }
 
     @Override
-    public Optional<UserPermission> findActiveByUserUuidAndPermissionUuid(UUID userUuid, UUID permissionUuid) {
+    public Optional<UserPermission>
+    findActiveByUserUuidAndPermissionUuid(
+            UUID userUuid,
+            UUID permissionUuid
+    ) {
         Long userId = users.findByUuidAndDeletedFalse(userUuid)
                 .map(UserJpaEntity::getId)
                 .orElse(null);
@@ -61,7 +65,8 @@ public class UserPermissionAssignmentRepositoryAdapter implements UserPermission
             return Optional.empty();
         }
 
-        Long permissionId = permissions.findByUuidAndDeletedFalse(permissionUuid)
+        Long permissionId = permissions
+                .findByUuidAndDeletedFalse(permissionUuid)
                 .map(PermissionJpaEntity::getId)
                 .orElse(null);
 
@@ -70,12 +75,21 @@ public class UserPermissionAssignmentRepositoryAdapter implements UserPermission
         }
 
         return assignments
-                .findByUserIdAndPermissionIdAndRevokedAtIsNull(userId, permissionId)
+                .findByUserIdAndPermissionIdAndRevokedAtIsNull(
+                        userId, permissionId
+                )
                 .map(mapper::toDomain);
     }
 
     @Override
-    public UserPermission save(UserPermission assignments) {
-        return null;
+    @Transactional
+    public UserPermission save(UserPermission assignment) {
+        var entity = assignments.findById(assignment.getId())
+                .orElseThrow(() -> new IllegalArgumentException(
+                        "Assignment not found: " + assignment.getId()
+                ));
+
+        mapper.updateEntity(assignment, entity);
+        return mapper.toDomain(assignments.saveAndFlush(entity));
     }
 }

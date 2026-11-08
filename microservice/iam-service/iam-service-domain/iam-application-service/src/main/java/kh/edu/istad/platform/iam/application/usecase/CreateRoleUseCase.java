@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.iam.application.usecase;
 
+import kh.edu.istad.platform.iam.application.dto.AssignPermissionsToRoleCommand;
 import kh.edu.istad.platform.iam.application.dto.CreateRoleCommand;
 import kh.edu.istad.platform.iam.application.dto.RoleResult;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
@@ -12,15 +13,18 @@ import java.util.Objects;
 
 
 public final class CreateRoleUseCase {
+    private final AssignmentPermissionsToRoleUseCase permissionsAssignments;
     private final RoleRepository roles;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;
 
     public CreateRoleUseCase(
+            AssignmentPermissionsToRoleUseCase permissionsAssignments,
             RoleRepository roles,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
+        this.permissionsAssignments = Objects.requireNonNull(permissionsAssignments);
         this.roles = Objects.requireNonNull(roles);
         this.actorProvider = Objects.requireNonNull(actorProvider);
         this.clock = Objects.requireNonNull(clock);
@@ -33,18 +37,27 @@ public final class CreateRoleUseCase {
             throw new DuplicateRoleException(command.name());
         }
 
-        var now = clock.instant();
-        String actor = actorProvider.currentActor();
-
         Role role = Role.builder()
                 .name(command.name())
                 .description(command.description())
                 .system(false)
                 .active(true)
-                .createdAt(now)
-                .createdBy(actor)
+                .createdAt(clock.instant())
+                .createdBy(actorProvider.currentActor())
                 .build();
 
-        return RoleResult.from(roles.save(role));
+        Role savedRole = roles.save(role);
+
+        if (!command.permissionUuids().isEmpty()){
+            permissionsAssignments.execute(
+                    new AssignPermissionsToRoleCommand(
+                            savedRole.getUuid(),
+                            command.permissionUuids(),
+                            null,
+                            "Permission assigned at role creation"
+                    )
+            );
+        }
+        return RoleResult.from(savedRole);
     }
 }

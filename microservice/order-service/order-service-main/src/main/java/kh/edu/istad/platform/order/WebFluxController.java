@@ -3,6 +3,7 @@ package kh.edu.istad.platform.order;
 import kh.edu.istad.platform.order.config.ServicePropConfig;
 import kh.edu.istad.platform.order.domain.dto.QueryCustomerResult;
 import kh.edu.istad.platform.order.domain.port.out.client.CustomerServiceClient;
+import kh.edu.istad.common.domain.valueobject.CustomerId;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.context.config.annotation.RefreshScope;
@@ -13,6 +14,7 @@ import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.Map;
+import java.util.UUID;
 
 @RefreshScope
 @RestController
@@ -24,6 +26,11 @@ public class WebFluxController {
     @GetMapping("customers")
     public Flux<QueryCustomerResult> getCustomers(){
         return customerServiceClient.getCustomerNames();
+    }
+
+    @GetMapping("customers/{customerId}")
+    public Mono<QueryCustomerResult> getCustomerById(@org.springframework.web.bind.annotation.PathVariable UUID customerId) {
+        return customerServiceClient.getCustomerById(new CustomerId(customerId));
     }
 
 

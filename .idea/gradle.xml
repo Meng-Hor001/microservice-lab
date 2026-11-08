@@ -16,6 +16,7 @@
                 <projects>
                   <project path="$PROJECT_DIR$/istad-common" />
                   <project path="$PROJECT_DIR$/istad-common/istad-common-domain" />
+                  <project path="$PROJECT_DIR$/istad-common/istad-common-grpc" />
                   <project path="$PROJECT_DIR$/istad-common/istad-common-restapi" />
                   <project path="$PROJECT_DIR$/istad-common/istad-common-webflux" />
                 </projects>
@@ -48,6 +49,19 @@
                   <project path="$PROJECT_DIR$/microservice/customer-service/customer-service-restapi" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/microservice/iam-service" name="iam-service">
+                <projects>
+                  <project path="$PROJECT_DIR$/microservice/iam-service" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-domain" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-domain/iam-application-service" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-domain/iam-domain-core" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-infrastructure" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-main" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-persistence" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-restapi" />
+                  <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-web" />
+                </projects>
+              </build>
               <build path="$PROJECT_DIR$/microservice/order-service" name="order-service">
                 <projects>
                   <project path="$PROJECT_DIR$/microservice/order-service" />
@@ -69,6 +83,7 @@
             <option value="$PROJECT_DIR$/build-logic" />
             <option value="$PROJECT_DIR$/istad-common" />
             <option value="$PROJECT_DIR$/istad-common/istad-common-domain" />
+            <option value="$PROJECT_DIR$/istad-common/istad-common-grpc" />
             <option value="$PROJECT_DIR$/istad-common/istad-common-restapi" />
             <option value="$PROJECT_DIR$/istad-common/istad-common-webflux" />
             <option value="$PROJECT_DIR$/microservice" />
@@ -87,6 +102,15 @@
             <option value="$PROJECT_DIR$/microservice/customer-service/customer-service-message" />
             <option value="$PROJECT_DIR$/microservice/customer-service/customer-service-persistence" />
             <option value="$PROJECT_DIR$/microservice/customer-service/customer-service-restapi" />
+            <option value="$PROJECT_DIR$/microservice/iam-service" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-domain" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-domain/iam-application-service" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-domain/iam-domain-core" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-infrastructure" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-main" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-persistence" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-restapi" />
+            <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-web" />
             <option value="$PROJECT_DIR$/microservice/order-service" />
             <option value="$PROJECT_DIR$/microservice/order-service/order-service-client" />
             <option value="$PROJECT_DIR$/microservice/order-service/order-service-domain" />

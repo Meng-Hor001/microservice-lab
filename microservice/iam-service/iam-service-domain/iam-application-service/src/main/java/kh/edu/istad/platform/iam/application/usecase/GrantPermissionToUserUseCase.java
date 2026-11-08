@@ -4,11 +4,13 @@ import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 
 import kh.edu.istad.platform.iam.application.dto.PermissionGrantResult;
+import kh.edu.istad.platform.iam.application.dto.GrantPermissionToUserCommand;
 import kh.edu.istad.platform.iam.application.port.out.PermissionRepository;
 import kh.edu.istad.platform.iam.application.port.out.UserPermissionAssignmentRepository;
 import kh.edu.istad.platform.iam.application.port.out.UserRepository;
 import kh.edu.istad.platform.iam.domain.entity.User;
 import kh.edu.istad.platform.iam.domain.entity.UserPermission;
+import kh.edu.istad.platform.iam.domain.entity.Permission;
 
 import java.time.Clock;
 import java.util.List;
@@ -21,7 +23,7 @@ public final class GrantPermissionToUserUseCase {
     private final CurrentActorProvider actorProvider;
     private final Clock clock;
 
-    public GrantPermissionsToUserUseCase(
+    public GrantPermissionToUserUseCase(
             UserRepository users,
             PermissionRepository permissions,
             UserPermissionAssignmentRepository assignments,
@@ -35,7 +37,7 @@ public final class GrantPermissionToUserUseCase {
         this.clock = clock;
     }
 
-    public List<PermissionGrantResult> execute(GrantPermissionsToUserCommand command) {
+    public List<PermissionGrantResult> execute(GrantPermissionToUserCommand command) {
         Objects.requireNonNull(command, "Command is required");
 
         User user = users.findByUuid(command.userUuid())

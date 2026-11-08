@@ -12,4 +12,6 @@ public interface RolePermissionAssignmentRepository{
     RolePermission save(RolePermission assignment);
 
     List<RolePermission> findActiveByRoleUuid(UUID uuid);
+
+    List<RolePermission> findByRoleIds(List<Long> roleIds);
 }

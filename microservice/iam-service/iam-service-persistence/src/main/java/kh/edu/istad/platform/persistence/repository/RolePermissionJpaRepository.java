@@ -9,4 +9,6 @@ import java.util.List;
 public interface RolePermissionJpaRepository extends JpaRepository<RolePermissionJpaEntity, Long> {
 
     List<RolePermissionJpaEntity> findByRoleIdAndRevokedAtIsNull(Long roleId);
+
+    List<RolePermissionJpaEntity> findByRoleIdInAndRevokedAtIsNull(List<Long> roleIds);
 }

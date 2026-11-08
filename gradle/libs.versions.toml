@@ -15,6 +15,7 @@ spring-boot-starter-liquibase = "4.1.2"
 liquibase-core = "5.0.4"
 spring-boot-starter-actuator = "4.1.2"
 spring-cloud-starter-consul-discovery = "5.0.4"
+spring-security-crypto = "6.5.3"
 
 [libraries]
 #Spring-boot
@@ -30,6 +31,7 @@ spring-boot-starter-liquibase = {module = "org.springframework.boot:spring-boot-
 liquibase-core = {module = "org.liquibase:liquibase-core", version.ref = "liquibase-core"}
 spring-boot-starter-actuator = {module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot-starter-actuator"}
 spring-cloud-starter-consul-discovery = {module = "org.springframework.cloud:spring-cloud-starter-consul-discovery", version.ref = "spring-cloud-starter-consul-discovery"}
+spring-security-crypto = {module = "org.springframework.security:spring-security-crypto", version.ref = "spring-security-crypto"}
 
 #Spring docs
 springdoc-openapi-starter-webflux-ui = {module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springdoc"}
@@ -53,8 +55,21 @@ customer-service-message = {module = "kh.edu.istad:customer-service-message"}
 customer-service-persistence = {module = "kh.edu.istad:customer-service-persistence"}
 customer-service-restapi = {module = "kh.edu.istad:customer-service-restapi"}
 
+#Iam-Service
+iam-service-persistence = {module = "kh.edu.istad:iam-service-persistence"}
+iam-service-infrstructure = {module = "kh.edu.istad:iam-service-infrastructure"}
+iam-service-restapi = {module = "kh.edu.istad:iam-service-restapi"}
+iam-service-web = {module = "kh.edu.istad:iam-service-web"}
+iam-application-service = {module = "kh.edu.istad:iam-application-service", version = "0.1.0-SNAPSHOT"}
+iam-domain-core = {module = "kh.edu.istad:iam-domain-core"}
 #Common
+
+
+
 istad-common-domain = {module = "kh.edu.istad:istad-common-domain"}
+istad-common-grpc = {module = "kh.edu.istad:istad-common-grpc"}
+istad-common-restapi = {module = "kh.edu.istad:istad-common-restapi"}
+istad-common-webflux = {module = "kh.edu.istad:istad-common-webflux"}
 #Projectreactor
 reactor-core = {module = "io.projectreactor:reactor-core", version.ref = "reactor-core"}
 

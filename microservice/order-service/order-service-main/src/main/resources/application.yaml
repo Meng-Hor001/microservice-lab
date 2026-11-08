@@ -1,6 +1,11 @@
 server:
-  port: 9091
+  port: 9092
 spring:
+  grpc:
+    client:
+      channel:
+        customer-service:
+          target: static://localhost:9091
   security:
     oauth2:
       client:

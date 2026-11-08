@@ -15,6 +15,8 @@ public interface UserRepository {
 
     Optional<User> findByUuid(UUID uuid);
 
+    Optional<User> findById(Long id);
+
     Optional<User> findByUsernameOrEmail(String usernameOrEmail);
 
     PageResult<User> findAll(UserFilterQuery query);
