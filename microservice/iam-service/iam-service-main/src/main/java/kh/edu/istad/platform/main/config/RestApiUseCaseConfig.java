@@ -14,10 +14,12 @@ public class RestApiUseCaseConfig {
     public CreateUserUseCase createUserUseCase(
             UserRepository users,
             PasswordHasher hasher,
+            AssignRolesToUserUseCase assignRolesToUserUseCase,
+            TransactionRunner transactionRunner,
             CurrentActorProvider actor,
             Clock clock
     ) {
-        return new CreateUserUseCase(users, hasher, actor, clock);
+        return new CreateUserUseCase(users, hasher, assignRolesToUserUseCase, transactionRunner, actor, clock);
     }
 
     @Bean

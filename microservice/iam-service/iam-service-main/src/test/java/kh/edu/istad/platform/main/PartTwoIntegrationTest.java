@@ -8,6 +8,7 @@ import kh.edu.istad.platform.iam.domain.entity.*;
 import kh.edu.istad.platform.iam.domain.enums.*;
 import kh.edu.istad.platform.iam.domain.exception.DomainRuleException;
 import kh.edu.istad.platform.iam.domain.service.AuthorityCalculator;
+import kh.edu.istad.platform.iam.domain.valueobject.UserProfile;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -48,6 +49,8 @@ class PartTwoIntegrationTest {
     @Autowired UserPermissionAssignmentRepository userPermissions;
     @Autowired IdentityRepository identities;
     @Autowired CreateRoleUseCase createRole;
+    @Autowired CreateUserUseCase createUser;
+    @Autowired PasswordHasher passwordHasher;
     @Autowired FindOrProvisionFederatedUserUseCase federation;
     @Autowired LinkIdentityUseCase linkIdentity;
     @Autowired UnlinkIdentityUseCase unlinkIdentity;
@@ -91,6 +94,58 @@ class PartTwoIntegrationTest {
     private GetUserAuthoritiesUseCase authorities(Clock at) {
         return new GetUserAuthoritiesUseCase(users, roles, permissions, userRoles,
                 rolePermissions, userPermissions, new AuthorityCalculator(), at);
+    }
+
+    private CreateUserCommand createUserCommand(Set<UUID> roleUuids) {
+        String username = "created_" + unique();
+        var profile = new UserProfile(
+                username + "@example.com", "Dara", "Sok", null, null, null,
+                null, null, null, null, "Asia/Phnom_Penh", "km", null,
+                null, null, null, null, "KH"
+        );
+        return new CreateUserCommand(username, "Str0ng!Pass2026", profile, roleUuids);
+    }
+
+    @Test
+    void userCreationPersistsProfilePasswordAndRequestedRoles() {
+        var firstRole = role();
+        var secondRole = role();
+        var command = createUserCommand(Set.of(firstRole.getUuid(), secondRole.getUuid()));
+
+        var result = createUser.execute(command);
+
+        var saved = users.findByUuid(result.uuid()).orElseThrow();
+        assertEquals(command.username(), saved.getUsername());
+        assertEquals("km", saved.getLocale());
+        assertEquals("KH", saved.getAddressCountry());
+        assertTrue(passwordHasher.matches(command.password(), saved.getPasswordHash()));
+        assertNotEquals(command.password(), saved.getPasswordHash());
+        assertEquals(2, userRoles.findActiveByUserUuid(result.uuid()).size());
+        assertEquals(Set.of(firstRole.getUuid(), secondRole.getUuid()),
+                new HashSet<>(authorities(clock).execute(result.uuid()).roles().stream()
+                        .map(role -> role.uuid()).toList()));
+    }
+
+    @Test
+    void userCreationWithoutRolesSucceeds() {
+        var result = createUser.execute(createUserCommand(Set.of()));
+
+        assertTrue(users.findByUuid(result.uuid()).isPresent());
+        assertTrue(userRoles.findActiveByUserUuid(result.uuid()).isEmpty());
+    }
+
+    @Test
+    void invalidRoleRollsBackUserCreation() {
+        var existingRole = role();
+        var command = createUserCommand(Set.of(existingRole.getUuid(), UUID.randomUUID()));
+        int assignmentsBefore = jdbc.queryForObject("select count(*) from user_roles", Integer.class);
+
+        assertThrows(ResourceNotFoundException.class, () -> createUser.execute(command));
+
+        assertFalse(users.existsByUsername(command.username()));
+        assertFalse(users.existsByEmail(command.profile().email()));
+        assertEquals(assignmentsBefore,
+                jdbc.queryForObject("select count(*) from user_roles", Integer.class));
     }
 
     @Test
