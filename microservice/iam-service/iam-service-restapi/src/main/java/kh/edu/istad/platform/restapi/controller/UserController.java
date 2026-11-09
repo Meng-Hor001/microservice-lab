@@ -1,6 +1,8 @@
 package kh.edu.istad.platform.restapi.controller;
 
 import jakarta.validation.Valid;
+import java.net.URI;
+import kh.edu.istad.platform.restapi.dto.request.CreateUserRequest;
 import jakarta.validation.constraints.Size;
 import kh.edu.istad.platform.iam.application.query.UserFilterQuery;
 import kh.edu.istad.platform.iam.application.usecase.*;
@@ -40,6 +42,17 @@ public class UserController {
     private final ResetUserPasswordUseCase resetUserPassword;
     private final UpdateUserProfileUseCase updateUserProfile;
     private final UserApiMapper mapper;
+
+    @PostMapping
+    @PreAuthorize("hasAuthority('user:create')")
+    public ResponseEntity<UserResponse> create(
+            @Valid @RequestBody CreateUserRequest request
+    ) {
+        var user = createUser.execute(mapper.toCommand(request));
+        var authorities = getAuthorities.execute(user.uuid());
+        return ResponseEntity.created(URI.create("/api/users/" + user.uuid()))
+                .body(mapper.toResponse(user, authorities));
+    }
 
     @GetMapping
     @PreAuthorize("hasAuthority('user:read')")

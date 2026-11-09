@@ -1,6 +1,7 @@
 package kh.edu.istad.platform.iam.application.usecase;
 
 import kh.edu.istad.platform.iam.application.dto.RegisterUserCommand;
+import kh.edu.istad.platform.iam.application.exception.DuplicateUserException;
 import kh.edu.istad.platform.iam.application.dto.UserResult;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 import kh.edu.istad.platform.iam.application.port.out.UserRepository;
@@ -40,10 +41,10 @@ public final class RegisterUserUseCase {
         String email = command.email().trim().toLowerCase(Locale.ROOT);
 
         if (users.existsByUsername(username)) {
-            throw new IllegalArgumentException("Username already exists");
+            throw new DuplicateUserException("username", username);
         }
         if (users.existsByEmail(email)) {
-            throw new IllegalArgumentException("Email already exists");
+            throw new DuplicateUserException("email", email);
         }
 
         var now = clock.instant();

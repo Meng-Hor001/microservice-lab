@@ -47,6 +47,7 @@ public final class CreateUserUseCase {
     private UserResult createUser(CreateUserCommand command) {
         String username = Objects.requireNonNull(command.username(), "Username is required").trim();
         String email = command.profile().email();
+
         if (users.existsByUsername(username)) {
             throw new DuplicateUserException("username", username);
         }

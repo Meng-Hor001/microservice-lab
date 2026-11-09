@@ -1,11 +1,12 @@
 plugins {
-    id 'spring-common-conventions'
+    id 'spring-boot-common-conventions'
 }
 
 dependencies {
     implementation libs.iam.application.service
     implementation libs.spring.security.crypto
     implementation 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server'
 }
 
 test {

@@ -31,7 +31,7 @@ public class AuthController {
         var authorities = getUserAuthoritiesUseCase.execute(result.uuid());
         var response = mapper.toResponse(result, authorities);
         return ResponseEntity.created(
-                URI.create("/api/users" + result.uuid()))
+                URI.create("/api/users/" + result.uuid()))
                 .body(response);
     }
 }

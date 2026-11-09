@@ -13,3 +13,7 @@ databaseChangeLog:
       file: db.changelog/change/006-seed-user-role-permission.sql
   - include:
       file: db.changelog/change/007-unique-unrevoked-assignments.sql
+  - include:
+      file: db.changelog/change/008-authorization-server.sql
+  - include:
+      file: db.changelog/change/009-seed-client-create-permission.sql

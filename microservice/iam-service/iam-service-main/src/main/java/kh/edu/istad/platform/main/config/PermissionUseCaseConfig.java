@@ -262,8 +262,9 @@ public class PermissionUseCaseConfig {
 
     @Bean
     public ListUserIdentitiesUseCase listUserIdentitiesUseCase(
+            UserRepository users,
             IdentityRepository identities
     ) {
-        return new ListUserIdentitiesUseCase(identities);
+        return new ListUserIdentitiesUseCase(identities, users);
     }
 }
