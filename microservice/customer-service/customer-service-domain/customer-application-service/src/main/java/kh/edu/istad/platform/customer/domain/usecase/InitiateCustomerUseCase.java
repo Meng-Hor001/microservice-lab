@@ -22,11 +22,11 @@ public class InitiateCustomerUseCase {
     public InitiateCustomerResult execute(InitiateCustomerCommand command) {
         log.info("initiate customer usecase: {}", command);
         customerRepository.save(null);
-        // validate by load data from persistence (output port)
-        // invoke domain logic (called domain service)
-        // customerDomainService.initiateCustomer(customer);
-        // save data into database (output port)
-        // customerRepository.save();
+
+
+
+
+
         return new InitiateCustomerResult(UUID.randomUUID());
     }
 

@@ -5,6 +5,7 @@ import kh.edu.istad.platform.iam.application.dto.FederatedIdentityCommand;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 import kh.edu.istad.platform.iam.application.port.out.IdentityRepository;
+import kh.edu.istad.platform.iam.application.port.out.TransactionRunner;
 import kh.edu.istad.platform.iam.application.port.out.UserRepository;
 import kh.edu.istad.platform.iam.domain.entity.Identity;
 import kh.edu.istad.platform.iam.domain.entity.User;
@@ -16,22 +17,29 @@ import java.util.UUID;
 public final class FindOrProvisionFederatedUserUseCase {
     private final UserRepository users;
     private final IdentityRepository identities;
+    private final TransactionRunner transaction;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;
 
     public FindOrProvisionFederatedUserUseCase(
             UserRepository users,
             IdentityRepository identities,
+            TransactionRunner transaction,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
         this.users = Objects.requireNonNull(users);
         this.identities = Objects.requireNonNull(identities);
+        this.transaction = Objects.requireNonNull(transaction);
         this.actorProvider = Objects.requireNonNull(actorProvider);
         this.clock = Objects.requireNonNull(clock);
     }
 
     public AuthUserResult execute(FederatedIdentityCommand command) {
+        return transaction.execute(() -> findOrProvision(command));
+    }
+
+    private AuthUserResult findOrProvision(FederatedIdentityCommand command) {
         Objects.requireNonNull(command, "Federated identity is required");
 
         var existing = identities.findByProviderAndSubject(

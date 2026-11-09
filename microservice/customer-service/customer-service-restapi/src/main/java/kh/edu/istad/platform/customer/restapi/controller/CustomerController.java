@@ -55,16 +55,16 @@ public class CustomerController {
         return createCustomerUseCase.create(customerWebMapper.toDomain(request));
     }
 
-//    @ResponseStatus(HttpStatus.CREATED)
-//    @PostMapping
-//    public CustomerInitiateResponse initiateCustomer(
-//            @RequestBody CustomerInitiateRequest customerInitiateRequest
-//            ) {
-//
-//        InitiateCustomerResult result = initiateCustomerUseCase.execute(
-//                customerWebMapper.toCommand(customerInitiateRequest)
-//        );
-//        return customerWebMapper.toResponse(result);
-//    }
+
+
+
+
+
+
+
+
+
+
+
 
 }

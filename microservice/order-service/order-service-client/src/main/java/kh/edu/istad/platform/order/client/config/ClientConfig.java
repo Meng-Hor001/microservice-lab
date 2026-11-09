@@ -30,7 +30,7 @@ import org.springframework.web.service.registry.ImportHttpServices;
         types = {BusinessHttpClient.class},
         clientType = HttpServiceGroup.ClientType.WEB_CLIENT
 )
-//@RequiredArgsConstructor
+
 public class ClientConfig {
 
     @Bean
@@ -61,36 +61,36 @@ public class ClientConfig {
                     );
         };
     }
-//
-//    private final WebClient.Builder webClient;
-//
-//    @Bean
-//    public CustomerHttpClient customerHttpClient(){
-//        return createClient("http://customer-service", CustomerHttpClient.class);
-//
-//    }
-//
-//    @Bean
-//    public BusinessHttpClient businessHttpClient(){
-//        return createClient("http://business-service", BusinessHttpClient.class);
-//    }
-//
-//    private <T> T createClient(String url, Class<T> type){
-//        WebClient wc = webClient
-//                .baseUrl(url)
-//                .build();
-//
-//        return createClient(wc, type);
-//    };
-//
-//    private <T> T createClient(WebClient wc, Class<T> type){
-//
-//        HttpServiceProxyFactory factory = HttpServiceProxyFactory
-//                .builderFor(WebClientAdapter.create(wc))
-//                .build();
-//
-//        return factory.createClient(type);
-//    };
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

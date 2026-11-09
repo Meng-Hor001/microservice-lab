@@ -75,6 +75,7 @@ public class UserRoleAssignmentRepositoryAdapter implements UserRoleAssignmentRe
     }
 
     @Override
+    @Transactional
     public UserRole save(UserRole assignment) {
         UserRoleJpaEntity entity = assignments
                 .findById(assignment.getId())

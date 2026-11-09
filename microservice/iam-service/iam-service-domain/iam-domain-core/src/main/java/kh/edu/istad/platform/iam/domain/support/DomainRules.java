@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public final class DomainRules {
     private DomainRules() {
-        // Utility class: do not instantiate.
+
     }
 
     public static void check(boolean condition, String message) {
@@ -65,7 +65,7 @@ public final class DomainRules {
 
         normalized = normalized.toLowerCase(Locale.ROOT);
 
-        // Basic domain validation; API validation may be stricter.
+
         check(
                 normalized.matches("^[^\\s@]+@[^\\s@]+\\.[^\\s@]+$"),
                 "Invalid email address"
@@ -86,7 +86,7 @@ public final class DomainRules {
     public static UUID publicId(Long id, UUID uuid) {
         check(id == null || id > 0, "ID must be positive");
 
-        // Restored records must keep their original UUID.
+
         if (id != null) {
             required(uuid, "Stored UUID");
         }

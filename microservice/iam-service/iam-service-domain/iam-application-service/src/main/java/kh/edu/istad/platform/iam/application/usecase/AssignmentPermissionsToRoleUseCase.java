@@ -3,6 +3,7 @@ package kh.edu.istad.platform.iam.application.usecase;
 import kh.edu.istad.platform.iam.application.dto.AssignPermissionsToRoleCommand;
 import kh.edu.istad.platform.iam.application.dto.PermissionAssignmentResult;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
+import kh.edu.istad.platform.iam.application.exception.DuplicateAssignmentException;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 import kh.edu.istad.platform.iam.application.port.out.PermissionRepository;
 import kh.edu.istad.platform.iam.application.port.out.RolePermissionAssignmentRepository;
@@ -45,12 +46,19 @@ public final class AssignmentPermissionsToRoleUseCase {
         String actor = actorProvider.currentActor();
         var now = clock.instant();
 
+        var existing = assignments.findActiveByRoleUuid(command.roleUuid());
+
         List<RolePermission> newAssignments = command.permissionUuids()
                 .stream()
                 .map(uuid -> {
                     Permission permission = permissions.findByUuid(uuid)
                             .orElseThrow(() ->
                                     new ResourceNotFoundException("Permission", uuid));
+
+                    if (existing.stream().anyMatch(assignment ->
+                            assignment.getPermissionId().equals(permission.getId()))) {
+                        throw new DuplicateAssignmentException("Role permission assignment");
+                    }
 
                     return RolePermission.assign(
                             role,

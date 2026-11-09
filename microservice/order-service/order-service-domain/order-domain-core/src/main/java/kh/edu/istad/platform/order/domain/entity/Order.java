@@ -13,7 +13,7 @@ public class Order extends AggregateRoot<OrderId> {
     private final CustomerId customerId;
     private final BusinessId businessId;
     private final StreetAddress deliveryAddress;
-    private final Money price; // orderPrice
+    private final Money price;
     private final List<OrderItem> items;
 
     private TrackingId trackingId;
@@ -38,11 +38,11 @@ public class Order extends AggregateRoot<OrderId> {
         return new Builder();
     }
 
-    // ------- start domain logic -------- //
 
-    /**
-     * Initialize order
-     */
+
+
+
+
     public void initializeOrder() {
 
         if (super.getId() != null || orderStatus != null) {
@@ -55,9 +55,9 @@ public class Order extends AggregateRoot<OrderId> {
         validateOrder();
     }
 
-    /**
-     * Pay order
-     */
+
+
+
     public void pay() {
         if (orderStatus != OrderStatus.PENDING) {
             throw new OrderDomainException("Order state is not correct for pay operation");
@@ -66,9 +66,9 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
 
-    /**
-     * Approve order
-     */
+
+
+
     public void approve() {
         if (orderStatus != OrderStatus.PAID) {
             throw new OrderDomainException("Order state is not correct for approve operation");
@@ -77,9 +77,9 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
 
-    /**
-     * Init cancel order
-     */
+
+
+
     public void initCancel(List<String> failureMessages) {
         if (orderStatus != OrderStatus.PAID) {
             throw new OrderDomainException("Order state is not correct for init cancel operation");
@@ -88,9 +88,9 @@ public class Order extends AggregateRoot<OrderId> {
         updateFailureMessages(failureMessages);
     }
 
-    /**
-     * cancel order
-     */
+
+
+
     public void cancel(List<String> failureMessages) {
         if (!(orderStatus == OrderStatus.PENDING || orderStatus == OrderStatus.CANCELLING)) {
             throw new OrderDomainException("Order state is not correct for cancel operation");
@@ -100,10 +100,10 @@ public class Order extends AggregateRoot<OrderId> {
     }
 
 
-    /**
-     * Update failure messages based on condition
-     * @param failureMessages are reasons of failure
-     */
+
+
+
+
     private void updateFailureMessages(List<String> failureMessages) {
         if (this.failureMessages != null && failureMessages != null) {
             this.failureMessages.addAll(failureMessages.stream().filter(
@@ -114,18 +114,18 @@ public class Order extends AggregateRoot<OrderId> {
         }
     }
 
-    // ------- end domain logic -------- //
 
-    /**
-     * Validate order data
-     */
+
+
+
+
     public void validateOrder() {
-        // Validate order price
+
         if (price == null || !price.isGreaterThanZero()) {
             throw new OrderDomainException("Price must be greater than zero");
         }
 
-        // Validate product price
+
         Money orderSubTotal = items.stream()
                 .map(orderItem -> {
                     validateItemPrice(orderItem);

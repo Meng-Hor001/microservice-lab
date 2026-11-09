@@ -3,6 +3,7 @@ package kh.edu.istad.platform.iam.application.usecase;
 import kh.edu.istad.platform.iam.application.dto.AssignRolesToUserCommand;
 import kh.edu.istad.platform.iam.application.dto.RoleAssignmentResult;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
+import kh.edu.istad.platform.iam.application.exception.DuplicateAssignmentException;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 import kh.edu.istad.platform.iam.application.port.out.RoleRepository;
 import kh.edu.istad.platform.iam.application.port.out.UserRepository;
@@ -48,6 +49,10 @@ public final class AssignRolesToUserUseCase {
                                     new ResourceNotFoundException("Role", roleUuid));
 
                     role.ensureAssignable();
+                    if (assignments.findActiveByUserUuidAndRoleUuid(
+                            command.userUuid(), roleUuid).isPresent()) {
+                        throw new DuplicateAssignmentException("User role assignment");
+                    }
 
                     return UserRole.assign(
                             user,

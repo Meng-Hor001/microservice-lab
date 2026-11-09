@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.iam.application.dto;
 
+import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
 
@@ -18,7 +19,7 @@ public record   UserAuthoritiesResult (
                 : List.copyOf(effectivePermissions);
     }
 
-    public record RoleAuthority(UUID uuid, String name) {}
+    public record RoleAuthority(UUID uuid, String name, Instant expiresAt) {}
 
     public record DirectPermissionAuthority(String name, String effect) {}
 }

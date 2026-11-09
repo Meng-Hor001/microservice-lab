@@ -10,7 +10,7 @@ import static kh.edu.istad.platform.iam.domain.support.DomainRules.check;
 
 public final class JsonAttributes {
     private JsonAttributes() {
-        // Utility class: do not instantiate.
+
     }
 
     public static Map<String, Object> copy(

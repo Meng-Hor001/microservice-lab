@@ -15,5 +15,5 @@ public class ServicePropConfig {
     private String message;
     private String env;
     private String version;
-    private String baseUrl; // base-url
+    private String baseUrl;
 }

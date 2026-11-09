@@ -27,7 +27,7 @@ class DomainTest {
     private static final Instant NOW = Instant.parse("2026-11-06T08:00:00Z");
     private final AuthorityCalculator calculator = new AuthorityCalculator();
 
-    // IDs simulate objects returned by persistence; no database is needed.
+
     private User user(String passwordHash) {
         return User.builder()
                 .id(1L).uuid(UUID.randomUUID())

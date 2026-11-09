@@ -1,6 +1,7 @@
 package kh.edu.istad.platform.persistence.adapter;
 
 import kh.edu.istad.platform.iam.application.port.out.UserPermissionAssignmentRepository;
+import kh.edu.istad.platform.iam.application.exception.VersionConflictException;
 import kh.edu.istad.platform.iam.domain.entity.UserPermission;
 import kh.edu.istad.platform.persistence.entity.PermissionJpaEntity;
 import kh.edu.istad.platform.persistence.entity.UserJpaEntity;
@@ -88,6 +89,13 @@ public class UserPermissionAssignmentRepositoryAdapter implements UserPermission
                 .orElseThrow(() -> new IllegalArgumentException(
                         "Assignment not found: " + assignment.getId()
                 ));
+
+        if (!java.util.Objects.equals(
+                entity.getVersion(),
+                Long.valueOf(assignment.getVersion())
+        )) {
+            throw new VersionConflictException("User permission assignment");
+        }
 
         mapper.updateEntity(assignment, entity);
         return mapper.toDomain(assignments.saveAndFlush(entity));

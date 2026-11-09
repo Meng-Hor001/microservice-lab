@@ -94,7 +94,12 @@ public final  class GetUserAuthoritiesUseCase {
                                 .contains("ROLE_" + role.getName()))
                         .map(role -> new UserAuthoritiesResult.RoleAuthority(
                                 role.getUuid(),
-                                role.getName()
+                                role.getName(),
+                                assignedRoles.stream()
+                                        .filter(assignment -> assignment.getRoleId().equals(role.getId()))
+                                        .findFirst()
+                                        .map(UserRole::getExpiresAt)
+                                        .orElse(null)
                         ))
                         .toList();
 

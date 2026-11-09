@@ -11,5 +11,5 @@ public class AuditorAwareConfig implements ReactiveAuditorAware<String> {
     public Mono<String> getCurrentAuditor() {
         return Mono.just("SYSTEM");
     }
-    
+
 }

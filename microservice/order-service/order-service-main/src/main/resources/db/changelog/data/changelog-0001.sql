@@ -1,4 +1,3 @@
--- sql for insert data
 insert into businesses (business_id, product_id, business_active, product_name, product_price)
 values ('7e465573-893f-45f9-848f-8679f98967a9', '5790e7f1-73ed-4187-81a3-9c30df5156d4',
         true, 'iPhone 17 Pro Max', 1400);

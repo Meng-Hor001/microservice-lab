@@ -37,7 +37,7 @@ public final class CreatePermissionUseCase {
         Instant now = clock.instant();
         String actor = currentActorProvider.currentActor();
 
-        // The domain builder validates resource/action and derives the name.
+
         Permission permission = Permission.builder()
                 .resource(command.resource())
                 .action(command.action())

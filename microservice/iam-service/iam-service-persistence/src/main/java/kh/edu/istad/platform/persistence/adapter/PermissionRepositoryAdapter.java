@@ -145,7 +145,7 @@ public class PermissionRepositoryAdapter implements PermissionRepository {
             mapper.updateEntity(permission, entity);
         }
 
-        // Flush before mapping so the returned version reflects the update.
+
         return mapper.toDomain(repository.saveAndFlush(entity));
     }
 }

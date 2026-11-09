@@ -95,10 +95,11 @@ public class PermissionUseCaseConfig {
     public CreateRoleUseCase createRoleUseCase(
             AssignmentPermissionsToRoleUseCase permissionsAssignments,
             RoleRepository roleRepository,
+            TransactionRunner transaction,
             CurrentActorProvider actorProvider,
             Clock clock
     ){
-        return new CreateRoleUseCase(permissionsAssignments,roleRepository, actorProvider, clock);
+        return new CreateRoleUseCase(permissionsAssignments,roleRepository, transaction, actorProvider, clock);
     }
 
     @Bean
@@ -236,12 +237,13 @@ public class PermissionUseCaseConfig {
     @Bean
     public FindOrProvisionFederatedUserUseCase findOrProvisionFederatedUserUseCase(
             UserRepository users,
+            TransactionRunner transaction,
             IdentityRepository identities,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
         return new FindOrProvisionFederatedUserUseCase(
-                users, identities, actorProvider, clock
+                users, identities,transaction , actorProvider, clock
         );
     }
 

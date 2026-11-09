@@ -1,5 +1,3 @@
--- sql for create db object
--- sql for create db object
 create table businesses
 (
     business_id     uuid not null,

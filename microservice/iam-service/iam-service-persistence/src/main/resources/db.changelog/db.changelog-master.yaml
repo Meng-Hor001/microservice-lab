@@ -11,3 +11,5 @@ databaseChangeLog:
       file: db.changelog/change/005-create-identities.sql
   - include:
       file: db.changelog/change/006-seed-user-role-permission.sql
+  - include:
+      file: db.changelog/change/007-unique-unrevoked-assignments.sql

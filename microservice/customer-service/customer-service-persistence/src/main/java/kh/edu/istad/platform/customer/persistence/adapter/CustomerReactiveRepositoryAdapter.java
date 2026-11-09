@@ -65,13 +65,3 @@ public class CustomerReactiveRepositoryAdapter implements CustomerRepository {
         );
     }
 }
-
-/**
- *
- * 1. Dynamic Filter
- * 2. CustomerSegment(Silver, Gold, Premium) @DBRef, @DocumentReference
- * 3. Aggregation customers/report, customers/statistic
- *      group by CustomerStatus
- *      total ...
- *
- */

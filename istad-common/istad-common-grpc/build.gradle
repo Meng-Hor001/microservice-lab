@@ -9,7 +9,7 @@ def protobufVersion = '4.33.0'
 dependencies {
     api "com.google.protobuf:protobuf-java:${protobufVersion}"
 
-    // Runtime for generated gRPC stubs
+
     api "io.grpc:grpc-protobuf:${grpcVersion}"
     api "io.grpc:grpc-stub:${grpcVersion}"
 }

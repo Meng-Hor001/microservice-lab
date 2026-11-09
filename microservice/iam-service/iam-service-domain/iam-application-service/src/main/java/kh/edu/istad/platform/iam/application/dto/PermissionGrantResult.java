@@ -6,12 +6,12 @@ import java.time.Instant;
 import java.util.UUID;
 
 public record PermissionGrantResult(
-        UUID userId,
-        Long permissionId,
+        UUID userUuid,
+        UUID permissionUuid,
         PermissionEffect effect,
         Instant assignedAt,
         String assignedBy,
-        Instant expiredAt,
+        Instant expiresAt,
         Instant revokedAt,
         String revokedBy,
         String reason

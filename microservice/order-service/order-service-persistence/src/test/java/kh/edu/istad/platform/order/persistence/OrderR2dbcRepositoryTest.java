@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import reactor.test.StepVerifier;
 
 @DataR2dbcTest
-// @ContextConfiguration(classes = PersistenceTestConfig.class)
+
 public class OrderR2dbcRepositoryTest {
 
     @Autowired

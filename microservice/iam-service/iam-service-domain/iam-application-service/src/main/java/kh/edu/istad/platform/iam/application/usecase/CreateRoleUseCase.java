@@ -5,6 +5,7 @@ import kh.edu.istad.platform.iam.application.dto.CreateRoleCommand;
 import kh.edu.istad.platform.iam.application.dto.RoleResult;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 import kh.edu.istad.platform.iam.application.port.out.RoleRepository;
+import kh.edu.istad.platform.iam.application.port.out.TransactionRunner;
 import kh.edu.istad.platform.iam.domain.entity.Role;
 import kh.edu.istad.platform.iam.domain.exception.DuplicateRoleException;
 
@@ -15,22 +16,27 @@ import java.util.Objects;
 public final class CreateRoleUseCase {
     private final AssignmentPermissionsToRoleUseCase permissionsAssignments;
     private final RoleRepository roles;
+    private final TransactionRunner transaction;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;
 
     public CreateRoleUseCase(
             AssignmentPermissionsToRoleUseCase permissionsAssignments,
-            RoleRepository roles,
+            RoleRepository roles, TransactionRunner transaction,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
         this.permissionsAssignments = Objects.requireNonNull(permissionsAssignments);
         this.roles = Objects.requireNonNull(roles);
+        this.transaction = Objects.requireNonNull(transaction);
         this.actorProvider = Objects.requireNonNull(actorProvider);
         this.clock = Objects.requireNonNull(clock);
     }
 
-    public RoleResult execute(CreateRoleCommand command) {
+    public RoleResult execute(CreateRoleCommand command){
+        return transaction.execute(()-> createRole(command));
+    }
+    private RoleResult createRole(CreateRoleCommand command) {
         Objects.requireNonNull(command, "Command is required");
 
         if (roles.existsByName(command.name())) {

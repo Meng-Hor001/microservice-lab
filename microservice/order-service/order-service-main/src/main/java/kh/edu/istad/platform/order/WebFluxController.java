@@ -41,21 +41,21 @@ public class WebFluxController {
                 .delayElements(Duration.ofSeconds(1));
     }
 
-//    @Value("${global.version}")
-//    private String globalVersion;
-//
-//    private final ServicePropConfig servicePropConfig;
-//
-//    @GetMapping("/consul/config")
-//    public Mono<Map<String, Object>> getConsulConfig() {
-//        return Mono.just(
-//                Map.of(
-//                        "globalVersion", globalVersion,
-//                        "message", servicePropConfig.getMessage(),
-//                        "version", servicePropConfig.getVersion(),
-//                        "env", servicePropConfig.getEnv(),
-//                        "baseUrl", servicePropConfig.getBaseUrl())
-//        );
-//    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 }

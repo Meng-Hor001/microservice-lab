@@ -9,7 +9,8 @@ public record RoleResult (
         String name,
         String description,
         boolean system,
-        boolean active
+        boolean active,
+        long version
 ){
 
     public static RoleResult from(Role role){
@@ -18,6 +19,7 @@ public record RoleResult (
                 role.getName(),
                 role.getDescription(),
                 role.isSystem(),
-                role.isActive());
+                role.isActive(),
+                role.getVersion());
     }
 }

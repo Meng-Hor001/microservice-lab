@@ -6,14 +6,14 @@ option java_multiple_files = true;
 option java_package = "kh.edu.istad.grpc.customer.v1";
 option java_outer_classname = "CustomerProto";
 
-// Customer lookup contract shared by the customer service and its gRPC clients.
+
 service CustomerService {
   rpc GetCustomer(GetCustomerRequest) returns (GetCustomerResponse);
   rpc GetCustomerByUsername(GetCustomerByUsernameRequest) returns (GetCustomerResponse);
 }
 
 message GetCustomerRequest {
-  // Customer identifier as the UUID string used by the platform.
+
   string username = 1;
 }
 

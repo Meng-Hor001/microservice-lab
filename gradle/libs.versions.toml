@@ -18,7 +18,6 @@ spring-cloud-starter-consul-discovery = "5.0.4"
 spring-security-crypto = "6.5.3"
 
 [libraries]
-#Spring-boot
 spring-boot-gradle-plugin = {module = "org.springframework.boot:spring-boot-gradle-plugin", version.ref = "spring-boot-gradle-plugin"}
 spring-boot-dependency-management-plugin = {module = "io.spring.gradle:dependency-management-plugin", version.ref = "dependency-management-plugin"}
 spring-boot-starter-data-r2dbc = {module = "org.springframework.boot:spring-boot-starter-data-r2dbc"}
@@ -33,36 +32,30 @@ spring-boot-starter-actuator = {module = "org.springframework.boot:spring-boot-s
 spring-cloud-starter-consul-discovery = {module = "org.springframework.cloud:spring-cloud-starter-consul-discovery", version.ref = "spring-cloud-starter-consul-discovery"}
 spring-security-crypto = {module = "org.springframework.security:spring-security-crypto", version.ref = "spring-security-crypto"}
 
-#Spring docs
 springdoc-openapi-starter-webflux-ui = {module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springdoc"}
 springdoc-openapi-starter-webmvc-ui = {module ="org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc"}
 
-#Spring cloud
 spring-cloud-starter-loadbalancer = {module = "org.springframework.cloud:spring-cloud-starter-loadbalancer", version.ref = "spring-cloud-starter-loadbalancer"}
 spring-cloud-starter-consul-config = {module = "org.springframework.cloud:spring-cloud-starter-consul-config", version.ref = "spring-cloud-starter-consul-config"}
 
 
-#Order Application Service
 order-application-service = {module = "kh.edu.istad:order-application-service"}
 order-domain-core = {module = "kh.edu.istad:order-domain-core"}
 order-service-persistence ={module = "kh.edu.istad:order-service-persistence"}
 order-service-client ={module = "kh.edu.istad:order-service-client"}
 
-#Customer Application Service
 customer-application-service = {module = "kh.edu.istad:customer-application-service"}
 customer-domain-core = {module = "kh.edu.istad:customer-domain-core"}
 customer-service-message = {module = "kh.edu.istad:customer-service-message"}
 customer-service-persistence = {module = "kh.edu.istad:customer-service-persistence"}
 customer-service-restapi = {module = "kh.edu.istad:customer-service-restapi"}
 
-#Iam-Service
 iam-service-persistence = {module = "kh.edu.istad:iam-service-persistence"}
 iam-service-infrstructure = {module = "kh.edu.istad:iam-service-infrastructure"}
 iam-service-restapi = {module = "kh.edu.istad:iam-service-restapi"}
 iam-service-web = {module = "kh.edu.istad:iam-service-web"}
 iam-application-service = {module = "kh.edu.istad:iam-application-service", version = "0.1.0-SNAPSHOT"}
 iam-domain-core = {module = "kh.edu.istad:iam-domain-core"}
-#Common
 
 
 
@@ -70,7 +63,6 @@ istad-common-domain = {module = "kh.edu.istad:istad-common-domain"}
 istad-common-grpc = {module = "kh.edu.istad:istad-common-grpc"}
 istad-common-restapi = {module = "kh.edu.istad:istad-common-restapi"}
 istad-common-webflux = {module = "kh.edu.istad:istad-common-webflux"}
-#Projectreactor
 reactor-core = {module = "io.projectreactor:reactor-core", version.ref = "reactor-core"}
 
 [bundles]

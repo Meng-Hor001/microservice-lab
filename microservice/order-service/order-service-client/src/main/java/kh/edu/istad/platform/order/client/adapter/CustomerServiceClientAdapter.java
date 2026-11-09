@@ -21,16 +21,16 @@ public class CustomerServiceClientAdapter implements CustomerServiceClient {
 
     @Override
     public Flux<QueryCustomerResult> getCustomerNames() {
-//        WebClient webClient = webClientBuilder
-//                .baseUrl("http://customer-service")
-//                .build();
-//
-//        var response = webClient
-//                .get()
-//                .uri("/api/customers")
-//                .retrieve()
-//                .bodyToFlux(GivenName.class);
-//        return response.map(GivenName::givenName);
+
+
+
+
+
+
+
+
+
+
 
         return customerHttpClient.queryCustomer();
     }
