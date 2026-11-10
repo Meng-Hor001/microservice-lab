@@ -23,7 +23,7 @@ public interface RoleMapper {
     void updateEntity(Role role, @MappingTarget RoleJpaEntity entity);
 
     @ObjectFactory
-    default RoleJpaEntity createEntity(){
+    default RoleJpaEntity createEntity() {
         return RoleJpaEntity.create();
     }
 

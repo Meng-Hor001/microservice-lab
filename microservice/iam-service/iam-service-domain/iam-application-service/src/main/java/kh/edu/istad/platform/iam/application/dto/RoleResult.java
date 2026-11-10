@@ -4,16 +4,16 @@ import kh.edu.istad.platform.iam.domain.entity.Role;
 
 import java.util.UUID;
 
-public record RoleResult (
+public record RoleResult(
         UUID uuid,
         String name,
         String description,
         boolean system,
         boolean active,
         long version
-){
+) {
 
-    public static RoleResult from(Role role){
+    public static RoleResult from(Role role) {
         return new RoleResult(
                 role.getUuid(),
                 role.getName(),

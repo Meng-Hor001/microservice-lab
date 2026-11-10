@@ -18,5 +18,6 @@ public interface RoleRepository {
 
 
     Optional<Long> findIdByUuid(UUID uuid);
+
     PageResult<Role> findAll(RoleFilterQuery query);
 }

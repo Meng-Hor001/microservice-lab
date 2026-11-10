@@ -3,7 +3,6 @@ plugins {
 }
 
 
-
 dependencies {
     implementation libs.iam.application.service
     implementation 'org.springframework:spring-tx'
@@ -12,6 +11,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-validation'
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-resource-server'
+    implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'

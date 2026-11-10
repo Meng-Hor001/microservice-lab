@@ -26,7 +26,7 @@ public interface PermissionMapper {
     void updateEntity(Permission permission, @MappingTarget PermissionJpaEntity entity);
 
     @ObjectFactory
-    default PermissionJpaEntity createEntity(){
+    default PermissionJpaEntity createEntity() {
         return PermissionJpaEntity.create();
     }
 }

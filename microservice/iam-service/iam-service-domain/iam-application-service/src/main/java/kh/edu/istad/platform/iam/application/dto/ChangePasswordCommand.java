@@ -7,5 +7,5 @@ public record ChangePasswordCommand(
         String currentPassword,
         String newPassword,
         String confirmPassword
-){
+) {
 }

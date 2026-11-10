@@ -32,6 +32,7 @@ public final class AssignRolesToUserUseCase {
         this.actorProvider = actorProvider;
         this.clock = clock;
     }
+
     public List<RoleAssignmentResult> execute(AssignRolesToUserCommand command) {
         Objects.requireNonNull(command, "Command is required");
 

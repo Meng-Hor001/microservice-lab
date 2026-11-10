@@ -25,7 +25,16 @@ public record AuthUserResult(
         boolean enabled,
         boolean accountNonExpired,
         boolean accountNonLocked,
-        boolean credentialsNonExpired
+        boolean credentialsNonExpired,
+
+        String phoneNumber,
+        boolean phoneNumberVerified,
+        java.time.Instant updatedAt,
+        String addressStreetAddress,
+        String addressLocality,
+        String addressRegion,
+        String addressPostalCode,
+        String addressCountry
 ) {
     public static AuthUserResult from(User user) {
         return new AuthUserResult(
@@ -48,7 +57,15 @@ public record AuthUserResult(
                 user.isEnabled(),
                 user.isAccountNonExpired(),
                 user.isAccountNonLocked(),
-                user.isCredentialsNonExpired()
+                user.isCredentialsNonExpired(),
+                user.getPhoneNumber(),
+                user.isPhoneNumberVerified(),
+                user.getUpdatedAt(),
+                user.getAddressStreetAddress(),
+                user.getAddressLocality(),
+                user.getAddressRegion(),
+                user.getAddressPostalCode(),
+                user.getAddressCountry()
         );
     }
 }

@@ -9,7 +9,7 @@ import java.time.Clock;
 import java.util.Objects;
 import java.util.UUID;
 
-public class DeletePermissionUseCase {
+public final class DeletePermissionUseCase {
     private final PermissionRepository repository;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;

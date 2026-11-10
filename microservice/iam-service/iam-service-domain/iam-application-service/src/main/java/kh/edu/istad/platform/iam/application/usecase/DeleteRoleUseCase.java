@@ -8,7 +8,7 @@ import kh.edu.istad.platform.iam.domain.entity.Role;
 import java.time.Clock;
 import java.util.UUID;
 
-public class DeleteRoleUseCase {
+public final class DeleteRoleUseCase {
     private final RoleRepository roles;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;

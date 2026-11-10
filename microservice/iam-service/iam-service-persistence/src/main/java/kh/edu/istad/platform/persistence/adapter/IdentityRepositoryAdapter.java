@@ -12,6 +12,7 @@ import kh.edu.istad.platform.persistence.repository.UserJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
+
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -51,7 +52,8 @@ public class IdentityRepositoryAdapter implements IdentityRepository {
             entity = identities.findById(identity.getId())
                     .filter(existing -> !existing.isDeleted())
                     .orElseThrow(() -> new ResourceNotFoundException("Identity", identity.getUuid()));
-            if (!entity.getUuid().equals(identity.getUuid())) throw new IllegalArgumentException("Identity UUID does not match stored entity");
+            if (!entity.getUuid().equals(identity.getUuid()))
+                throw new IllegalArgumentException("Identity UUID does not match stored entity");
             if (!entity.getVersion().equals(identity.getVersion())) throw new VersionConflictException("Identity");
             mapper.updateEntity(identity, entity);
         }

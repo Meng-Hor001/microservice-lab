@@ -13,14 +13,15 @@ public interface UserJpaRepository extends JpaRepository<UserJpaEntity, Long>, J
     boolean existsByUsername(String name);
 
     boolean existsByEmail(String email);
+
     Optional<UserJpaEntity> findByUuidAndDeletedFalse(UUID uuid);
 
     @Query("""
-           select u
-           from UserJpaEntity u
-           where u.deleted = false
-             and (u.username = :value or u.email = :value)
-           """)
+            select u
+            from UserJpaEntity u
+            where u.deleted = false
+              and (u.username = :value or u.email = :value)
+            """)
     Optional<UserJpaEntity> findByUsernameOrEmailAndDeletedFalse(
             @Param("value") String value
     );

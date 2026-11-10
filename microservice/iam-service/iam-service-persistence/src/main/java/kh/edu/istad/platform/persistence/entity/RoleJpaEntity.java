@@ -60,7 +60,7 @@ public class RoleJpaEntity {
     private Long version;
 
 
-    public static RoleJpaEntity create(){
+    public static RoleJpaEntity create() {
         return new RoleJpaEntity();
     }
 }

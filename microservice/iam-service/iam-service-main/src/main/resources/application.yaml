@@ -29,6 +29,22 @@ spring:
             scope:
               - public_profile
               - email
+          telegram:
+            provider: telegram
+            client-id: ${TELEGRAM_CLIENT_ID}
+            client-secret: ${TELEGRAM_CLIENT_SECRET}
+            client-authentication-method: client_secret_basic
+            authorization-grant-type: authorization_code
+            redirect-uri: https://ovary-kinswoman-tantrum.ngrok-free.dev/login/oauth2/code/telegram
+            scope:
+              - openid
+              - profile
+        provider:
+          telegram:
+            authorization-uri: https://oauth.telegram.org/auth
+            token-uri: https://oauth.telegram.org/token
+            jwk-set-uri: https://oauth.telegram.org/.well-known/jwks.json
+            user-name-attribute: sub
 
   profiles:
     active: local
@@ -39,9 +55,10 @@ spring:
     hibernate:
       ddl-auto: validate
   datasource:
-    url: jdbc:postgresql://localhost:5432/service_db
-    password: 1234
-    username: postgres
+    url: ${DB_URL}
+    password: ${DB_PASSWORD}
+    username: ${DB_USERNAME}
+    driver-class-name: org.postgresql.Driver
 
   liquibase:
     enabled: true
@@ -49,3 +66,15 @@ spring:
 
 server:
   port: 9999
+
+iam:
+  registration-client:
+    id: ${IAM_REGISTRATION_CLIENT_ID}
+    secret: ${IAM_REGISTRATION_CLIENT_SECRET}
+
+logging:
+  level:
+    org.springframework.security.oauth2.client: DEBUG
+gg:
+  jte:
+    development-mode: true

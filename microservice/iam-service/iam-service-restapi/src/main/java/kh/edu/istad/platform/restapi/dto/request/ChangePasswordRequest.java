@@ -6,4 +6,5 @@ public record ChangePasswordRequest(
         @NotBlank String currentPassword,
         @NotBlank String newPassword,
         @NotBlank String confirmPassword
-) {}
+) {
+}

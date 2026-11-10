@@ -1,7 +1,9 @@
 package kh.edu.istad.platform.restapi.controller;
 
 import jakarta.validation.Valid;
+
 import java.net.URI;
+
 import kh.edu.istad.platform.restapi.dto.request.CreateUserRequest;
 import jakarta.validation.constraints.Size;
 import kh.edu.istad.platform.iam.application.query.UserFilterQuery;
@@ -100,7 +102,7 @@ public class UserController {
     @PreAuthorize("hasAuthority('user:read')")
     public UserResponse getByUuid(
             @PathVariable UUID uuid
-            ){
+    ) {
         var user = getUser.execute(uuid);
         var authorities = getAuthorities.execute(uuid);
 

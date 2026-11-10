@@ -7,4 +7,5 @@ public record UpdatePermissionRequest(
         @NotBlank @Size(max = 50) String action,
         @Size(max = 255) String description,
         @NotNull @PositiveOrZero Long version
-) {}
+) {
+}

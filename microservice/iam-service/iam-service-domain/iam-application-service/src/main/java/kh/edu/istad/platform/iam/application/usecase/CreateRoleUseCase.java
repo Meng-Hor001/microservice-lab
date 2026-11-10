@@ -33,9 +33,10 @@ public final class CreateRoleUseCase {
         this.clock = Objects.requireNonNull(clock);
     }
 
-    public RoleResult execute(CreateRoleCommand command){
-        return transaction.execute(()-> createRole(command));
+    public RoleResult execute(CreateRoleCommand command) {
+        return transaction.execute(() -> createRole(command));
     }
+
     private RoleResult createRole(CreateRoleCommand command) {
         Objects.requireNonNull(command, "Command is required");
 
@@ -54,7 +55,7 @@ public final class CreateRoleUseCase {
 
         Role savedRole = roles.save(role);
 
-        if (!command.permissionUuids().isEmpty()){
+        if (!command.permissionUuids().isEmpty()) {
             permissionsAssignments.execute(
                     new AssignPermissionsToRoleCommand(
                             savedRole.getUuid(),

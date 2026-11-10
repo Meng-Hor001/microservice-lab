@@ -9,7 +9,7 @@ import java.time.Clock;
 import java.util.Objects;
 import java.util.UUID;
 
-public final  class EnableUserUseCase {
+public final class EnableUserUseCase {
     private final UserRepository users;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;

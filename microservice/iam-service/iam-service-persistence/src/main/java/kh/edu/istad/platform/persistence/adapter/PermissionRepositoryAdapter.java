@@ -115,6 +115,7 @@ public class PermissionRepositoryAdapter implements PermissionRepository {
                 .replace("%", "\\%")
                 .replace("_", "\\_");
     }
+
     @Override
     @Transactional
     public Permission save(Permission permission) {

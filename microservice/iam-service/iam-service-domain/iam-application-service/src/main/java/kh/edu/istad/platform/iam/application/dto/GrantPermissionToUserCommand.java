@@ -13,9 +13,9 @@ public record GrantPermissionToUserCommand(
         Instant expiresAt,
         String reason
 ) {
-    public GrantPermissionToUserCommand{
+    public GrantPermissionToUserCommand {
         permissionUuids = permissionUuids == null
-                ?List.of()
+                ? List.of()
                 : List.copyOf(permissionUuids);
     }
 }

@@ -29,6 +29,7 @@ import java.util.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 @Testcontainers
+@org.springframework.test.context.TestPropertySource(locations = "classpath:iam-test.properties")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 class PartThreeApiTest {
     @Container
@@ -53,23 +54,33 @@ class PartThreeApiTest {
         properties.add("spring.jpa.open-in-view", () -> "false");
     }
 
-    @LocalServerPort int port;
-    @Autowired LinkIdentityUseCase linkIdentity;
-    @Autowired UserRepository users;
+    @LocalServerPort
+    int port;
+    @Autowired
+    LinkIdentityUseCase linkIdentity;
+    @Autowired
+    UserRepository users;
     final HttpClient client = HttpClient.newHttpClient();
 
     @AfterAll
-    static void closeJwks() { JWKS.stop(0); }
+    static void closeJwks() {
+        JWKS.stop(0);
+    }
 
     static KeyPair keyPair() {
         try {
             var generator = KeyPairGenerator.getInstance("RSA");
             generator.initialize(2048);
             return generator.generateKeyPair();
-        } catch (GeneralSecurityException exception) { throw new IllegalStateException(exception); }
+        } catch (GeneralSecurityException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 
-    static String base64(byte[] bytes) { return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes); }
+    static String base64(byte[] bytes) {
+        return Base64.getUrlEncoder().withoutPadding().encodeToString(bytes);
+    }
+
     static String unsigned(BigInteger number) {
         byte[] bytes = number.toByteArray();
         return base64(bytes[0] == 0 ? Arrays.copyOfRange(bytes, 1, bytes.length) : bytes);
@@ -85,11 +96,15 @@ class PartThreeApiTest {
             server.createContext("/jwks", exchange -> {
                 exchange.getResponseHeaders().set("Content-Type", "application/json");
                 exchange.sendResponseHeaders(200, body.length);
-                try (var output = exchange.getResponseBody()) { output.write(body); }
+                try (var output = exchange.getResponseBody()) {
+                    output.write(body);
+                }
             });
             server.start();
             return server;
-        } catch (Exception exception) { throw new IllegalStateException(exception); }
+        } catch (Exception exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 
     String token(String subject, List<String> permissions) {
@@ -113,7 +128,9 @@ class PartThreeApiTest {
             signer.initSign(keys.getPrivate());
             signer.update(unsigned.getBytes(StandardCharsets.US_ASCII));
             return unsigned + "." + base64(signer.sign());
-        } catch (GeneralSecurityException exception) { throw new IllegalStateException(exception); }
+        } catch (GeneralSecurityException exception) {
+            throw new IllegalStateException(exception);
+        }
     }
 
     HttpResponse<String> request(String method, String path, Object body, String token) throws Exception {
@@ -127,7 +144,10 @@ class PartThreeApiTest {
     JsonNode ok(String method, String path, Object body, int status, String token) throws Exception {
         var response = request(method, path, body, token);
         assertEquals(status, response.statusCode(), method + " " + path + ": " + response.body());
-        if (status == 204) { assertEquals("", response.body()); return null; }
+        if (status == 204) {
+            assertEquals("", response.body());
+            return null;
+        }
         return JSON.readTree(response.body());
     }
 
@@ -140,8 +160,13 @@ class PartThreeApiTest {
         assertFalse(tree.has("trace"));
     }
 
-    String admin() { return token(SUBJECT, ALL); }
-    String unique() { return UUID.randomUUID().toString().replace("-", "").substring(0, 12); }
+    String admin() {
+        return token(SUBJECT, ALL);
+    }
+
+    String unique() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 12);
+    }
 
     Map<String, Object> userRequest() {
         String username = "api_" + unique();
@@ -149,18 +174,58 @@ class PartThreeApiTest {
                 "givenName", "Dara", "familyName", "Sok", "locale", "km");
     }
 
-    JsonNode createUser() throws Exception { return ok("POST", "/api/users", userRequest(), 201, admin()); }
+    JsonNode createUser() throws Exception {
+        return ok("POST", "/api/users", userRequest(), 201, admin());
+    }
+
     JsonNode createRole() throws Exception {
         return ok("POST", "/api/roles", Map.of("name", "EDITOR_" + unique(), "description", "Editor"), 201, admin());
     }
+
     JsonNode createPermission() throws Exception {
         return ok("POST", "/api/permissions", Map.of("resource", "course" + unique(), "action", "read", "description", "Read"), 201, admin());
     }
-    String uuid(JsonNode result) { return result.path("uuid").asString(); }
+
+    String uuid(JsonNode result) {
+        return result.path("uuid").asString();
+    }
 
     String identity(String userUuid, IdentityProvider provider) {
         return linkIdentity.execute(UUID.fromString(userUuid), new FederatedIdentityCommand(
                 provider, unique(), "linked@example.com", true, "Dara Sok", "dara", null, Map.of())).uuid().toString();
+    }
+
+    @Test
+    void formLoginPersistsFailuresAndSuccessWithoutExposingUnknownUsers() throws Exception {
+        var body = userRequest();
+        var created = ok("POST", "/api/users", body, 201, admin());
+        var userUuid = UUID.fromString(uuid(created));
+        var browser = HttpClient.newBuilder()
+                .cookieHandler(new CookieManager(null, CookiePolicy.ACCEPT_ALL)).build();
+        String base = "http://localhost:" + port;
+        for (String username : List.of(body.get("username").toString(), "missing_" + unique(),
+                body.get("email").toString())) {
+            var login = browser.send(HttpRequest.newBuilder(URI.create(base + "/login")).GET().build(),
+                    HttpResponse.BodyHandlers.ofString());
+            assertEquals(200, login.statusCode());
+            var csrf = java.util.regex.Pattern.compile("name=\"_csrf\" value=\"([^\"]+)\"")
+                    .matcher(login.body());
+            assertTrue(csrf.find(), "Login form must contain a CSRF token");
+            boolean success = username.equals(body.get("email"));
+            String form = "username=" + URLEncoder.encode(username, StandardCharsets.UTF_8)
+                    + "&password=" + URLEncoder.encode(success ? body.get("password").toString() : "wrong-password", StandardCharsets.UTF_8)
+                    + "&_csrf=" + URLEncoder.encode(csrf.group(1), StandardCharsets.UTF_8);
+            var result = browser.send(HttpRequest.newBuilder(URI.create(base + "/login"))
+                    .header("Content-Type", "application/x-www-form-urlencoded")
+                    .POST(HttpRequest.BodyPublishers.ofString(form)).build(), HttpResponse.BodyHandlers.ofString());
+            assertEquals(302, result.statusCode());
+            assertTrue(result.headers().firstValue("Location").orElseThrow()
+                    .endsWith(success ? "/" : "/login?error"));
+            var stored = users.findByUuid(userUuid).orElseThrow();
+            assertEquals(success ? 0 : 1, stored.getFailedLoginAttempts());
+            if (success) assertNotNull(stored.getLastLoginAt());
+            else assertNull(stored.getLastLoginAt());
+        }
     }
 
     @Test
@@ -212,7 +277,8 @@ class PartThreeApiTest {
         assertEquals(1, page.path("content").size());
         assertEquals(1, page.path("page").path("size").asInt());
         assertEquals("Updated Sok", ok("PATCH", path, Map.of("givenName", "Updated"), 200, admin()).path("name").asString());
-        for (String action : List.of("disable", "enable", "lock", "unlock")) ok("POST", path + "/" + action, null, 204, admin());
+        for (String action : List.of("disable", "enable", "lock", "unlock"))
+            ok("POST", path + "/" + action, null, 204, admin());
         ok("PUT", path + "/password", Map.of("newPassword", "Reset!Pass2026"), 204, admin());
         var authorities = ok("GET", path + "/authorities", null, 200, admin());
         assertEquals(uuid(role), uuid(authorities.path("roles").get(0)));

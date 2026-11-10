@@ -53,6 +53,7 @@ public class ClientRegistrationManagementService {
 
         return client;
     }
+
     public RegisteredClient updateRegistration(
             String clientId,
             String authorizationHeader,

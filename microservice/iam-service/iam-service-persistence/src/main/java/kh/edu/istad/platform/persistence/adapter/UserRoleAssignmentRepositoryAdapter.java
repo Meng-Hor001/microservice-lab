@@ -58,7 +58,7 @@ public class UserRoleAssignmentRepositoryAdapter implements UserRoleAssignmentRe
                 .map(UserJpaEntity::getId)
                 .orElse(null);
 
-        if (userId == null){
+        if (userId == null) {
             return Optional.empty();
         }
         Long roleId = roles.findByUuidAndDeletedFalse(roleUuid)
@@ -79,11 +79,11 @@ public class UserRoleAssignmentRepositoryAdapter implements UserRoleAssignmentRe
     public UserRole save(UserRole assignment) {
         UserRoleJpaEntity entity = assignments
                 .findById(assignment.getId())
-                .orElseThrow(()-> new IllegalArgumentException(
+                .orElseThrow(() -> new IllegalArgumentException(
                         "User role assignment not found :" + assignment.getId()
                 ));
 
-        if (!entity.getVersion().equals(assignment.getVersion())){
+        if (!entity.getVersion().equals(assignment.getVersion())) {
             throw new IllegalStateException(
                     "User role assignment was changed by another operation"
             );

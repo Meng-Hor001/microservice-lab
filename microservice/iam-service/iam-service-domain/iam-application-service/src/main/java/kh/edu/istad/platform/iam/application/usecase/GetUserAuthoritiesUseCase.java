@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
-public final  class GetUserAuthoritiesUseCase {
+public final class GetUserAuthoritiesUseCase {
     private final UserRepository users;
     private final RoleRepository roles;
     private final PermissionRepository permissions;

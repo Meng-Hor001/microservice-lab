@@ -1,8 +1,8 @@
 package kh.edu.istad.platform.iam.domain.entity;
 
 import static kh.edu.istad.platform.iam.domain.support.DomainRules.*;
-import java.util.Objects;
 
+import java.util.Objects;
 
 
 import kh.edu.istad.platform.iam.domain.valueobject.UserProfile;

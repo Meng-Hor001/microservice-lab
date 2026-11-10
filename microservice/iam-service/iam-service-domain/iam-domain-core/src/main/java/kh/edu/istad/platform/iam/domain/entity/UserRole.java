@@ -3,7 +3,6 @@ package kh.edu.istad.platform.iam.domain.entity;
 import static kh.edu.istad.platform.iam.domain.support.DomainRules.*;
 
 
-
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

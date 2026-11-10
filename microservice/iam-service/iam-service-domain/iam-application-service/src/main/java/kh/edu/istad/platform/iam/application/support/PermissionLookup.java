@@ -8,7 +8,8 @@ import java.util.Objects;
 import java.util.UUID;
 
 public final class PermissionLookup {
-    private PermissionLookup(){}
+    private PermissionLookup() {
+    }
 
     public static Permission require(
             PermissionRepository repository,

@@ -20,7 +20,6 @@ import java.util.Base64;
 import java.util.Map;
 import java.util.UUID;
 
-@RestController
 @RequestMapping("/connect")
 @RequiredArgsConstructor
 public class ClientRegisterController {
@@ -91,6 +90,7 @@ public class ClientRegisterController {
                 .created(URI.create("/connect/register/" + clientId))
                 .body(response);
     }
+
     @GetMapping("/register/{clientId}")
     public ResponseEntity<Map<String, Object>> getRegistration(
             @PathVariable String clientId,

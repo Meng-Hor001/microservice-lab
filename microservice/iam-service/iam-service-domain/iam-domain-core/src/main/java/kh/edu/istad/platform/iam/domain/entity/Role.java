@@ -8,8 +8,10 @@ import lombok.Getter;
 
 
 import static kh.edu.istad.platform.iam.domain.support.DomainRules.*;
+
 import java.time.Instant;
 import java.util.UUID;
+
 @Getter
 @Builder
 @AllArgsConstructor(access = AccessLevel.PRIVATE)

@@ -2,7 +2,7 @@ package kh.edu.istad.platform.iam.application.query;
 
 import java.util.Set;
 
-public record PermissionFilterQuery (
+public record PermissionFilterQuery(
         String search,
         String resource,
         Boolean active,
@@ -10,7 +10,7 @@ public record PermissionFilterQuery (
         int size,
         String sort,
         boolean descending
-){
+) {
     public PermissionFilterQuery {
         if (page < 0) {
             throw new IllegalArgumentException("Page cannot be negative");

@@ -9,7 +9,7 @@ public record CreateRoleCommand(
         Set<UUID> permissionUuids
 ) {
 
-    public CreateRoleCommand{
+    public CreateRoleCommand {
         permissionUuids = permissionUuids == null
                 ? Set.of()
                 : Set.copyOf(permissionUuids);

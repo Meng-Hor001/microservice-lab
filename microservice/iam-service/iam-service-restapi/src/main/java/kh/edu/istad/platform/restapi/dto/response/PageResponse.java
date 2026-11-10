@@ -1,6 +1,7 @@
 package kh.edu.istad.platform.restapi.dto.response;
 
 import kh.edu.istad.platform.iam.application.dto.PageResult;
+
 import java.util.List;
 import java.util.function.Function;
 
@@ -18,5 +19,6 @@ public record PageResponse<T>(List<T> content, PageMetadata page) {
         );
     }
 
-    public record PageMetadata(int number, int size, long totalElements, int totalPages) {}
+    public record PageMetadata(int number, int size, long totalElements, int totalPages) {
+    }
 }

@@ -13,7 +13,7 @@ import java.time.Clock;
 @Configuration(proxyBeanMethods = false)
 public class PermissionUseCaseConfig {
     @Bean
-    public Clock clock(){
+    public Clock clock() {
         return Clock.systemUTC();
     }
 
@@ -22,9 +22,9 @@ public class PermissionUseCaseConfig {
             PermissionRepository repository,
             CurrentActorProvider actorProvider,
             Clock clock
-    ){
+    ) {
         return new CreatePermissionUseCase(
-                repository,actorProvider,clock
+                repository, actorProvider, clock
         );
     }
 
@@ -98,21 +98,21 @@ public class PermissionUseCaseConfig {
             TransactionRunner transaction,
             CurrentActorProvider actorProvider,
             Clock clock
-    ){
-        return new CreateRoleUseCase(permissionsAssignments,roleRepository, transaction, actorProvider, clock);
+    ) {
+        return new CreateRoleUseCase(permissionsAssignments, roleRepository, transaction, actorProvider, clock);
     }
 
     @Bean
-    public ListRolesUseCase listRolesUseCase(RoleRepository roleRepository){
+    public ListRolesUseCase listRolesUseCase(RoleRepository roleRepository) {
         return new ListRolesUseCase(roleRepository);
     }
 
     @Bean
-     public UpdateRoleUseCase updateRoleUseCase(
-             RoleRepository roleRepository,
-             CurrentActorProvider actorProvider,
-             Clock clock
-    ){
+    public UpdateRoleUseCase updateRoleUseCase(
+            RoleRepository roleRepository,
+            CurrentActorProvider actorProvider,
+            Clock clock
+    ) {
         return new UpdateRoleUseCase(roleRepository, actorProvider, clock);
     }
 
@@ -123,8 +123,7 @@ public class PermissionUseCaseConfig {
             RolePermissionAssignmentRepository assignments,
             CurrentActorProvider actorProvider,
             Clock clock
-    )
-    {
+    ) {
         return new RevokePermissionFromRoleUseCase(
                 roles,
                 permissions,
@@ -153,18 +152,18 @@ public class PermissionUseCaseConfig {
             PasswordHasher passwordHasher,
             CurrentActorProvider actorProvider,
             Clock clock
-    ){
+    ) {
         return new RegisterUserUseCase(
                 users,
                 passwordHasher,
                 actorProvider,
                 clock
-        ) ;
+        );
     }
 
     @Bean
-    public ListUserUseCase listUserUseCase(UserRepository users){
-        return new ListUserUseCase( users);
+    public ListUserUseCase listUserUseCase(UserRepository users) {
+        return new ListUserUseCase(users);
     }
 
     @Bean
@@ -174,12 +173,12 @@ public class PermissionUseCaseConfig {
             UserPermissionAssignmentRepository assignments,
             CurrentActorProvider actorProvider,
             Clock clock
-    ){
+    ) {
         return new GrantPermissionToUserUseCase(users, permissions, assignments, actorProvider, clock);
     }
 
     @Bean
-    public AuthorityCalculator authorityCalculator(){
+    public AuthorityCalculator authorityCalculator() {
         return new AuthorityCalculator();
     }
 
@@ -243,7 +242,7 @@ public class PermissionUseCaseConfig {
             Clock clock
     ) {
         return new FindOrProvisionFederatedUserUseCase(
-                users, identities,transaction , actorProvider, clock
+                users, identities, transaction, actorProvider, clock
         );
     }
 
@@ -266,5 +265,14 @@ public class PermissionUseCaseConfig {
             IdentityRepository identities
     ) {
         return new ListUserIdentitiesUseCase(identities, users);
+    }
+
+    @Bean
+    public RecordIdentityLoginUseCase recordIdentityLoginUseCase(
+            IdentityRepository identities,
+            CurrentActorProvider actor,
+            Clock clock
+    ) {
+        return new RecordIdentityLoginUseCase(identities, actor, clock);
     }
 }

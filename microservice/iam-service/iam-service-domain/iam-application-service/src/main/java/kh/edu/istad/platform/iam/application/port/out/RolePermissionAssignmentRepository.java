@@ -6,7 +6,7 @@ import kh.edu.istad.platform.iam.domain.entity.RolePermission;
 import java.util.List;
 import java.util.UUID;
 
-public interface RolePermissionAssignmentRepository{
+public interface RolePermissionAssignmentRepository {
     List<RolePermission> saveAll(List<RolePermission> assignments);
 
     RolePermission save(RolePermission assignment);

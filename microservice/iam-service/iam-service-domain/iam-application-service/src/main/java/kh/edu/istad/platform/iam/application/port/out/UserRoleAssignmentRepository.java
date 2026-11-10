@@ -12,6 +12,7 @@ public interface UserRoleAssignmentRepository {
     List<UserRole> findActiveByUserUuid(UUID userUuid);
 
     Optional<UserRole> findActiveByUserUuidAndRoleUuid(UUID userUuid, UUID roleUuid);
+
     UserRole save(UserRole assignment);
 
 }

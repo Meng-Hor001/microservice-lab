@@ -12,6 +12,7 @@ import java.util.function.Supplier;
 @RequiredArgsConstructor
 public class SpringTransactionRunner implements TransactionRunner {
     private final TransactionTemplate template;
+
     @Override
     public <T> T execute(Supplier<T> operations) {
 

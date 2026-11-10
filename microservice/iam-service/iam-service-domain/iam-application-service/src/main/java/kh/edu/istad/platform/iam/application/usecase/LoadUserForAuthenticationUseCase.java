@@ -3,6 +3,7 @@ package kh.edu.istad.platform.iam.application.usecase;
 import kh.edu.istad.platform.iam.application.dto.AuthUserResult;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
 import kh.edu.istad.platform.iam.application.port.out.UserRepository;
+
 import java.util.Objects;
 
 public final class LoadUserForAuthenticationUseCase {

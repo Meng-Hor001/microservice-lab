@@ -18,6 +18,7 @@ public final class RevokedRoleFromUserUseCase {
         this.actorProvider = actorProvider;
         this.clock = clock;
     }
+
     public void execute(UUID userUuid, UUID roleUuid, String reason) {
         var assignment = assignments
                 .findActiveByUserUuidAndRoleUuid(userUuid, roleUuid)

@@ -11,7 +11,6 @@ dependencies {
     implementation libs.iam.service.restapi
 
 
-
     implementation libs.spring.boot.starter.liquibase
     implementation libs.spring.boot.starter.data.jpa
     runtimeOnly 'org.postgresql:postgresql'
@@ -22,6 +21,7 @@ dependencies {
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'tools.jackson.core:jackson-databind'
+    testImplementation 'org.springframework.boot:spring-boot-starter-security-oauth2-authorization-server'
 }
 
 test {

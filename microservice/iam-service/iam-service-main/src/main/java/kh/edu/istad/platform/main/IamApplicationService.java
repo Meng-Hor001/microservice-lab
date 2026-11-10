@@ -1,4 +1,5 @@
 package kh.edu.istad.platform.main;
+
 import kh.edu.istad.platform.persistence.entity.PermissionJpaEntity;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import kh.edu.istad.platform.persistence.repository.PermissionJpaRepository;

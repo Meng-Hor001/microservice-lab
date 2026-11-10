@@ -15,6 +15,6 @@ public record FederatedIdentityCommand(
         Map<String, Object> attributes
 ) {
     public FederatedIdentityCommand {
-        attributes = attributes == null ? Map.of() : Map.copyOf(attributes);
+        attributes = kh.edu.istad.platform.iam.domain.support.JsonAttributes.copy(attributes);
     }
 }

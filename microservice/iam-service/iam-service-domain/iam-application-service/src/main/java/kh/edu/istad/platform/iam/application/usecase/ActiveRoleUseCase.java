@@ -11,7 +11,7 @@ import java.util.UUID;
 public final class ActiveRoleUseCase {
     private final RoleRepository roles;
     private final CurrentActorProvider actorProvider;
-     private final Clock clock;
+    private final Clock clock;
 
     public ActiveRoleUseCase(RoleRepository roles, CurrentActorProvider actorProvider, Clock clock) {
         this.roles = roles;

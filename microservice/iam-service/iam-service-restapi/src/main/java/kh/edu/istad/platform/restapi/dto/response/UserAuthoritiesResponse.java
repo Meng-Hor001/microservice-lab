@@ -1,6 +1,7 @@
 package kh.edu.istad.platform.restapi.dto.response;
 
 import kh.edu.istad.platform.iam.application.dto.UserAuthoritiesResult;
+
 import java.time.Instant;
 import java.util.List;
 import java.util.UUID;
@@ -28,6 +29,9 @@ public record UserAuthoritiesResponse(
         );
     }
 
-    public record RoleAuthorityResponse(UUID uuid, String name, Instant expiresAt) {}
-    public record DirectPermissionResponse(String name, String effect) {}
+    public record RoleAuthorityResponse(UUID uuid, String name, Instant expiresAt) {
+    }
+
+    public record DirectPermissionResponse(String name, String effect) {
+    }
 }

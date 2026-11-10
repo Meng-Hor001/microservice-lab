@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 
 @Testcontainers
+@org.springframework.test.context.TestPropertySource(locations = "classpath:iam-test.properties")
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.NONE)
 class PartTwoIntegrationTest {
     @Container
@@ -41,25 +42,63 @@ class PartTwoIntegrationTest {
         properties.add("spring.liquibase.enabled", () -> "true");
     }
 
-    @Autowired UserRepository users;
-    @Autowired RoleRepository roles;
-    @Autowired PermissionRepository permissions;
-    @Autowired UserRoleAssignmentRepository userRoles;
-    @Autowired RolePermissionAssignmentRepository rolePermissions;
-    @Autowired UserPermissionAssignmentRepository userPermissions;
-    @Autowired IdentityRepository identities;
-    @Autowired CreateRoleUseCase createRole;
-    @Autowired CreateUserUseCase createUser;
-    @Autowired PasswordHasher passwordHasher;
-    @Autowired FindOrProvisionFederatedUserUseCase federation;
-    @Autowired LinkIdentityUseCase linkIdentity;
-    @Autowired UnlinkIdentityUseCase unlinkIdentity;
-    @Autowired JdbcTemplate jdbc;
-    @Autowired Clock clock;
+    @Autowired
+    UserRepository users;
+    @Autowired
+    RoleRepository roles;
+    @Autowired
+    PermissionRepository permissions;
+    @Autowired
+    UserRoleAssignmentRepository userRoles;
+    @Autowired
+    RolePermissionAssignmentRepository rolePermissions;
+    @Autowired
+    UserPermissionAssignmentRepository userPermissions;
+    @Autowired
+    IdentityRepository identities;
+    @Autowired
+    CreateRoleUseCase createRole;
+    @Autowired
+    CreateUserUseCase createUser;
+    @Autowired
+    PasswordHasher passwordHasher;
+    @Autowired
+    FindOrProvisionFederatedUserUseCase federation;
+    @Autowired
+    LinkIdentityUseCase linkIdentity;
+    @Autowired
+    UnlinkIdentityUseCase unlinkIdentity;
+    @Autowired
+    RecordIdentityLoginUseCase recordIdentityLogin;
+    @Autowired
+    JdbcTemplate jdbc;
+    @Autowired
+    Clock clock;
 
     private final CurrentActorProvider actor = () -> "integration-test";
 
-    private String unique() { return UUID.randomUUID().toString().replace("-", "").substring(0, 16); }
+    private String unique() {
+        return UUID.randomUUID().toString().replace("-", "").substring(0, 16);
+    }
+
+    @Test
+    void socialLoginAuditUpdatesOnlyTheMatchingIdentity() {
+        var owner = user();
+        for (var provider : List.of(IdentityProvider.GOOGLE, IdentityProvider.GITHUB)) {
+            linkIdentity.execute(owner.getUuid(), new FederatedIdentityCommand(
+                    provider, unique(), "audit@example.com", true,
+                    "Dara Sok", "dara", null, Map.of()));
+        }
+        recordIdentityLogin.execute(owner.getUuid(), IdentityProvider.GOOGLE);
+        for (var identity : identities.findByUserUuid(owner.getUuid())) {
+            if (identity.getProvider() == IdentityProvider.GOOGLE) {
+                assertNotNull(identity.getLastLoginAt());
+                assertEquals(identity.getLastLoginAt(), identity.getUpdatedAt());
+            } else {
+                assertNull(identity.getLastLoginAt());
+            }
+        }
+    }
 
     private User user() {
         String name = "user_" + unique();
@@ -150,16 +189,17 @@ class PartTwoIntegrationTest {
 
     @Test
     void freshDatabaseRunsEveryMigrationAndSeedsAccess() {
-        assertEquals(7, jdbc.queryForObject("select count(*) from databasechangelog", Integer.class));
+        assertEquals(9, jdbc.queryForObject("select count(*) from databasechangelog", Integer.class));
         assertEquals(2, jdbc.queryForObject("select count(*) from roles where name in ('ADMIN','USER') and is_system", Integer.class));
-        assertEquals(14, jdbc.queryForObject("select count(*) from permissions where is_system", Integer.class));
-        assertEquals(17, jdbc.queryForObject("select count(*) from role_permissions rp join roles r on r.id=rp.role_id where r.name in ('ADMIN','USER')", Integer.class));
+        assertEquals(15, jdbc.queryForObject("select count(*) from permissions where is_system", Integer.class));
+        assertEquals(18, jdbc.queryForObject("select count(*) from role_permissions rp join roles r on r.id=rp.role_id where r.name in ('ADMIN','USER')", Integer.class));
         assertEquals(7, jdbc.queryForObject("select count(*) from information_schema.tables where table_schema='public' and table_name in ('users','roles','permissions','identities','user_roles','role_permissions','user_permissions')", Integer.class));
     }
 
     @Test
     void revokeRolePersistsAuditAndAllowsReassignment() {
-        var user = user(); var role = role();
+        var user = user();
+        var role = role();
         var command = new AssignRolesToUserCommand(user.getUuid(), Set.of(role.getUuid()), null, "Initial access");
         assignRoles().execute(command);
         assertThrows(DuplicateAssignmentException.class, () -> assignRoles().execute(command));
@@ -177,7 +217,8 @@ class PartTwoIntegrationTest {
 
     @Test
     void duplicateRolePermissionIsRejected() {
-        var role = role(); var permission = permission();
+        var role = role();
+        var permission = permission();
         var command = new AssignPermissionsToRoleCommand(role.getUuid(), Set.of(permission.getUuid()), null, "Access");
         assignRolePermissions().execute(command);
         assertThrows(DuplicateAssignmentException.class, () -> assignRolePermissions().execute(command));
@@ -185,7 +226,8 @@ class PartTwoIntegrationTest {
 
     @Test
     void directPermissionMustBeRevokedBeforeChangingEffect() {
-        var user = user(); var permission = permission();
+        var user = user();
+        var permission = permission();
         var grants = grantPermissions().execute(new GrantPermissionToUserCommand(user.getUuid(), List.of(permission.getUuid()), PermissionEffect.GRANT, null, "Grant"));
         assertEquals(user.getUuid(), grants.getFirst().userUuid());
         assertEquals(permission.getUuid(), grants.getFirst().permissionUuid());
@@ -199,7 +241,8 @@ class PartTwoIntegrationTest {
 
     @Test
     void duplicatePermissionInsideRequestWritesNothing() {
-        var user = user(); var permission = permission();
+        var user = user();
+        var permission = permission();
         assertThrows(DuplicateAssignmentException.class, () -> grantPermissions().execute(
                 new GrantPermissionToUserCommand(user.getUuid(), List.of(permission.getUuid(), permission.getUuid()), PermissionEffect.GRANT, null, "Duplicate")));
         assertTrue(userPermissions.findActiveByUserUuid(user.getUuid()).isEmpty());
@@ -207,7 +250,8 @@ class PartTwoIntegrationTest {
 
     @Test
     void databaseRejectsDuplicatesEvenWhenUseCaseIsBypassed() {
-        var user = user(); var role = role();
+        var user = user();
+        var role = role();
         userRoles.saveAll(List.of(UserRole.assign(user, role, actor.currentActor(), clock.instant(), null, "First")));
         assertThrows(DataIntegrityViolationException.class, () -> userRoles.saveAll(
                 List.of(UserRole.assign(user, role, actor.currentActor(), clock.instant(), null, "Duplicate"))));
@@ -216,7 +260,9 @@ class PartTwoIntegrationTest {
 
     @Test
     void denyOverridesRoleGrantAndExpiryRestoresPermission() {
-        var user = user(); var role = role(); var permission = permission();
+        var user = user();
+        var role = role();
+        var permission = permission();
         assignRoles().execute(new AssignRolesToUserCommand(user.getUuid(), Set.of(role.getUuid()), null, "Role"));
         assignRolePermissions().execute(new AssignPermissionsToRoleCommand(role.getUuid(), Set.of(permission.getUuid()), null, "Permission"));
         assertTrue(authorities(clock).execute(user.getUuid()).effectivePermissions().contains(permission.getName()));
@@ -228,7 +274,8 @@ class PartTwoIntegrationTest {
 
     @Test
     void expiredRoleStopsContributingAndMustBeRevokedBeforeReplacement() {
-        var user = user(); var role = role();
+        var user = user();
+        var role = role();
         Instant expiry = clock.instant().plusSeconds(60).truncatedTo(java.time.temporal.ChronoUnit.MICROS);
         var command = new AssignRolesToUserCommand(user.getUuid(), Set.of(role.getUuid()), expiry, "Temporary role");
         assignRoles().execute(command);
@@ -259,7 +306,8 @@ class PartTwoIntegrationTest {
 
     @Test
     void stalePermissionAssignmentCannotOverwriteNewerRevocation() {
-        var user = user(); var permission = permission();
+        var user = user();
+        var permission = permission();
         grantPermissions().execute(new GrantPermissionToUserCommand(user.getUuid(), List.of(permission.getUuid()), PermissionEffect.GRANT, null, "Grant"));
         var stale = userPermissions.findActiveByUserUuid(user.getUuid()).getFirst();
         var current = userPermissions.findActiveByUserUuid(user.getUuid()).getFirst();

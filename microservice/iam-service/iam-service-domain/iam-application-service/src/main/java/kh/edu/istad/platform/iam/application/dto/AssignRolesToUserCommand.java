@@ -10,7 +10,7 @@ public record AssignRolesToUserCommand(
         Instant expiresAt,
         String reason
 ) {
-    public AssignRolesToUserCommand{
+    public AssignRolesToUserCommand {
         roleUuids = roleUuids == null ? Set.of() : Set.copyOf(roleUuids);
     }
 }

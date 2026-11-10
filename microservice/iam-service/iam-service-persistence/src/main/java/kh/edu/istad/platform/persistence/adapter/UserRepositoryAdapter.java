@@ -28,6 +28,7 @@ import java.util.UUID;
 public class UserRepositoryAdapter implements UserRepository {
     private final UserJpaRepository repository;
     private final UserMapper mapper;
+
     @Override
     public boolean existsByUsername(String username) {
         return repository.existsByUsername(username);

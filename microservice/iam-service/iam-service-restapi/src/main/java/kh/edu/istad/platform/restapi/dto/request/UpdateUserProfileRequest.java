@@ -2,6 +2,7 @@ package kh.edu.istad.platform.restapi.dto.request;
 
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
+
 import java.time.LocalDate;
 
 
@@ -20,4 +21,5 @@ public record UpdateUserProfileRequest(
         @Pattern(regexp = "en|km") String locale,
         @Pattern(regexp = "^\\+[1-9]\\d{1,14}$", message = "must use E.164 format") String phoneNumber,
         @Valid AddressRequest address
-) {}
+) {
+}

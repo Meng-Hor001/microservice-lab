@@ -6,4 +6,5 @@ public record UpdateRoleRequest(
         @NotBlank @Size(max = 50) String name,
         @Size(max = 255) String description,
         @NotNull @PositiveOrZero Long version
-) {}
+) {
+}

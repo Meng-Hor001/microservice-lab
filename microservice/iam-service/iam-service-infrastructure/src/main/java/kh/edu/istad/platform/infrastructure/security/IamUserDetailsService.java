@@ -31,7 +31,7 @@ public class IamUserDetailsService implements UserDetailsService {
                     .accountExpired(!result.accountNonExpired())
                     .accountLocked(!result.accountNonLocked())
                     .credentialsExpired(!result.credentialsNonExpired())
-                    .authorities()
+                    .authorities(java.util.List.of())
                     .build();
         } catch (ResourceNotFoundException exception) {
             throw new UsernameNotFoundException(
