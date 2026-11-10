@@ -1,0 +1,15 @@
+plugins {
+    id 'spring-boot-common-conventions'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'org.springframework.kafka:spring-kafka'
+}
+
+test {
+    useJUnitPlatform()
+}

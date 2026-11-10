@@ -62,6 +62,13 @@
                   <project path="$PROJECT_DIR$/microservice/iam-service/iam-service-web" />
                 </projects>
               </build>
+              <build path="$PROJECT_DIR$/microservice/kafka-service" name="kafka-service">
+                <projects>
+                  <project path="$PROJECT_DIR$/microservice/kafka-service" />
+                  <project path="$PROJECT_DIR$/microservice/kafka-service/kafka-service-infrastructure" />
+                  <project path="$PROJECT_DIR$/microservice/kafka-service/kafka-service-main" />
+                </projects>
+              </build>
               <build path="$PROJECT_DIR$/microservice/order-service" name="order-service">
                 <projects>
                   <project path="$PROJECT_DIR$/microservice/order-service" />
@@ -111,6 +118,9 @@
             <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-persistence" />
             <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-restapi" />
             <option value="$PROJECT_DIR$/microservice/iam-service/iam-service-web" />
+            <option value="$PROJECT_DIR$/microservice/kafka-service" />
+            <option value="$PROJECT_DIR$/microservice/kafka-service/kafka-service-infrastructure" />
+            <option value="$PROJECT_DIR$/microservice/kafka-service/kafka-service-main" />
             <option value="$PROJECT_DIR$/microservice/order-service" />
             <option value="$PROJECT_DIR$/microservice/order-service/order-service-client" />
             <option value="$PROJECT_DIR$/microservice/order-service/order-service-domain" />

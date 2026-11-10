@@ -18,6 +18,7 @@ dependencies {
 
     implementation 'org.springframework.boot:spring-boot-starter-security-oauth2-client'
     testImplementation platform('org.testcontainers:testcontainers-bom:1.21.3')
+    implementation libs.springdoc.openapi.starter.webmvc.scalar
     testImplementation 'org.testcontainers:junit-jupiter'
     testImplementation 'org.testcontainers:postgresql'
     testImplementation 'tools.jackson.core:jackson-databind'

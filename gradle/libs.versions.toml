@@ -31,9 +31,11 @@ liquibase-core = {module = "org.liquibase:liquibase-core", version.ref = "liquib
 spring-boot-starter-actuator = {module = "org.springframework.boot:spring-boot-starter-actuator", version.ref = "spring-boot-starter-actuator"}
 spring-cloud-starter-consul-discovery = {module = "org.springframework.cloud:spring-cloud-starter-consul-discovery", version.ref = "spring-cloud-starter-consul-discovery"}
 spring-security-crypto = {module = "org.springframework.security:spring-security-crypto", version.ref = "spring-security-crypto"}
-
+reactor-core = {module = "io.projectreactor:reactor-core", version.ref = "reactor-core"}
 springdoc-openapi-starter-webflux-ui = {module = "org.springdoc:springdoc-openapi-starter-webflux-ui", version.ref = "springdoc"}
 springdoc-openapi-starter-webmvc-ui = {module ="org.springdoc:springdoc-openapi-starter-webmvc-ui", version.ref = "springdoc"}
+springdoc-openapi-starter-webflux-scalar = {module = "org.springdoc:springdoc-openapi-starter-webflux-scalar", version.ref = "springdoc"}
+springdoc-openapi-starter-webmvc-scalar = {module = "org.springdoc:springdoc-openapi-starter-webmvc-scalar", version.ref = "springdoc"}
 
 spring-cloud-starter-loadbalancer = {module = "org.springframework.cloud:spring-cloud-starter-loadbalancer", version.ref = "spring-cloud-starter-loadbalancer"}
 spring-cloud-starter-consul-config = {module = "org.springframework.cloud:spring-cloud-starter-consul-config", version.ref = "spring-cloud-starter-consul-config"}
@@ -57,13 +59,12 @@ iam-service-web = {module = "kh.edu.istad:iam-service-web"}
 iam-application-service = {module = "kh.edu.istad:iam-application-service", version = "0.1.0-SNAPSHOT"}
 iam-domain-core = {module = "kh.edu.istad:iam-domain-core"}
 
-
+kafka-service-infrastructure = {module = "kh.edu.istad:kafka-service-infrastructure"}
 
 istad-common-domain = {module = "kh.edu.istad:istad-common-domain"}
 istad-common-grpc = {module = "kh.edu.istad:istad-common-grpc"}
 istad-common-restapi = {module = "kh.edu.istad:istad-common-restapi"}
 istad-common-webflux = {module = "kh.edu.istad:istad-common-webflux"}
-reactor-core = {module = "io.projectreactor:reactor-core", version.ref = "reactor-core"}
 
 [bundles]
 gradle-dependency-management = [
