@@ -36,7 +36,8 @@ public class IamWebController {
     }
 
     AuthUserResult actor(Authentication a) {
-        if (a.getPrincipal() instanceof UserDetails u) return load.execute(u.getUsername());
+        if (a.getPrincipal() instanceof UserDetails u)
+            return load.execute(u.getUsername());
         throw new org.springframework.security.access.AccessDeniedException("Unsupported principal");
     }
 
@@ -79,7 +80,27 @@ public class IamWebController {
     String edit(Authentication a, @RequestParam Map<String, String> v, Model m, @ModelAttribute("page") Page page) {
         var u = actor(a);
         try {
-            update.execute(new UpdateUserProfileCommand(u.uuid(), v.get("email"), v.get("givenName"), v.get("familyName"), v.get("middleName"), v.get("nickname"), v.get("gender"), v.getOrDefault("birthdate", "").isBlank() ? null : java.time.LocalDate.parse(v.get("birthdate")), v.get("profileUrl"), v.get("pictureUrl"), v.get("websiteUrl"), v.get("zoneinfo"), v.get("locale"), v.get("phoneNumber"), v.get("addressStreetAddress"), v.get("addressLocality"), v.get("addressRegion"), v.get("addressPostalCode"), v.get("addressCountry")));
+            update.execute(new UpdateUserProfileCommand(
+                    u.uuid(),
+                    v.get("email"),
+                    v.get("givenName"),
+                    v.get("familyName"),
+                    v.get("middleName"),
+                    v.get("nickname"),
+                    v.get("gender"),
+                    v.getOrDefault("birthdate", "")
+                            .isBlank() ? null : java.time.LocalDate.parse(v.get("birthdate")),
+                    v.get("profileUrl"),
+                    v.get("pictureUrl"),
+                    v.get("websiteUrl"),
+                    v.get("zoneinfo"),
+                    v.get("locale"),
+                    v.get("phoneNumber"),
+                    v.get("addressStreetAddress"),
+                    v.get("addressLocality"),
+                    v.get("addressRegion"),
+                    v.get("addressPostalCode"),
+                    v.get("addressCountry")));
             return "redirect:/";
         } catch (IllegalArgumentException | kh.edu.istad.platform.iam.domain.exception.DomainRuleException |
                  kh.edu.istad.platform.iam.application.exception.DuplicateUserException e) {
