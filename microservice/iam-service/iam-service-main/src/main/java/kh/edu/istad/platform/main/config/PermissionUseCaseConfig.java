@@ -150,12 +150,14 @@ public class PermissionUseCaseConfig {
     public RegisterUserUseCase registerUserUseCase(
             UserRepository users,
             PasswordHasher passwordHasher,
+            kh.edu.istad.platform.iam.application.support.PasswordPolicy passwordPolicy,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
         return new RegisterUserUseCase(
                 users,
                 passwordHasher,
+                passwordPolicy,
                 actorProvider,
                 clock
         );
@@ -216,9 +218,12 @@ public class PermissionUseCaseConfig {
     public RecordLoginAttemptUseCase recordLoginAttemptUseCase(
             UserRepository users,
             CurrentActorProvider actorProvider,
+            kh.edu.istad.platform.iam.application.port.out.SystemSettingsRepository settings,
+            kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository accounts,
+            kh.edu.istad.platform.iam.application.port.out.AuditLogRepository auditLogs,
             Clock clock
     ) {
-        return new RecordLoginAttemptUseCase(users, actorProvider, clock);
+        return new RecordLoginAttemptUseCase(users, actorProvider, settings, accounts, auditLogs, clock);
     }
 
     @Bean

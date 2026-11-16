@@ -15,4 +15,9 @@ public class SystemSettingsUseCaseConfig {
             SystemSettingsRepository settings, CurrentActorProvider actors, Clock clock) {
         return new ManageSystemSettingsUseCase(settings, actors, clock);
     }
+
+    @Bean
+    public kh.edu.istad.platform.iam.application.support.PasswordPolicy passwordPolicy(SystemSettingsRepository settings) {
+        return new kh.edu.istad.platform.iam.application.support.PasswordPolicy(settings);
+    }
 }

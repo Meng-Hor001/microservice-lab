@@ -9,7 +9,8 @@ import { cn } from "@/lib/utils"
 
 /**
  * The floating black icon rail: left edge on desktop, bottom of the screen on mobile.
- * `sections` is a list of item lists; a hairline divider separates sections.
+ * A slim black pill: round icon buttons, sections set apart by space instead of divider lines.
+ * `sections` is a list of item lists.
  * Each item: { path, label, icon, active, danger }.
  */
 export function Rail({ label, sections }) {
@@ -21,10 +22,10 @@ export function Rail({ label, sections }) {
       aria-label={label}
       className="fixed inset-x-0 bottom-4 z-20 mx-auto w-fit md:inset-x-auto md:top-1/2 md:bottom-auto md:left-6 md:mx-0 md:-translate-y-1/2"
     >
-      <ul className="flex items-center gap-2 rounded-full bg-sidebar p-2.5 shadow-[0_8px_24px_rgba(0,0,0,0.12)] dark:ring-1 dark:ring-sidebar-border md:flex-col">
+      <ul className="flex items-center gap-1 rounded-full bg-sidebar p-1.5 shadow-[0_8px_24px_rgba(0,0,0,0.14)] ring-1 ring-sidebar-border md:flex-col">
         {visible.map((items, i) => (
           <Fragment key={i}>
-            {i > 0 && <li aria-hidden className="mx-1.5 h-6 w-px bg-sidebar-border md:mx-0 md:my-1.5 md:h-px md:w-6" />}
+            {i > 0 && <li aria-hidden className="w-3 md:h-3 md:w-auto" />}
             {items.map((n) => (
               <li key={n.path}>
                 <Tooltip>
@@ -34,14 +35,14 @@ export function Rail({ label, sections }) {
                       aria-label={n.label}
                       aria-current={n.active ? "page" : undefined}
                       className={cn(
-                        "flex size-11 items-center justify-center rounded-full text-sidebar-foreground outline-none transition-[color,background-color,transform] duration-150 ease-[cubic-bezier(0.22,1,0.36,1)] focus-visible:ring-2 focus-visible:ring-sidebar-ring active:scale-[0.97] [&_svg]:size-5 [&_svg]:stroke-[1.75]",
+                        "flex size-10 items-center justify-center rounded-full text-sidebar-foreground outline-none transition-[color,background-color,transform] duration-150 ease-(--ease-out-soft) focus-visible:ring-2 focus-visible:ring-sidebar-ring active:scale-[0.96] [&_svg]:size-[18px] [&_svg]:stroke-[1.75]",
                         n.danger
                           ? "hover:bg-rail-danger/15 hover:text-rail-danger"
-                          : "hover:bg-sidebar-accent hover:text-sidebar-primary",
+                          : "hover:bg-white/10 hover:text-white",
                         n.active &&
                           (n.danger
                             ? "bg-rail-danger/20 text-rail-danger hover:bg-rail-danger/20"
-                            : "bg-primary text-primary-foreground shadow-[inset_0_1px_0_rgba(255,255,255,0.18),0_4px_12px_rgba(18,97,90,0.45)] hover:bg-primary hover:text-primary-foreground")
+                            : "bg-white text-sidebar hover:bg-white hover:text-sidebar")
                       )}
                     >
                       <n.icon />

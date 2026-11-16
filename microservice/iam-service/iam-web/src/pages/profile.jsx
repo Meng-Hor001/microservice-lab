@@ -5,6 +5,7 @@ import { CardSkeleton, ErrorState, PageIntro } from "@/components/page-states"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
+import { Separator } from "@/components/ui/separator"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
@@ -127,42 +128,38 @@ function ProfileForm({ saved, onSaved }) {
 
       <Card>
         <CardHeader>
-          <CardTitle>{t("profile.photoTitle")}</CardTitle>
-        </CardHeader>
-        <CardContent className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
-          <Avatar className="size-20 text-xl">
-            {values.avatarUrl && <AvatarImage src={values.avatarUrl} alt={t("profile.photoAlt")} className="object-cover" />}
-            <AvatarFallback className="bg-accent text-accent-foreground">{initials(values.name)}</AvatarFallback>
-          </Avatar>
-          <div className="flex flex-col gap-2">
-            <div className="flex flex-wrap gap-2">
-              <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={pickAvatar} tabIndex={-1} aria-hidden="true" />
-              <Button type="button" variant="outline" onClick={() => fileRef.current?.click()}>
-                <ImageUpIcon data-icon="inline-start" />
-                {t("profile.upload")}
-              </Button>
-              {values.avatarUrl && (
-                <Button type="button" variant="ghost" onClick={() => setValues((v) => ({ ...v, avatarUrl: null }))}>
-                  <Trash2Icon data-icon="inline-start" />
-                  {t("profile.removePhoto")}
-                </Button>
-              )}
-            </div>
-            {errors.avatar ? (
-              <p role="alert" className="text-sm text-destructive">{t(`validation.${errors.avatar}`)}</p>
-            ) : (
-              values.avatarUrl !== saved.avatarUrl && <p className="text-sm text-muted-foreground">{t("profile.photoPending")}</p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
           <CardTitle>{t("profile.detailsTitle")}</CardTitle>
           <CardDescription>{t("profile.detailsHint")}</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-col gap-5">
+          <div className="flex flex-col items-start gap-4 sm:flex-row sm:items-center">
+            <Avatar className="size-20 text-xl">
+              {values.avatarUrl && <AvatarImage src={values.avatarUrl} alt={t("profile.photoAlt")} className="object-cover" />}
+              <AvatarFallback className="bg-accent text-accent-foreground">{initials(values.name)}</AvatarFallback>
+            </Avatar>
+            <div className="flex flex-col gap-2">
+              <span className="font-medium">{t("profile.photoTitle")}</span>
+              <div className="flex flex-wrap gap-2">
+                <input ref={fileRef} type="file" accept="image/png,image/jpeg,image/webp" className="sr-only" onChange={pickAvatar} tabIndex={-1} aria-hidden="true" />
+                <Button type="button" variant="outline" onClick={() => fileRef.current?.click()}>
+                  <ImageUpIcon data-icon="inline-start" />
+                  {t("profile.upload")}
+                </Button>
+                {values.avatarUrl && (
+                  <Button type="button" variant="ghost" onClick={() => setValues((v) => ({ ...v, avatarUrl: null }))}>
+                    <Trash2Icon data-icon="inline-start" />
+                    {t("profile.removePhoto")}
+                  </Button>
+                )}
+              </div>
+              {errors.avatar ? (
+                <p role="alert" className="text-sm text-destructive">{t(`validation.${errors.avatar}`)}</p>
+              ) : (
+                values.avatarUrl !== saved.avatarUrl && <p className="text-sm text-muted-foreground">{t("profile.photoPending")}</p>
+              )}
+            </div>
+          </div>
+          <Separator />
           {saveError && (
             <Alert variant="destructive">
               <AlertTitle>{t("profile.saveFailedTitle")}</AlertTitle>

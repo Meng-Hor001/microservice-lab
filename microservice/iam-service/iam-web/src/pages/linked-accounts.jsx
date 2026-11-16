@@ -5,7 +5,7 @@ import { ConfirmDialog } from "@/components/confirm-dialog"
 import { CardSkeleton, EmptyState, ErrorState, PageIntro } from "@/components/page-states"
 import { ProviderLogo } from "@/components/provider-logo"
 import { PROVIDERS } from "@/lib/providers"
-import { Badge } from "@/components/ui/badge"
+import { StatusDot } from "@/components/management/states"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
@@ -59,9 +59,9 @@ export default function LinkedAccountsPage() {
                         <div className="flex flex-wrap items-center gap-2">
                           <span className="font-medium">{PROVIDERS[p.id]?.name ?? p.id}</span>
                           {p.linked ? (
-                            <Badge variant="secondary" className="bg-success-soft text-success">{t("linked.connected")}</Badge>
+                            <StatusDot on label={t("linked.connected")} />
                           ) : (
-                            <Badge variant="outline" className="text-muted-foreground">{t("linked.notConnected")}</Badge>
+                            <StatusDot label={t("linked.notConnected")} />
                           )}
                         </div>
                         <span className="truncate text-sm text-muted-foreground">

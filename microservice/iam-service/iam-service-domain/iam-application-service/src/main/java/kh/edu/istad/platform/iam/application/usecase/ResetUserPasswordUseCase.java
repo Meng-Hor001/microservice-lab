@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.iam.application.usecase;
 
+import kh.edu.istad.platform.iam.application.support.PasswordPolicy;
 import kh.edu.istad.platform.iam.application.dto.ResetUserPasswordCommand;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
@@ -13,17 +14,20 @@ import java.util.Objects;
 public final class ResetUserPasswordUseCase {
     private final UserRepository users;
     private final PasswordHasher passwordHasher;
+    private final PasswordPolicy passwordPolicy;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;
 
     public ResetUserPasswordUseCase(
             UserRepository users,
             PasswordHasher passwordHasher,
+            PasswordPolicy passwordPolicy,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
         this.users = Objects.requireNonNull(users);
         this.passwordHasher = Objects.requireNonNull(passwordHasher);
+        this.passwordPolicy = Objects.requireNonNull(passwordPolicy);
         this.actorProvider = Objects.requireNonNull(actorProvider);
         this.clock = Objects.requireNonNull(clock);
     }
@@ -36,7 +40,7 @@ public final class ResetUserPasswordUseCase {
                         new ResourceNotFoundException("User", command.userUuid()));
 
         user.changePasswordHash(
-                passwordHasher.hash(command.newPassword()),
+                passwordHasher.hash(passwordPolicy.checked(command.newPassword())),
                 actorProvider.currentActor(),
                 clock.instant()
         );

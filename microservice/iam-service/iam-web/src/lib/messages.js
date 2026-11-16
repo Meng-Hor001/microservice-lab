@@ -103,8 +103,9 @@ export const messages = {
       rulesTitle: "Your password needs",
       ruleMet: "done",
       rules: {
-        length: "At least 8 characters",
-        case: "Upper and lowercase letters",
+        length: "At least {n} characters",
+        upper: "An uppercase letter",
+        lower: "A lowercase letter",
         number: "At least one number",
         symbol: "At least one symbol",
       },
@@ -237,7 +238,7 @@ export const messages = {
       result: "Result",
       device: "Device",
       location: "Location",
-      methods: { password: "Password", google: "Google", github: "GitHub" },
+      methods: { password: "Password", google: "Google", github: "GitHub", facebook: "Facebook", telegram: "Telegram" },
       reasons: {
         wrong_password: "Wrong password",
         mfa_failed: "Verification code rejected",
@@ -421,8 +422,9 @@ export const messages = {
       rulesTitle: "ពាក្យសម្ងាត់ត្រូវមាន",
       ruleMet: "រួចរាល់",
       rules: {
-        length: "យ៉ាងតិច ៨ តួអក្សរ",
-        case: "អក្សរធំ និងអក្សរតូច",
+        length: "យ៉ាងតិច {n} តួអក្សរ",
+        upper: "អក្សរធំយ៉ាងហោចណាស់មួយ",
+        lower: "អក្សរតូចយ៉ាងហោចណាស់មួយ",
         number: "យ៉ាងតិចលេខមួយ",
         symbol: "យ៉ាងតិចនិមិត្តសញ្ញាមួយ",
       },
@@ -555,7 +557,7 @@ export const messages = {
       result: "លទ្ធផល",
       device: "ឧបករណ៍",
       location: "ទីតាំង",
-      methods: { password: "ពាក្យសម្ងាត់", google: "Google", github: "GitHub" },
+      methods: { password: "ពាក្យសម្ងាត់", google: "Google", github: "GitHub", facebook: "Facebook", telegram: "Telegram" },
       reasons: {
         wrong_password: "ពាក្យសម្ងាត់ខុស",
         mfa_failed: "លេខកូដផ្ទៀងផ្ទាត់មិនត្រឹមត្រូវ",

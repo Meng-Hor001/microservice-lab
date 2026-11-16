@@ -33,6 +33,9 @@ import UserDetailPage from "@/pages/management/user-detail"
 import RolesPage from "@/pages/management/roles"
 import RoleDetailPage from "@/pages/management/role-detail"
 import PermissionsPage from "@/pages/management/permissions"
+import ClientsPage from "@/pages/management/clients"
+import AuditLogsPage from "@/pages/management/audit-logs"
+import SettingsPage from "@/pages/management/settings"
 
 function RequireAdmin({ children }) {
   const { isAdmin } = useAccess()
@@ -58,12 +61,12 @@ function Shell({ onSignOut }) {
     <div className="flex min-h-svh flex-col bg-background">
       <SiteHeader onSignOut={onSignOut} />
       <NavRail />
-      <main className="flex flex-1 flex-col px-4 pt-4 pb-28 md:pr-6 md:pb-12 md:pl-32">
+      <main className="flex flex-1 flex-col px-4 pt-4 pb-28 md:pr-6 md:pb-12 md:pl-28">
         <div
           key={pathname}
           className={cn("mx-auto flex w-full flex-col gap-6", !current?.wide && "motion-rise", current?.wide ? "max-w-7xl" : "max-w-5xl")}
         >
-          {!current?.wide && <h1 className="text-3xl font-medium tracking-tight">{title}</h1>}
+          {!current?.wide && <h1 className="text-3xl leading-tight font-medium tracking-tight">{title}</h1>}
           <Routes>
             <Route path="/" element={<Navigate to={homePath()} replace />} />
             <Route path="/overview" element={<OverviewPage />} />
@@ -102,11 +105,11 @@ function SignedOut({ error }) {
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-4 px-4 text-center">
-      <span className="flex size-12 items-center justify-center rounded-xl bg-primary text-primary-foreground">
+      <span className="flex size-12 items-center justify-center rounded-md bg-primary text-primary-foreground">
         <ShieldCheckIcon />
       </span>
       <div className="flex flex-col gap-1">
-        <h1 className="text-xl font-semibold">{t("signedOut.title")}</h1>
+        <h1 className="text-xl font-medium">{t("signedOut.title")}</h1>
         <p className="text-sm text-muted-foreground">{t("signedOut.body")}</p>
       </div>
       {error && (
@@ -194,6 +197,9 @@ export default function App() {
                     path="permissions"
                     element={<RequirePermission permission="permission:read"><PermissionsPage /></RequirePermission>}
                   />
+                  <Route path="clients" element={<RequirePermission permission="client:read"><ClientsPage /></RequirePermission>} />
+                  <Route path="audit-logs" element={<RequirePermission permission="audit:read"><AuditLogsPage /></RequirePermission>} />
+                  <Route path="settings" element={<RequirePermission permission="settings:read"><SettingsPage /></RequirePermission>} />
                   <Route path="*" element={<Navigate to="/management" replace />} />
                 </Route>
               )}

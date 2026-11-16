@@ -3,18 +3,19 @@ import { CheckIcon, CircleIcon, KeyRoundIcon, LogInIcon } from "lucide-react"
 import { PasswordInput } from "@/components/password-input"
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
+import { LanguageSwitcher } from "@/components/language-switcher"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Spinner } from "@/components/ui/spinner"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
 import { confirmPasswordReset } from "@/lib/api"
 import { login } from "@/lib/auth"
 import { useI18n } from "@/lib/i18n-context"
-import { PASSWORD_RULES } from "@/lib/password"
+import { usePasswordRules } from "@/lib/password"
 import { cn } from "@/lib/utils"
 
 export default function ResetPasswordPage() {
-  const { t, locale, setLocale } = useI18n()
+  const passwordRules = usePasswordRules()
+  const { t } = useI18n()
   const token = new URLSearchParams(window.location.search).get("token") ?? ""
   const [values, setValues] = useState({ next: "", confirm: "" })
   const [errors, setErrors] = useState({})
@@ -31,7 +32,7 @@ export default function ResetPasswordPage() {
     ev.preventDefault()
     const found = {}
     if (!values.next) found.next = "required"
-    else if (!PASSWORD_RULES.every((r) => r.test(values.next))) found.next = "passwordWeak"
+    else if (!passwordRules.every((r) => r.test(values.next))) found.next = "passwordWeak"
     if (!values.confirm) found.confirm = "required"
     else if (values.confirm !== values.next) found.confirm = "passwordMismatch"
     setErrors(found)
@@ -54,13 +55,10 @@ export default function ResetPasswordPage() {
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 px-4 py-10">
-      <ToggleGroup type="single" variant="outline" size="sm" spacing={0} value={locale} onValueChange={(v) => v && setLocale(v)} aria-label={t("header.language")}>
-        <ToggleGroupItem value="en" aria-label="English">EN</ToggleGroupItem>
-        <ToggleGroupItem value="km" aria-label="ភាសាខ្មែរ">ខ្មែរ</ToggleGroupItem>
-      </ToggleGroup>
+      <LanguageSwitcher align="center" />
       <Card className="w-full max-w-md">
         <CardHeader>
-          <span className="mb-1 flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+          <span className="mb-1 flex size-10 items-center justify-center rounded-md bg-accent text-accent-foreground">
             <KeyRoundIcon className="size-5" />
           </span>
           <CardTitle>{t("reset.title")}</CardTitle>
@@ -118,13 +116,13 @@ export default function ResetPasswordPage() {
                   {err("confirm")}
                 </Field>
               </FieldGroup>
-              <ul className="flex flex-col gap-2 rounded-lg border bg-muted/50 p-4">
-                {PASSWORD_RULES.map((r) => {
+              <ul className="flex flex-col gap-2 rounded-md border bg-muted/50 p-4">
+                {passwordRules.map((r) => {
                   const ok = r.test(values.next)
                   return (
                     <li key={r.key} className={cn("flex items-start gap-2 text-sm", ok ? "text-success" : "text-muted-foreground")}>
                       {ok ? <CheckIcon className="mt-0.5 size-4 shrink-0" /> : <CircleIcon className="mt-1 size-3 shrink-0 opacity-60" />}
-                      {t(`security.rules.${r.key}`)}
+                      {t(`security.rules.${r.key}`, { n: r.n })}
                     </li>
                   )
                 })}

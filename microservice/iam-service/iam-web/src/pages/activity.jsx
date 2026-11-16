@@ -99,7 +99,7 @@ export default function ActivityPage() {
                       {!isLast && <span aria-hidden="true" className="absolute top-9 bottom-0 left-[17px] w-px bg-border" />}
                       <span
                         className={cn(
-                          "relative flex size-9 shrink-0 items-center justify-center rounded-full border bg-card",
+                          "relative flex size-9 shrink-0 items-center justify-center rounded-md border bg-card",
                           meta.sensitive ? "border-warning/30 bg-warning-soft text-warning" : "text-muted-foreground"
                         )}
                       >

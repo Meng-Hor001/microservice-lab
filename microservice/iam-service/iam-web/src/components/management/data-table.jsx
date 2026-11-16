@@ -78,4 +78,4 @@ export function RowChevron() {
 }
 
 /** Link styling for the main cell of a clickable row: no underline, focus lights the row instead. */
-export const rowLink = "rounded-sm outline-none focus-visible:underline focus-visible:underline-offset-4"
+export const rowLink = "rounded-md outline-none focus-visible:underline focus-visible:underline-offset-4"

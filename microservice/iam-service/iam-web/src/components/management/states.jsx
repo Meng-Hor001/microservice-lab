@@ -11,12 +11,12 @@ import { cn } from "@/lib/utils"
 
 export function PageHeader({ title, intro, children }) {
   return (
-    <div className="flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
-      <div className="flex min-w-0 flex-col gap-1">
-        <h1 className="text-3xl font-medium tracking-tight">{title}</h1>
-        {intro && <p className="max-w-[62ch] text-muted-foreground">{intro}</p>}
+    <div className="flex flex-col gap-6">
+      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <h1 className="min-w-0 text-3xl leading-tight font-medium tracking-tight">{title}</h1>
+        {children && <div className="flex shrink-0 flex-wrap gap-2">{children}</div>}
       </div>
-      {children && <div className="flex shrink-0 flex-wrap gap-2">{children}</div>}
+      {intro && <p className="max-w-[62ch] text-muted-foreground">{intro}</p>}
     </div>
   )
 }
@@ -38,13 +38,16 @@ export function BackLink({ to, children }) {
  * The signature detail of Management: permission and role names set as small key tags.
  * `user:read` renders the resource muted and the action in full ink, so the eye lands on the verb.
  */
-export function KeyTag({ name, className, tone = "default" }) {
+export function KeyTag({ name, className, tone = "default", bare = false }) {
   const i = name?.indexOf(":") ?? -1
   return (
     <code
       className={cn(
-        "inline-flex max-w-full items-center truncate rounded-md border px-1.5 py-px font-mono text-sm leading-6",
-        tone === "deny" ? "border-destructive/30 bg-destructive/5 text-destructive line-through decoration-destructive/40" : "bg-muted/60 text-foreground",
+        "inline-flex max-w-full items-center truncate font-mono text-sm leading-6",
+        !bare && "rounded-md border px-1.5 py-px",
+        tone === "deny"
+          ? cn("text-destructive", !bare && "border-destructive/30 bg-destructive/5 line-through decoration-destructive/40")
+          : cn("text-foreground", !bare && "bg-muted/60"),
         className
       )}
     >
@@ -61,10 +64,16 @@ export function KeyTag({ name, className, tone = "default" }) {
 }
 
 /** Status as a dot and a word, not a colored pill. */
-export function StatusDot({ on, label, className }) {
+export function StatusDot({ on, label, tone, className }) {
+  const danger = tone === "danger"
   return (
-    <span className={cn("inline-flex items-center gap-2 whitespace-nowrap", on ? "text-foreground" : "text-muted-foreground", className)}>
-      <span aria-hidden className={cn("size-2 shrink-0 rounded-full", on ? "bg-success" : "bg-muted-foreground/35")} />
+    <span
+      className={cn("inline-flex items-center gap-2 whitespace-nowrap", on || danger ? "text-foreground" : "text-muted-foreground", className)}
+    >
+      <span
+        aria-hidden
+        className={cn("size-2 shrink-0 rounded-full", danger ? "bg-destructive" : on ? "bg-success" : "bg-muted-foreground/35")}
+      />
       {label}
     </span>
   )
@@ -86,7 +95,7 @@ export function TableSkeleton({ rows = 6 }) {
     <div aria-busy="true" className="flex flex-col">
       {Array.from({ length: rows }, (_, i) => (
         <div key={i} className="flex h-15 items-center gap-4 border-b border-border/70 px-5 last:border-b-0">
-          <Skeleton className="size-8 rounded-lg" />
+          <Skeleton className="size-8 rounded-md" />
           <Skeleton className="h-4 w-48" />
           <Skeleton className="ml-auto h-4 w-20" />
         </div>

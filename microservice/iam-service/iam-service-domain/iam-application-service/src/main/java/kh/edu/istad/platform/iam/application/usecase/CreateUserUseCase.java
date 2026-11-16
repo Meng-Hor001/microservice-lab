@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.iam.application.usecase;
 
+import kh.edu.istad.platform.iam.application.support.PasswordPolicy;
 import kh.edu.istad.platform.iam.application.dto.CreateUserCommand;
 import kh.edu.istad.platform.iam.application.dto.AssignRolesToUserCommand;
 import kh.edu.istad.platform.iam.application.dto.UserResult;
@@ -16,6 +17,7 @@ import java.util.Objects;
 public final class CreateUserUseCase {
     private final UserRepository users;
     private final PasswordHasher passwordHasher;
+    private final PasswordPolicy passwordPolicy;
     private final AssignRolesToUserUseCase assignRolesToUserUseCase;
     private final TransactionRunner transactionRunner;
     private final CurrentActorProvider actorProvider;
@@ -24,6 +26,7 @@ public final class CreateUserUseCase {
     public CreateUserUseCase(
             UserRepository users,
             PasswordHasher passwordHasher,
+            PasswordPolicy passwordPolicy,
             AssignRolesToUserUseCase assignRolesToUserUseCase,
             TransactionRunner transactionRunner,
             CurrentActorProvider actorProvider,
@@ -31,6 +34,7 @@ public final class CreateUserUseCase {
     ) {
         this.users = Objects.requireNonNull(users);
         this.passwordHasher = Objects.requireNonNull(passwordHasher);
+        this.passwordPolicy = Objects.requireNonNull(passwordPolicy);
         this.assignRolesToUserUseCase = Objects.requireNonNull(assignRolesToUserUseCase);
         this.transactionRunner = Objects.requireNonNull(transactionRunner);
         this.actorProvider = Objects.requireNonNull(actorProvider);
@@ -60,7 +64,7 @@ public final class CreateUserUseCase {
         User user = User.builder()
                 .username(username)
                 .email(email)
-                .passwordHash(passwordHasher.hash(command.password()))
+                .passwordHash(passwordHasher.hash(passwordPolicy.checked(command.password())))
                 .givenName(command.profile().givenName())
                 .familyName(command.profile().familyName())
                 .middleName(command.profile().middleName())

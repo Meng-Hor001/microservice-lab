@@ -250,6 +250,22 @@ public class User {
     public void unlock(String actor, Instant now) {
         touch(actor, now);
         accountNonLocked = true;
+        // A fresh start: old failures must not lock the account again on the next typo.
+        failedLoginAttempts = 0;
+    }
+
+    /**
+     * Locks the account once it has reached {@code maxFailedAttempts} consecutive failed sign-ins.
+     *
+     * @return true when this call locked the account
+     */
+    public boolean lockAfterFailedAttempts(int maxFailedAttempts, String actor, Instant now) {
+        check(maxFailedAttempts > 0, "Max failed attempts must be positive");
+        if (!accountNonLocked || failedLoginAttempts < maxFailedAttempts) {
+            return false;
+        }
+        lock(actor, now);
+        return true;
     }
 
     public void expireAccount(String actor, Instant now) {

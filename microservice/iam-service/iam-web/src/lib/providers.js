@@ -2,6 +2,7 @@ export const PROVIDERS = {
   google: { name: "Google" },
   github: { name: "GitHub" },
   facebook: { name: "Facebook" },
+  telegram: { name: "Telegram" },
   microsoft: { name: "Microsoft" },
   apple: { name: "Apple" },
 }

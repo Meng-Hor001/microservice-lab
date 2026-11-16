@@ -14,12 +14,13 @@ public class RestApiUseCaseConfig {
     public CreateUserUseCase createUserUseCase(
             UserRepository users,
             PasswordHasher hasher,
+            kh.edu.istad.platform.iam.application.support.PasswordPolicy passwordPolicy,
             AssignRolesToUserUseCase assignRolesToUserUseCase,
             TransactionRunner transactionRunner,
             CurrentActorProvider actor,
             Clock clock
     ) {
-        return new CreateUserUseCase(users, hasher, assignRolesToUserUseCase, transactionRunner, actor, clock);
+        return new CreateUserUseCase(users, hasher, passwordPolicy, assignRolesToUserUseCase, transactionRunner, actor, clock);
     }
 
     @Bean
@@ -76,20 +77,22 @@ public class RestApiUseCaseConfig {
     public ChangePasswordUseCase changePasswordUseCase(
             UserRepository users,
             PasswordHasher hasher,
+            kh.edu.istad.platform.iam.application.support.PasswordPolicy passwordPolicy,
             CurrentActorProvider actor,
             Clock clock
     ) {
-        return new ChangePasswordUseCase(users, hasher, actor, clock);
+        return new ChangePasswordUseCase(users, hasher, passwordPolicy, actor, clock);
     }
 
     @Bean
     public ResetUserPasswordUseCase resetUserPasswordUseCase(
             UserRepository users,
             PasswordHasher hasher,
+            kh.edu.istad.platform.iam.application.support.PasswordPolicy passwordPolicy,
             CurrentActorProvider actor,
             Clock clock
     ) {
-        return new ResetUserPasswordUseCase(users, hasher, actor, clock);
+        return new ResetUserPasswordUseCase(users, hasher, passwordPolicy, actor, clock);
     }
 
     @Bean

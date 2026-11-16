@@ -188,6 +188,27 @@ class DomainTest {
     }
 
     @Test
+    void repeatedFailedSignInsLockTheAccountAndUnlockStartsFresh() {
+        User user = user("encoded-password");
+        for (int i = 1; i <= 2; i++) {
+            user.recordLoginAttempt(false, "authentication", NOW.plusSeconds(i));
+            assertFalse(user.lockAfterFailedAttempts(3, "system", NOW.plusSeconds(i)));
+        }
+        user.recordLoginAttempt(false, "authentication", NOW.plusSeconds(3));
+        assertTrue(user.lockAfterFailedAttempts(3, "system", NOW.plusSeconds(3)));
+        assertFalse(user.canSignIn());
+        // Already locked: no second lock event.
+        assertFalse(user.lockAfterFailedAttempts(3, "system", NOW.plusSeconds(4)));
+
+        user.unlock("admin", NOW.plusSeconds(5));
+        assertTrue(user.canSignIn());
+        assertEquals(0, user.getFailedLoginAttempts());
+        // One new typo after an unlock must not lock again.
+        user.recordLoginAttempt(false, "authentication", NOW.plusSeconds(6));
+        assertFalse(user.lockAfterFailedAttempts(3, "system", NOW.plusSeconds(6)));
+    }
+
+    @Test
     void passwordChangeRenewsExpiredCredentials() {
         User user = user("old-hash");
         user.expireCredentials("admin", NOW);

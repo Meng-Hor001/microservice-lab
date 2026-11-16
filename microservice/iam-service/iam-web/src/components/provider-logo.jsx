@@ -21,6 +21,15 @@ const paths = {
       <path fill="#fff" d="M16.67 15.47 17.2 12h-3.33V9.75c0-.95.47-1.88 1.95-1.88h1.51V4.92s-1.37-.23-2.68-.23c-2.74 0-4.53 1.66-4.53 4.66V12H7.08v3.47h3.04V24a12.1 12.1 0 0 0 3.75 0v-8.53h2.8Z" />
     </>
   ),
+  telegram: (
+    <>
+      <circle cx="12" cy="12" r="12" fill="#2AABEE" />
+      <path
+        fill="#fff"
+        d="M5.43 11.87 16.4 7.64c.51-.18.95.12.79.89l-1.87 8.8c-.14.62-.51.78-1.03.48l-2.85-2.1-1.37 1.32c-.15.15-.28.28-.57.28l.2-2.9 5.27-4.76c.23-.2-.05-.32-.36-.12L8.1 13.64l-2.8-.88c-.61-.19-.62-.61.13-.9Z"
+      />
+    </>
+  ),
   microsoft: (
     <>
       <path fill="#F25022" d="M1 1h10.5v10.5H1z" />
@@ -39,7 +48,7 @@ const paths = {
 
 export function ProviderLogo({ id, className }) {
   return (
-    <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-lg border bg-card", className)}>
+    <span className={cn("flex size-10 shrink-0 items-center justify-center rounded-md border bg-card", className)}>
       <svg viewBox="0 0 24 24" className="size-5" aria-hidden="true">
         {paths[id]}
       </svg>

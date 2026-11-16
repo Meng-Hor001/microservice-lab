@@ -14,12 +14,12 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { Switch } from "@/components/ui/switch"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { FilterChip, FilterChips } from "@/components/filter-chips"
 import { useAccess } from "@/lib/access"
 import { allRoles, createUser, listUsers, setUserStatus } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
 import { useI18n } from "@/lib/i18n-context"
-import { PASSWORD_RULES } from "@/lib/password"
+import { usePasswordRules } from "@/lib/password"
 import { initials } from "@/lib/providers"
 import { useAsync } from "@/lib/use-async"
 import { cn } from "@/lib/utils"
@@ -29,8 +29,9 @@ const E164 = /^\+[1-9]\d{1,14}$/
 const USERNAME = /^[A-Za-z0-9._-]{3,50}$/
 const EMAIL = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 
-export function StatusBadge({ enabled }) {
+export function StatusBadge({ enabled, locked }) {
   const { t } = useI18n()
+  if (locked) return <StatusDot tone="danger" label={t("mgmt.users.locked")} />
   return <StatusDot on={enabled} label={enabled ? t("mgmt.users.enabled") : t("mgmt.users.disabled")} />
 }
 
@@ -47,6 +48,7 @@ const EMPTY = {
 }
 
 function CreateUserDialog({ open, onOpenChange, onCreated }) {
+  const passwordRules = usePasswordRules()
   const { t } = useI18n()
   const [form, setForm] = useState(EMPTY)
   const [errors, setErrors] = useState({})
@@ -63,7 +65,7 @@ function CreateUserDialog({ open, onOpenChange, onCreated }) {
     if (!USERNAME.test(form.username)) e.username = t("validation.usernameFormat")
     if (!EMAIL.test(form.email)) e.email = t("validation.emailFormat")
     if (form.phoneNumber && !E164.test(form.phoneNumber)) e.phoneNumber = t("validation.phoneFormat")
-    if (!PASSWORD_RULES.every((r) => r.test(form.password))) e.password = t("validation.passwordWeak")
+    if (!passwordRules.every((r) => r.test(form.password))) e.password = t("validation.passwordWeak")
     setErrors(e)
     return Object.keys(e).length === 0
   }
@@ -228,8 +230,8 @@ export default function UsersPage() {
             <DataRow key={u.uuid} onOpen={() => navigate(`/management/users/${u.uuid}`)}>
               <Td>
                 <div className="flex items-center gap-3">
-                  <Avatar className="size-9 rounded-lg">
-                    <AvatarFallback className="rounded-lg">{initials(u.name)}</AvatarFallback>
+                  <Avatar className="size-9 rounded-md">
+                    <AvatarFallback className="rounded-md">{initials(u.name)}</AvatarFallback>
                   </Avatar>
                   <div className="flex min-w-0 flex-col leading-snug">
                     <Link
@@ -245,7 +247,7 @@ export default function UsersPage() {
               </Td>
               <Td className="hidden font-mono text-muted-foreground md:table-cell">{u.username}</Td>
               <Td>
-                <StatusBadge enabled={u.enabled} />
+                <StatusBadge enabled={u.enabled} locked={u.locked} />
               </Td>
               <Td>
                 <RowChevron />
@@ -277,18 +279,15 @@ export default function UsersPage() {
               placeholder={t("mgmt.users.searchPlaceholder")}
               onChange={(q) => update({ q, page: 1 })}
             />
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              spacing={0}
+            <FilterChips
               value={status}
               onValueChange={(v) => v && update({ status: v, page: 1 })}
               aria-label={t("mgmt.common.status")}
             >
-              <ToggleGroupItem value="all">{t("mgmt.common.all")}</ToggleGroupItem>
-              <ToggleGroupItem value="active">{t("mgmt.common.active")}</ToggleGroupItem>
-              <ToggleGroupItem value="inactive">{t("mgmt.common.inactive")}</ToggleGroupItem>
-            </ToggleGroup>
+              <FilterChip value="all">{t("mgmt.common.all")}</FilterChip>
+              <FilterChip value="active">{t("mgmt.common.active")}</FilterChip>
+              <FilterChip value="inactive">{t("mgmt.common.inactive")}</FilterChip>
+            </FilterChips>
             {users.status === "refreshing" && <Spinner className="text-muted-foreground" />}
           </>
         }

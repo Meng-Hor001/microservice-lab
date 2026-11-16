@@ -17,6 +17,7 @@ public record UserResponse(
         String phoneNumber,
         String pictureUrl,
         boolean enabled,
+        boolean locked,
         List<RoleReferenceResponse> roles,
         Instant createdAt,
         Instant updatedAt,
@@ -30,7 +31,7 @@ public record UserResponse(
         return new UserResponse(
                 user.uuid(), user.username(), user.email(), user.emailVerified(),
                 user.givenName() + " " + user.familyName(), user.locale(),
-                user.phoneNumber(), user.pictureUrl(), user.enabled(),
+                user.phoneNumber(), user.pictureUrl(), user.enabled(), user.locked(),
                 authorities.roles().stream().map(RoleReferenceResponse::from).toList(),
                 user.createdAt(), user.updatedAt(), user.version()
         );

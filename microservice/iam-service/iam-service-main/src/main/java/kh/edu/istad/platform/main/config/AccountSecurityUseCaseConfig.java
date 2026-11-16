@@ -54,8 +54,9 @@ public class AccountSecurityUseCaseConfig {
 
     @Bean
     public ConfirmPasswordResetUseCase confirmPasswordResetUseCase(
-            AccountSecurityRepository accounts, PasswordHasher hasher, Clock clock
+            AccountSecurityRepository accounts, PasswordHasher hasher,
+            kh.edu.istad.platform.iam.application.support.PasswordPolicy passwordPolicy, Clock clock
     ) {
-        return new ConfirmPasswordResetUseCase(accounts, hasher, clock);
+        return new ConfirmPasswordResetUseCase(accounts, hasher, passwordPolicy, clock);
     }
 }

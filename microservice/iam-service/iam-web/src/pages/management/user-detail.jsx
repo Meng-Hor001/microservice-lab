@@ -17,6 +17,7 @@ import { CardSkeleton, ErrorState } from "@/components/page-states"
 import { ProviderLogo } from "@/components/provider-logo"
 import { StatusBadge } from "@/pages/management/users"
 import { BackLink, KeyTag, StatusDot } from "@/components/management/states"
+import { UserSessionsTab, UserSignInsTab } from "@/components/management/user-security"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
@@ -45,12 +46,12 @@ import {
 } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
 import { useI18n } from "@/lib/i18n-context"
-import { PASSWORD_RULES } from "@/lib/password"
+import { usePasswordRules } from "@/lib/password"
 import { initials, PROVIDERS } from "@/lib/providers"
 import { useAsync } from "@/lib/use-async"
 
 const E164 = /^\+[1-9]\d{1,14}$/
-const TABS = ["details", "credentials", "roles", "permissions"]
+const TABS = ["details", "credentials", "roles", "permissions", "sessions", "history"]
 
 /* ---------- shared dialog for picking roles or permissions ---------- */
 
@@ -206,7 +207,7 @@ function DetailsTab({ user, onSaved, onDeleted }) {
     <div className="grid gap-6 lg:grid-cols-3">
       <Card className="lg:col-span-2">
         <CardHeader>
-          <CardTitle className="text-base">{t("mgmt.users.detailsTitle")}</CardTitle>
+          <CardTitle>{t("mgmt.users.detailsTitle")}</CardTitle>
           <CardDescription className="tabular flex flex-wrap gap-x-6 gap-y-1">
             <span>
               {t("mgmt.users.createdAt")} {user.createdAt ? fmt.dateTime(user.createdAt) : "–"}
@@ -246,7 +247,7 @@ function DetailsTab({ user, onSaved, onDeleted }) {
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">{t("mgmt.users.statusTitle")}</CardTitle>
+            <CardTitle>{t("mgmt.users.statusTitle")}</CardTitle>
             <CardDescription>{t("mgmt.users.statusBody")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-start gap-4">
@@ -268,7 +269,7 @@ function DetailsTab({ user, onSaved, onDeleted }) {
         {can("user:delete") && (
           <Card className="ring-destructive/25">
             <CardHeader>
-              <CardTitle className="text-base">{t("mgmt.users.deleteAction")}</CardTitle>
+              <CardTitle>{t("mgmt.users.deleteAction")}</CardTitle>
               <CardDescription>{t("mgmt.users.deleteBody")}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -315,7 +316,8 @@ function DetailsTab({ user, onSaved, onDeleted }) {
 
 /* ---------- Credentials tab ---------- */
 
-function CredentialsTab({ user }) {
+function CredentialsTab({ user, onChanged }) {
+  const passwordRules = usePasswordRules()
   const { t, fmt } = useI18n()
   const { can } = useAccess()
   const [password, setPassword] = useState("")
@@ -327,7 +329,7 @@ function CredentialsTab({ user }) {
 
   const reset = async (event) => {
     event.preventDefault()
-    if (!PASSWORD_RULES.every((r) => r.test(password))) {
+    if (!passwordRules.every((r) => r.test(password))) {
       setError(t("validation.passwordWeak"))
       return
     }
@@ -348,7 +350,7 @@ function CredentialsTab({ user }) {
     <div className="grid gap-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">{t("mgmt.users.resetTitle")}</CardTitle>
+          <CardTitle>{t("mgmt.users.resetTitle")}</CardTitle>
           <CardDescription>{t("mgmt.users.resetBody")}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -382,29 +384,33 @@ function CredentialsTab({ user }) {
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">{t("mgmt.users.lockTitle")}</CardTitle>
+            <CardTitle>{t("mgmt.users.lockTitle")}</CardTitle>
             <CardDescription>{t("mgmt.users.lockBody")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-start gap-3">
-            <p className="text-xs text-muted-foreground">{t("mgmt.users.lockStateUnknown")}</p>
-            {editable && (
-              <div className="flex flex-wrap gap-2">
-                <Button variant="outline" onClick={() => setConfirm("lock")}>
-                  <LockIcon data-icon="inline-start" />
-                  {t("mgmt.users.lock")}
-                </Button>
+            {user.locked ? (
+              <StatusDot tone="danger" label={t("mgmt.users.locked")} />
+            ) : (
+              <StatusDot on label={t("mgmt.users.notLocked")} />
+            )}
+            {editable &&
+              (user.locked ? (
                 <Button variant="outline" onClick={() => setConfirm("unlock")}>
                   <UnlockIcon data-icon="inline-start" />
                   {t("mgmt.users.unlock")}
                 </Button>
-              </div>
-            )}
+              ) : (
+                <Button variant="outline" onClick={() => setConfirm("lock")}>
+                  <LockIcon data-icon="inline-start" />
+                  {t("mgmt.users.lock")}
+                </Button>
+              ))}
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">{t("mgmt.users.identities")}</CardTitle>
+            <CardTitle>{t("mgmt.users.identities")}</CardTitle>
           </CardHeader>
           <CardContent>
             {identities.status === "loading" ? (
@@ -419,7 +425,7 @@ function CredentialsTab({ user }) {
                   const key = id.provider?.toLowerCase()
                   return (
                     <li key={id.uuid} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
-                      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg border bg-muted/40">
+                      <span className="flex size-9 shrink-0 items-center justify-center rounded-md border bg-muted/40">
                         <ProviderLogo id={key} className="size-4" />
                       </span>
                       <span className="flex min-w-0 flex-1 flex-col">
@@ -454,6 +460,7 @@ function CredentialsTab({ user }) {
         confirmLabel={confirm === "lock" ? t("mgmt.users.lock") : t("mgmt.users.unlock")}
         onConfirm={async () => {
           await setUserStatus(user.uuid, confirm)
+          onChanged({ locked: confirm === "lock" })
           toast.success(confirm === "lock" ? t("mgmt.users.lockedDone") : t("mgmt.users.unlockedDone"))
         }}
       />
@@ -489,7 +496,7 @@ function RolesTab({ user, authorities }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle className="text-base">{t("mgmt.users.rolesTitle")}</CardTitle>
+        <CardTitle>{t("mgmt.users.rolesTitle")}</CardTitle>
         <CardDescription>{t("mgmt.users.rolesBody")}</CardDescription>
         {editable && (
           <CardAction>
@@ -584,7 +591,7 @@ function PermissionsTab({ user, authorities }) {
     <div className="grid gap-6 lg:grid-cols-2">
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">{t("mgmt.users.directTitle")}</CardTitle>
+          <CardTitle>{t("mgmt.users.directTitle")}</CardTitle>
           <CardDescription>{t("mgmt.users.directBody")}</CardDescription>
           {editable && (
             <CardAction>
@@ -624,7 +631,7 @@ function PermissionsTab({ user, authorities }) {
 
       <Card>
         <CardHeader>
-          <CardTitle className="text-base">{t("mgmt.users.inheritedTitle")}</CardTitle>
+          <CardTitle>{t("mgmt.users.inheritedTitle")}</CardTitle>
           <CardDescription>{t("mgmt.users.inheritedBody")}</CardDescription>
         </CardHeader>
         <CardContent>
@@ -699,14 +706,14 @@ export default function UserDetailPage() {
       <BackLink to="/management/users">{t("mgmt.users.title")}</BackLink>
 
       <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-        <Avatar className="size-14 rounded-xl text-lg">
-          {u.pictureUrl && <AvatarImage src={u.pictureUrl} alt="" className="rounded-xl" />}
-          <AvatarFallback className="rounded-xl">{initials(u.name)}</AvatarFallback>
+        <Avatar className="size-14 rounded-md text-lg">
+          {u.pictureUrl && <AvatarImage src={u.pictureUrl} alt="" className="rounded-md" />}
+          <AvatarFallback className="rounded-md">{initials(u.name)}</AvatarFallback>
         </Avatar>
         <div className="flex min-w-0 flex-1 flex-col gap-1">
           <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-            <h1 className="truncate text-3xl font-medium tracking-tight">{u.name}</h1>
-            <StatusBadge enabled={u.enabled} />
+            <h1 className="truncate text-3xl leading-tight font-medium tracking-tight">{u.name}</h1>
+            <StatusBadge enabled={u.enabled} locked={u.locked} />
           </div>
           <p className="flex min-w-0 flex-wrap gap-x-4 text-muted-foreground">
             <span className="font-mono">{u.username}</span>
@@ -739,13 +746,19 @@ export default function UserDetailPage() {
           />
         </TabsContent>
         <TabsContent value="credentials">
-          <CredentialsTab user={u} />
+          <CredentialsTab user={u} onChanged={(patch) => user.setData({ ...u, ...patch })} />
         </TabsContent>
         <TabsContent value="roles">
           <RolesTab user={u} authorities={authorities} />
         </TabsContent>
         <TabsContent value="permissions">
           <PermissionsTab user={u} authorities={authorities} />
+        </TabsContent>
+        <TabsContent value="sessions">
+          <UserSessionsTab user={u} />
+        </TabsContent>
+        <TabsContent value="history">
+          <UserSignInsTab user={u} />
         </TabsContent>
       </Tabs>
     </>

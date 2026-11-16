@@ -9,7 +9,8 @@ public record UserSummary(
         String username,
         String email,
         String name,
-        boolean enabled
+        boolean enabled,
+        boolean locked
 ) {
     public static UserSummary from(User user) {
         return new UserSummary(
@@ -17,7 +18,8 @@ public record UserSummary(
                 user.getUsername(),
                 user.getEmail(),
                 user.getName(),
-                user.isEnabled()
+                user.isEnabled(),
+                !user.isAccountNonLocked()
         );
     }
 }

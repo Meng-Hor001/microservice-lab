@@ -57,7 +57,7 @@ function DetailsTab({ role, onSaved, onDeleted }) {
     <div className="grid gap-6 lg:grid-cols-3">
       <Card className="lg:col-span-2">
         <CardHeader>
-          <CardTitle className="text-base">{t("mgmt.roles.tabs.details")}</CardTitle>
+          <CardTitle>{t("mgmt.roles.tabs.details")}</CardTitle>
           {role.system && <CardDescription>{t("mgmt.common.systemHint")}</CardDescription>}
         </CardHeader>
         <CardContent>
@@ -112,7 +112,7 @@ function DetailsTab({ role, onSaved, onDeleted }) {
       <div className="flex flex-col gap-6">
         <Card>
           <CardHeader>
-            <CardTitle className="text-base">{t("mgmt.common.status")}</CardTitle>
+            <CardTitle>{t("mgmt.common.status")}</CardTitle>
             <CardDescription>{t("mgmt.roles.statusBody")}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-col items-start gap-4">
@@ -128,7 +128,7 @@ function DetailsTab({ role, onSaved, onDeleted }) {
         {can("role:delete") && !role.system && (
           <Card className="ring-destructive/25">
             <CardHeader>
-              <CardTitle className="text-base">{t("mgmt.common.delete")}</CardTitle>
+              <CardTitle>{t("mgmt.common.delete")}</CardTitle>
               <CardDescription>{t("mgmt.roles.deleteBody")}</CardDescription>
             </CardHeader>
             <CardContent>
@@ -247,7 +247,7 @@ export default function RoleDetailPage() {
       <BackLink to="/management/roles">{t("mgmt.roles.title")}</BackLink>
       <div className="flex flex-col gap-2">
         <div className="flex flex-wrap items-center gap-x-4 gap-y-1">
-          <h1 className="font-mono text-3xl font-medium tracking-tight">{r.name}</h1>
+          <h1 className="font-mono text-3xl leading-tight font-medium tracking-tight">{r.name}</h1>
           <ActiveBadge active={r.active} />
           {r.system && <span className="text-muted-foreground">{t("mgmt.common.system")}</span>}
         </div>
@@ -271,7 +271,7 @@ export default function RoleDetailPage() {
         <TabsContent value="permissions">
           <Card>
             <CardHeader>
-              <CardTitle className="text-base">{t("mgmt.roles.permissions")}</CardTitle>
+              <CardTitle>{t("mgmt.roles.permissions")}</CardTitle>
             </CardHeader>
             <CardContent className="flex flex-col gap-4">
               <Alert>

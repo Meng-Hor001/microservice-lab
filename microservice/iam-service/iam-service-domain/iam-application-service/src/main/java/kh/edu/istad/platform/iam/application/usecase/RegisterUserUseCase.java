@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.iam.application.usecase;
 
+import kh.edu.istad.platform.iam.application.support.PasswordPolicy;
 import kh.edu.istad.platform.iam.application.dto.RegisterUserCommand;
 import kh.edu.istad.platform.iam.application.exception.DuplicateUserException;
 import kh.edu.istad.platform.iam.application.dto.UserResult;
@@ -15,17 +16,20 @@ import java.util.Objects;
 public final class RegisterUserUseCase {
     private final UserRepository users;
     private final PasswordHasher passwordHasher;
+    private final PasswordPolicy passwordPolicy;
     private final CurrentActorProvider actorProvider;
     private final Clock clock;
 
     public RegisterUserUseCase(
             UserRepository users,
             PasswordHasher passwordHasher,
+            PasswordPolicy passwordPolicy,
             CurrentActorProvider actorProvider,
             Clock clock
     ) {
         this.users = Objects.requireNonNull(users);
         this.passwordHasher = Objects.requireNonNull(passwordHasher);
+        this.passwordPolicy = Objects.requireNonNull(passwordPolicy);
         this.actorProvider = Objects.requireNonNull(actorProvider);
         this.clock = Objects.requireNonNull(clock);
     }
@@ -53,7 +57,7 @@ public final class RegisterUserUseCase {
         User user = User.builder()
                 .username(username)
                 .email(email)
-                .passwordHash(passwordHasher.hash(command.password()))
+                .passwordHash(passwordHasher.hash(passwordPolicy.checked(command.password())))
                 .givenName(command.givenName())
                 .familyName(command.familyName())
                 .locale(command.locale())

@@ -6,6 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import { useAccess } from "@/lib/access"
 import { useI18n } from "@/lib/i18n-context"
 import { findNav, MGMT_NAV } from "@/components/management/nav"
+import { cn } from "@/lib/utils"
 
 /** Management uses the same floating icon rail and header as the account pages. */
 export function MgmtShell({ onSignOut }) {
@@ -35,10 +36,13 @@ export function MgmtShell({ onSignOut }) {
 
   return (
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader onSignOut={onSignOut} />
+      <SiteHeader onSignOut={onSignOut} label={t("mgmt.title")} home="/management" />
       <Rail label={t("mgmt.title")} sections={sections} />
-      <main className="flex flex-1 flex-col px-4 pt-4 pb-28 md:pr-6 md:pb-12 md:pl-32">
-        <div key={pathname} className="motion-rise mx-auto flex w-full max-w-7xl flex-col gap-6">
+      <main className="flex flex-1 flex-col px-4 pt-4 pb-28 md:pr-6 md:pb-12 md:pl-28">
+        <div
+          key={pathname}
+          className={cn("motion-rise mx-auto flex w-full flex-col gap-6", pathname === "/management" ? "max-w-7xl" : "max-w-5xl")}
+        >
           <Outlet />
         </div>
       </main>

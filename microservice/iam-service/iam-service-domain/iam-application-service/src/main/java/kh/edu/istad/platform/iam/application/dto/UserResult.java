@@ -16,6 +16,7 @@ public record UserResult(
         String phoneNumber,
         String pictureUrl,
         boolean enabled,
+        boolean locked,
         Instant createdAt,
         Instant updatedAt,
         long version
@@ -32,6 +33,7 @@ public record UserResult(
                 user.getPhoneNumber(),
                 user.getPictureUrl(),
                 user.isEnabled(),
+                !user.isAccountNonLocked(),
                 user.getCreatedAt(),
                 user.getUpdatedAt(),
                 user.getVersion()

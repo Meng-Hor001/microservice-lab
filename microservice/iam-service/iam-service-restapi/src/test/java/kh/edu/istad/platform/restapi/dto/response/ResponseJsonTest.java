@@ -32,7 +32,7 @@ class ResponseJsonTest {
     void userContainsComposedNameAndPublicRoles() {
         UUID roleUuid = UUID.randomUUID();
         var user = new UserResult(UUID.randomUUID(), "dara", "dara@example.com", true,
-                "Dara", "Sok", "km", "+85512345678", null, true, now, now, 2);
+                "Dara", "Sok", "km", "+85512345678", null, true, false, now, now, 2);
         var authorities = new UserAuthoritiesResult(
                 List.of(new UserAuthoritiesResult.RoleAuthority(roleUuid, "USER", null)),
                 List.of(), List.of("user:read"));

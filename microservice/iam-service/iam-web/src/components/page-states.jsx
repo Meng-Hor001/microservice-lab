@@ -15,7 +15,7 @@ export function CardSkeleton({ rows = 3 }) {
       <CardContent className="flex flex-col gap-4">
         {Array.from({ length: rows }, (_, i) => (
           <div key={i} className="flex items-center gap-3">
-            <Skeleton className="size-9 rounded-full" />
+            <Skeleton className="size-9 rounded-md" />
             <div className="flex flex-1 flex-col gap-2">
               <Skeleton className="h-4 w-1/3" />
               <Skeleton className="h-3 w-1/2" />

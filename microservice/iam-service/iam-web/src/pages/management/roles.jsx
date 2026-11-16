@@ -13,7 +13,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/c
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { FilterChip, FilterChips } from "@/components/filter-chips"
 import { useAccess } from "@/lib/access"
 import { allPermissions, createRole, deleteRole, listRoles } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
@@ -230,18 +230,15 @@ export default function RolesPage() {
         toolbar={
           <>
             <SearchBox className="sm:max-w-sm" value={search} onChange={(q) => update({ q, page: 1 })} />
-            <ToggleGroup
-              type="single"
-              variant="outline"
-              spacing={0}
+            <FilterChips
               value={status}
               onValueChange={(v) => v && update({ status: v, page: 1 })}
               aria-label={t("mgmt.common.status")}
             >
-              <ToggleGroupItem value="all">{t("mgmt.common.all")}</ToggleGroupItem>
-              <ToggleGroupItem value="active">{t("mgmt.common.active")}</ToggleGroupItem>
-              <ToggleGroupItem value="inactive">{t("mgmt.common.inactive")}</ToggleGroupItem>
-            </ToggleGroup>
+              <FilterChip value="all">{t("mgmt.common.all")}</FilterChip>
+              <FilterChip value="active">{t("mgmt.common.active")}</FilterChip>
+              <FilterChip value="inactive">{t("mgmt.common.inactive")}</FilterChip>
+            </FilterChips>
             {roles.status === "refreshing" && <Spinner className="text-muted-foreground" />}
           </>
         }

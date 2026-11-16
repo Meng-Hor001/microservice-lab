@@ -47,6 +47,7 @@ public class ApiSecurityConfig {
                                 "/api/auth/register",
                                 "/api/auth/password/reset/confirm"
                         ).permitAll()
+                        .requestMatchers(HttpMethod.GET, "/api/auth/password-policy").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions

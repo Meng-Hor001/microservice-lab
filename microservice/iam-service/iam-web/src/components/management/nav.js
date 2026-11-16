@@ -1,4 +1,4 @@
-import { KeyRoundIcon, LayoutDashboardIcon, ShieldCheckIcon, UsersIcon } from "lucide-react"
+import { AppWindowIcon, KeyRoundIcon, LayoutDashboardIcon, ScrollTextIcon, SettingsIcon, ShieldCheckIcon, UsersIcon } from "lucide-react"
 
 // Paths are relative to the router basename (/me/), so /management/users lives at /me/management/users.
 export const MGMT_NAV = [
@@ -9,6 +9,14 @@ export const MGMT_NAV = [
       { path: "/management/users", key: "users", icon: UsersIcon, permission: "user:read" },
       { path: "/management/roles", key: "roles", icon: ShieldCheckIcon, permission: "role:read" },
       { path: "/management/permissions", key: "permissions", icon: KeyRoundIcon, permission: "permission:read" },
+    ],
+  },
+  {
+    group: "system",
+    items: [
+      { path: "/management/clients", key: "clients", icon: AppWindowIcon, permission: "client:read" },
+      { path: "/management/audit-logs", key: "audit", icon: ScrollTextIcon, permission: "audit:read" },
+      { path: "/management/settings", key: "settings", icon: SettingsIcon, permission: "settings:read" },
     ],
   },
 ]

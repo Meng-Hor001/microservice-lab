@@ -21,9 +21,11 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/c
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
-import { EllipsisIcon, XIcon } from "lucide-react"
+import { EllipsisIcon } from "lucide-react"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { useAccess } from "@/lib/access"
 import {
+  allPermissions,
   createPermission,
   deletePermission,
   listPermissions,
@@ -161,6 +163,9 @@ export default function PermissionsPage() {
   const creating = params.get("new") === "1"
 
   const filtered = !!search || !!resource
+  // Every resource name, for the filter dropdown (independent of the current page and search).
+  const catalog = useAsync(() => allPermissions(), [perms.data?.total])
+  const resources = [...new Set((catalog.data ?? []).map((p) => p.resource))].sort()
 
   const body = () => {
     if (perms.status === "loading") return <TableSkeleton rows={8} />
@@ -185,7 +190,6 @@ export default function PermissionsPage() {
       <DataTable>
         <DataHead>
           <Th>{t("mgmt.permissions.code")}</Th>
-          <Th className="hidden w-48 sm:table-cell">{t("mgmt.permissions.resource")}</Th>
           <Th className="w-40">{t("mgmt.common.status")}</Th>
           <Th className="w-12">
             <span className="sr-only">{t("mgmt.common.actions")}</span>
@@ -200,17 +204,10 @@ export default function PermissionsPage() {
                     <KeyTag name={p.name} />
                     {p.system && <span className="text-muted-foreground">{t("mgmt.common.system")}</span>}
                   </div>
-                  {p.description && <span className="w-full truncate text-muted-foreground">{p.description}</span>}
+                  {p.description && p.description.trim().toLowerCase() !== `${p.action} ${p.resource}` && (
+                    <span className="w-full truncate text-muted-foreground">{p.description}</span>
+                  )}
                 </div>
-              </Td>
-              <Td className="hidden sm:table-cell">
-                <button
-                  type="button"
-                  className="rounded-sm font-mono text-muted-foreground underline-offset-4 transition-colors hover:text-foreground hover:underline focus-visible:text-foreground focus-visible:underline focus-visible:outline-none"
-                  onClick={() => update({ resource: p.resource, page: 1 })}
-                >
-                  {p.resource}
-                </button>
               </Td>
               <Td>
                 <ActiveBadge active={p.active} />
@@ -278,18 +275,21 @@ export default function PermissionsPage() {
         toolbar={
           <>
             <SearchBox className="sm:max-w-sm" value={search} onChange={(q) => update({ q, page: 1 })} />
-            {resource && (
-              <Button
-                variant="outline"
-                size="sm"
-                aria-label={`${t("mgmt.common.clearFilters")}: ${resource}`}
-                onClick={() => update({ resource: null, page: 1 })}
-              >
-                <span className="text-muted-foreground">{t("mgmt.permissions.resourceFilter")}</span>
-                <span className="font-mono">{resource}</span>
-                <XIcon data-icon="inline-end" />
-              </Button>
-            )}
+            <Select value={resource || "all"} onValueChange={(v) => update({ resource: v === "all" ? null : v, page: 1 })}>
+              <SelectTrigger className="w-full sm:w-48" aria-label={t("mgmt.permissions.resourceFilter")}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">{t("mgmt.permissions.allResources")}</SelectItem>
+                  {resources.map((r) => (
+                    <SelectItem key={r} value={r} className="font-mono">
+                      {r}
+                    </SelectItem>
+                  ))}
+                </SelectGroup>
+              </SelectContent>
+            </Select>
             {perms.status === "refreshing" && <Spinner className="text-muted-foreground" />}
           </>
         }

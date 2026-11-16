@@ -12,7 +12,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { changePassword, requestPasswordReset } from "@/lib/api"
 import { useAccount } from "@/lib/account"
 import { useI18n } from "@/lib/i18n-context"
-import { PASSWORD_RULES as RULES } from "@/lib/password"
+import { usePasswordRules } from "@/lib/password"
 import { cn } from "@/lib/utils"
 
 const EMPTY = { current: "", next: "", confirm: "" }
@@ -57,7 +57,7 @@ function ResetDialog({ open, onOpenChange }) {
     <Dialog open={open} onOpenChange={change}>
       <DialogContent>
         <DialogHeader>
-          <span className="mb-1 flex size-10 items-center justify-center rounded-lg bg-accent text-accent-foreground">
+          <span className="mb-1 flex size-10 items-center justify-center rounded-md bg-accent text-accent-foreground">
             {step === "sent" ? <MailCheckIcon className="size-5" /> : <MailIcon className="size-5" />}
           </span>
           <DialogTitle>{step === "sent" ? t("security.resetSentTitle") : t("security.resetTitle")}</DialogTitle>
@@ -96,6 +96,7 @@ function ResetDialog({ open, onOpenChange }) {
 }
 
 export default function SecurityPage() {
+  const RULES = usePasswordRules()
   const { t } = useI18n()
   const rulesId = useId()
   const [values, setValues] = useState(EMPTY)
@@ -202,7 +203,7 @@ export default function SecurityPage() {
                 </Field>
               </FieldGroup>
 
-              <div id={rulesId} className="flex flex-col gap-3 rounded-lg border bg-muted/50 p-4 md:self-start">
+              <div id={rulesId} className="flex flex-col gap-3 rounded-md border bg-muted/50 p-4 md:self-start">
                 <p className="text-sm font-medium">{t("security.rulesTitle")}</p>
                 <ul className="flex flex-col gap-2">
                   {RULES.map((r) => {
@@ -211,7 +212,7 @@ export default function SecurityPage() {
                       <li key={r.key} className={cn("flex items-start gap-2 text-sm", ok ? "text-success" : "text-muted-foreground")}>
                         {ok ? <CheckIcon className="mt-0.5 size-4 shrink-0" /> : <CircleIcon className="mt-1 size-3 shrink-0 opacity-60" />}
                         <span>
-                          {t(`security.rules.${r.key}`)}
+                          {t(`security.rules.${r.key}`, { n: r.n })}
                           <span className="sr-only">{ok ? ` (${t("security.ruleMet")})` : ""}</span>
                         </span>
                       </li>

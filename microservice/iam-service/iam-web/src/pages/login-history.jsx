@@ -1,13 +1,13 @@
 import { useState } from "react"
-import { CircleCheckIcon, CircleXIcon, HistoryIcon } from "lucide-react"
+import { HistoryIcon } from "lucide-react"
 import { CardSkeleton, EmptyState, ErrorState, PageIntro } from "@/components/page-states"
-import { Badge } from "@/components/ui/badge"
+import { StatusDot } from "@/components/management/states"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { ToggleGroup, ToggleGroupItem } from "@/components/ui/toggle-group"
+import { FilterChip, FilterChips } from "@/components/filter-chips"
 import { getLoginHistory } from "@/lib/api"
 import { useI18n } from "@/lib/i18n-context"
 import { useAsync } from "@/lib/use-async"
@@ -17,15 +17,9 @@ const PAGE_SIZE = 10
 function ResultBadge({ entry }) {
   const { t } = useI18n()
   return entry.result === "success" ? (
-    <Badge variant="secondary" className="bg-success-soft text-success">
-      <CircleCheckIcon data-icon="inline-start" />
-      {t("history.success")}
-    </Badge>
+    <StatusDot on label={t("history.success")} />
   ) : (
-    <Badge variant="destructive">
-      <CircleXIcon data-icon="inline-start" />
-      {t("history.failed")}
-    </Badge>
+    <StatusDot tone="danger" label={t("history.failed")} />
   )
 }
 
@@ -43,9 +37,7 @@ export default function LoginHistoryPage() {
 
   const filters = (
     <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-      <ToggleGroup
-        type="single"
-        variant="outline"
+      <FilterChips
         value={result}
         onValueChange={(v) => {
           if (!v) return
@@ -54,10 +46,10 @@ export default function LoginHistoryPage() {
         }}
         aria-label={t("history.resultFilter")}
       >
-        <ToggleGroupItem value="all">{t("history.all")}</ToggleGroupItem>
-        <ToggleGroupItem value="success">{t("history.success")}</ToggleGroupItem>
-        <ToggleGroupItem value="failed">{t("history.failed")}</ToggleGroupItem>
-      </ToggleGroup>
+        <FilterChip value="all">{t("history.all")}</FilterChip>
+        <FilterChip value="success">{t("history.success")}</FilterChip>
+        <FilterChip value="failed">{t("history.failed")}</FilterChip>
+      </FilterChips>
       <Select
         value={range}
         onValueChange={(v) => {

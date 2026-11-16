@@ -1,7 +1,7 @@
 import { useMemo, useState } from "react"
 import { Checkbox } from "@/components/ui/checkbox"
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
+import { Field, FieldLabel } from "@/components/ui/field"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import { Skeleton } from "@/components/ui/skeleton"
 import { useI18n } from "@/lib/i18n-context"
@@ -44,7 +44,7 @@ export function ItemPicker({ items, loading, selected, onChange, label, sublabel
         value={q}
         onChange={(e) => setQ(e.target.value)}
       />
-      <ScrollArea className="h-64 rounded-lg border">
+      <ScrollArea className="h-64 rounded-md border">
         <div className="flex flex-col gap-4 p-3">
           {loading &&
             [0, 1, 2, 3].map((i) => <Skeleton key={i} className="h-8" />)}
@@ -57,23 +57,19 @@ export function ItemPicker({ items, loading, selected, onChange, label, sublabel
               {list.map((item) => {
                 const id = `pick-${item.uuid}`
                 return (
-                  <Label
-                    key={item.uuid}
-                    htmlFor={id}
-                    className="flex cursor-pointer items-center gap-3 rounded-md px-2 py-2 font-normal hover:bg-muted"
-                  >
+                  <Field key={item.uuid} orientation="horizontal" className="rounded-md px-2 py-2 hover:bg-muted">
                     <Checkbox
                       id={id}
                       checked={selected.has(item.uuid)}
                       onCheckedChange={(v) => toggle(item.uuid, v === true)}
                     />
-                    <span className="flex min-w-0 flex-col">
-                      <span className="truncate font-mono text-sm">{label(item)}</span>
+                    <FieldLabel htmlFor={id} className="flex min-w-0 flex-1 cursor-pointer flex-col items-start gap-0 font-normal">
+                      <span className="w-full truncate font-mono text-sm">{label(item)}</span>
                       {sublabel?.(item) && (
-                        <span className="truncate text-xs text-muted-foreground">{sublabel(item)}</span>
+                        <span className="w-full truncate text-xs text-muted-foreground">{sublabel(item)}</span>
                       )}
-                    </span>
-                  </Label>
+                    </FieldLabel>
+                  </Field>
                 )
               })}
             </div>

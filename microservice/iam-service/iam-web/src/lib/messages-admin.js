@@ -1,4 +1,6 @@
 // Text for the Management section. Merged into messages.js under the "mgmt" key.
+import { opsMessages } from "@/lib/messages-ops"
+
 export const adminMessages = {
   en: {
     title: "Management",
@@ -138,7 +140,7 @@ export const adminMessages = {
       unlock: "Unlock account",
       lockedDone: "Account locked",
       unlockedDone: "Account unlocked",
-      lockStateUnknown: "The API doesn't report whether this account is locked right now.",
+      notLocked: "Not locked, can sign in",
       identities: "Linked sign-in providers",
       noIdentities: "No external providers linked",
       unlink: "Unlink",
@@ -351,7 +353,7 @@ export const adminMessages = {
       unlock: "ដោះសោគណនី",
       lockedDone: "បានចាក់សោគណនី",
       unlockedDone: "បានដោះសោគណនី",
-      lockStateUnknown: "API មិនប្រាប់ថាគណនីនេះកំពុងជាប់សោឬអត់ទេ។",
+      notLocked: "មិនជាប់សោ អាចចូលបាន",
       identities: "អ្នកផ្ដល់សេវាចូលដែលបានភ្ជាប់",
       noIdentities: "មិនបានភ្ជាប់អ្នកផ្ដល់សេវាខាងក្រៅទេ",
       unlink: "ផ្ដាច់",
@@ -425,4 +427,13 @@ export const adminMessages = {
       deactivate: "បិទដំណើរការ",
     },
   },
+}
+
+// Pages added with the admin operations endpoints: nav labels merge into `nav`, sections are added as-is.
+for (const lang of ["en", "km"]) {
+  // One level deep: e.g. ops `users.tabs` extends the existing `users` section instead of replacing it.
+  for (const [key, value] of Object.entries(opsMessages[lang])) {
+    const current = adminMessages[lang][key]
+    adminMessages[lang][key] = current && typeof current === "object" ? { ...current, ...value } : value
+  }
 }

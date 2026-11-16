@@ -69,3 +69,29 @@ export const deletePermission = (uuid) => http("DELETE", `/permissions/${uuid}`)
 export const setPermissionActive = (uuid, active) =>
   http("POST", `/permissions/${uuid}/${active ? "activate" : "deactivate"}`)
 export const unlinkUserIdentity = (uuid, identityUuid) => http("DELETE", `/users/${uuid}/identities/${identityUuid}`)
+
+/* user sessions & login history (admin) */
+export const getUserSessions = async (uuid) => (await http("GET", `/users/${uuid}/sessions`)) ?? []
+export const revokeUserSession = (uuid, sessionId) => http("DELETE", `/users/${uuid}/sessions/${sessionId}`)
+export const revokeAllUserSessions = (uuid) => http("DELETE", `/users/${uuid}/sessions`)
+export const getUserLoginHistory = async (uuid, { result = "all", days, page = 1, size = 10 } = {}) =>
+  toPage(await http("GET", `/users/${uuid}/login-history?${listQuery({ page, size, result, days })}`))
+export const listSuspiciousLogins = async ({ days = 1, threshold = 5 } = {}) =>
+  (await http("GET", `/login-history/suspicious?days=${days}&threshold=${threshold}`)) ?? []
+
+/* OAuth2 clients */
+const clientPath = (clientId) => `/clients/${encodeURIComponent(clientId)}`
+export const listClients = async (params) => toPage(await http("GET", `/clients?${listQuery(params)}`))
+export const countClients = async () => (await listClients({ size: 1 })).total
+export const getClient = (clientId) => http("GET", clientPath(clientId))
+export const createClient = (body) => http("POST", "/clients", body)
+export const updateClient = (clientId, body) => http("PUT", clientPath(clientId), body)
+export const rotateClientSecret = (clientId) => http("POST", `${clientPath(clientId)}/secret`)
+export const deleteClient = (clientId) => http("DELETE", clientPath(clientId))
+
+/* audit logs */
+export const listAuditLogs = async (params) => toPage(await http("GET", `/audit-logs?${listQuery(params)}`))
+
+/* system settings */
+export const getSettings = () => http("GET", "/settings")
+export const updateSettings = (body) => http("PUT", "/settings", body)

@@ -7,7 +7,8 @@ import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Spinner } from "@/components/ui/spinner"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "@/components/ui/table"
-import { getSessions, terminateOtherSessions, terminateSession } from "@/lib/api"
+import { getSessions, terminateAllSessions, terminateOtherSessions, terminateSession } from "@/lib/api"
+import { logout } from "@/lib/auth"
 import { useI18n } from "@/lib/i18n-context"
 import { useAsync } from "@/lib/use-async"
 
@@ -17,7 +18,7 @@ function DeviceCell({ s }) {
   const Icon = DEVICE_ICON[s.type] ?? LaptopIcon
   return (
     <div className="flex items-center gap-3">
-      <span className="flex size-9 shrink-0 items-center justify-center rounded-lg bg-muted text-muted-foreground">
+      <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground">
         <Icon className="size-4.5" />
       </span>
       <div className="flex min-w-0 flex-col">
@@ -35,6 +36,7 @@ export default function SessionsPage() {
   const sessions = useAsync(getSessions)
   const [target, setTarget] = useState(null)
   const [allOpen, setAllOpen] = useState(false)
+  const [everywhereOpen, setEverywhereOpen] = useState(false)
 
   const refreshing = sessions.status === "refreshing"
 
@@ -64,6 +66,12 @@ export default function SessionsPage() {
                 {t("sessions.thisDevice")}
               </CardTitle>
               <CardDescription>{t("sessions.thisDeviceHint")}</CardDescription>
+              <CardAction>
+                <Button variant="outline" onClick={() => setEverywhereOpen(true)}>
+                  <LogOutIcon data-icon="inline-start" />
+                  {t("mgmt.account.signOutEverywhere")}
+                </Button>
+              </CardAction>
             </CardHeader>
             <CardContent className="grid gap-4 sm:grid-cols-[1.4fr_1fr_1fr]">
               <DeviceCell s={current} />
@@ -134,7 +142,7 @@ export default function SessionsPage() {
                 </div>
                 <ul className="flex flex-col gap-3 md:hidden">
                   {others.map((s) => (
-                    <li key={s.id} className="flex flex-col gap-3 rounded-lg border p-3">
+                    <li key={s.id} className="flex flex-col gap-3 rounded-md border p-3">
                       <DeviceCell s={s} />
                       <dl className="grid grid-cols-2 gap-x-3 gap-y-2 text-sm">
                         <div className="flex flex-col">
@@ -182,6 +190,19 @@ export default function SessionsPage() {
           await terminateSession(target.id)
           toast.success(t("sessions.signedOutOne", { device: target.device }))
           sessions.reload()
+        }}
+      />
+      <ConfirmDialog
+        open={everywhereOpen}
+        onOpenChange={setEverywhereOpen}
+        icon={LogOutIcon}
+        destructive
+        title={t("mgmt.account.signOutEverywhereTitle")}
+        description={t("mgmt.account.signOutEverywhereBody")}
+        confirmLabel={t("mgmt.account.signOutEverywhere")}
+        onConfirm={async () => {
+          await terminateAllSessions()
+          logout()
         }}
       />
       <ConfirmDialog

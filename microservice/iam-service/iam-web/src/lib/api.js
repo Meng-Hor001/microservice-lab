@@ -11,7 +11,7 @@ export class ApiError extends Error {
 }
 
 const API_BASE = import.meta.env.VITE_API_BASE ?? "/api"
-const PROVIDERS = ["google", "github", "facebook"]
+const PROVIDERS = ["google", "github", "facebook", "telegram"]
 const FIELD_MAP = {
   givenName: "name",
   familyName: "name",
@@ -160,6 +160,10 @@ export const unlinkProvider = (provider) => http("DELETE", `/me/identities/${pro
 export const getSessions = async () => (await http("GET", "/me/sessions")) ?? []
 export const terminateSession = (id) => http("DELETE", `/me/sessions/${id}`)
 export const terminateOtherSessions = () => http("DELETE", "/me/sessions")
+// Public, so the reset-by-link page can show the rules before anyone signs in.
+export const getPasswordPolicy = () => http("GET", "/auth/password-policy", undefined, { auth: false })
+// Every session including this one; the caller signs out locally afterwards.
+export const terminateAllSessions = () => http("DELETE", "/me/sessions/all")
 
 export async function getLoginHistory({ result = "all", range = "30", page = 1, pageSize = 10 } = {}) {
   const query = new URLSearchParams({ page: String(page - 1), size: String(pageSize) })

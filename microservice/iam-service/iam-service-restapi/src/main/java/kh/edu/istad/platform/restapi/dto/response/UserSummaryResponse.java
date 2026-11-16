@@ -5,9 +5,9 @@ import kh.edu.istad.platform.iam.application.dto.UserSummary;
 import java.util.UUID;
 
 public record UserSummaryResponse(
-        UUID uuid, String username, String email, String name, boolean enabled
+        UUID uuid, String username, String email, String name, boolean enabled, boolean locked
 ) {
     public static UserSummaryResponse from(UserSummary user) {
-        return new UserSummaryResponse(user.uuid(), user.username(), user.email(), user.name(), user.enabled());
+        return new UserSummaryResponse(user.uuid(), user.username(), user.email(), user.name(), user.enabled(), user.locked());
     }
 }

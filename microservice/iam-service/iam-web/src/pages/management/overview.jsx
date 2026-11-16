@@ -1,16 +1,19 @@
-import { useMemo } from "react"
+import { useMemo, useState } from "react"
 import { Link } from "react-router-dom"
-import { ChevronRightIcon, ShieldCheckIcon, UserPlusIcon } from "lucide-react"
-import { KeyTag, PageHeader, StatusDot } from "@/components/management/states"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { AppWindowIcon, ChevronRightIcon, KeyRoundIcon, MonitorSmartphoneIcon, PlusIcon, ServerIcon, ShieldCheckIcon, UsersIcon } from "lucide-react"
+import { Stat } from "@/components/stat"
+import { KeyTag, StatusDot } from "@/components/management/states"
 import { Button } from "@/components/ui/button"
-import { Card, CardAction, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useAccess } from "@/lib/access"
-import { allPermissions, allRoles, countUsers, listUsers } from "@/lib/admin-api"
+import { allPermissions, allRoles, countUsers, getSettings, listAuditLogs, listClients, listSuspiciousLogins, listUsers } from "@/lib/admin-api"
+import { Checkup, SignInChart } from "@/components/overview-cards"
+import { FilterChip, FilterChips } from "@/components/filter-chips"
+import { ClientType } from "@/pages/management/clients"
+import { ActionTag } from "@/components/management/action-tag"
 import { useI18n } from "@/lib/i18n-context"
-import { initials } from "@/lib/providers"
 import { useAsync } from "@/lib/use-async"
 import { cn } from "@/lib/utils"
 
@@ -25,44 +28,15 @@ const byActionOrder = (a, b) => {
   return a.localeCompare(b)
 }
 
-/* ---------- stat strip: one panel, four figures ---------- */
-
-function Stat({ label, value, note, to, loading, failed }) {
-  const { t } = useI18n()
-  const body = (
-    <>
-      <span className="text-muted-foreground">{label}</span>
-      {loading ? (
-        <Skeleton className="h-9 w-20" />
-      ) : failed ? (
-        <span className="text-muted-foreground">{t("mgmt.common.failed")}</span>
-      ) : (
-        <span className="tabular text-4xl leading-none font-medium tracking-tight">{value}</span>
-      )}
-      <span className="min-h-6 text-muted-foreground">{!loading && !failed ? note : null}</span>
-    </>
-  )
-  const cls = "flex flex-col gap-3 px-5 py-5"
-  return to ? (
-    <Link
-      to={to}
-      className={cn(cls, "transition-colors hover:bg-muted/50 focus-visible:bg-muted/50 focus-visible:outline-none")}
-    >
-      {body}
-    </Link>
-  ) : (
-    <div className={cls}>{body}</div>
-  )
-}
-
 /* ---------- the access map: resources × actions ---------- */
 
-function AccessCell({ permission, resource, action }) {
+function AccessCell({ permission, resource, action, dim }) {
   const { t } = useI18n()
   if (!permission) {
     return (
-      <span className="flex size-9 items-center justify-center" aria-label={`${resource}:${action} ${t("mgmt.overview.legendNone")}`}>
-        <span aria-hidden className="size-1 rounded-full bg-foreground/15" />
+      <span className={cn("flex size-9 items-center justify-center transition-opacity", dim && "opacity-25")} aria-label={`${resource}:${action} ${t("mgmt.overview.legendNone")}`}>
+        {/* Same size as a defined cell, so the empty slot reads as "nothing here" rather than vanishing. */}
+        <span aria-hidden className="size-6 rounded-[4px] border-2 border-dashed border-foreground/20" />
       </span>
     )
   }
@@ -72,12 +46,16 @@ function AccessCell({ permission, resource, action }) {
         <Link
           to={`/management/permissions?resource=${encodeURIComponent(resource)}`}
           aria-label={`${permission.name}, ${permission.active ? t("mgmt.overview.legendActive") : t("mgmt.overview.legendInactive")}`}
-          className="group/cell flex size-9 items-center justify-center rounded-md focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
+          className={cn(
+            "group/cell flex size-9 items-center justify-center rounded-md transition-opacity focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none",
+            // Filtered out: fades back but keeps its place, so rows and columns still line up.
+            dim && "opacity-15"
+          )}
         >
           <span
             className={cn(
-              "flex size-6 items-center justify-center rounded-[5px] transition-transform duration-150 group-hover/cell:scale-110",
-              permission.active ? "bg-primary" : "border-[1.5px] border-primary/60 bg-background"
+              "flex size-6 items-center justify-center rounded-[4px] ring-primary/30 transition-shadow duration-150 group-hover/cell:ring-4 group-focus-visible/cell:ring-4",
+              permission.active ? "bg-primary" : "border-2 border-primary/60 bg-background"
             )}
           >
             {permission.system && (
@@ -98,7 +76,7 @@ function Legend() {
   const { t } = useI18n()
   const items = [
     { key: "legendActive", swatch: <span className="size-4 rounded-[4px] bg-primary" /> },
-    { key: "legendInactive", swatch: <span className="size-4 rounded-[4px] border-[1.5px] border-primary/60" /> },
+    { key: "legendInactive", swatch: <span className="size-4 rounded-[4px] border-2 border-primary/60" /> },
     {
       key: "legendSystem",
       swatch: (
@@ -109,15 +87,11 @@ function Legend() {
     },
     {
       key: "legendNone",
-      swatch: (
-        <span className="flex size-4 items-center justify-center">
-          <span className="size-1 rounded-full bg-foreground/25" />
-        </span>
-      ),
+      swatch: <span className="size-4 rounded-[4px] border-2 border-dashed border-foreground/25" />,
     },
   ]
   return (
-    <ul className="flex flex-wrap gap-x-6 gap-y-2 text-muted-foreground">
+    <ul className="flex flex-col gap-2.5 text-muted-foreground">
       {items.map((i) => (
         <li key={i.key} className="flex items-center gap-2">
           <span aria-hidden className="flex">{i.swatch}</span>
@@ -128,8 +102,42 @@ function Legend() {
   )
 }
 
+/** Beside the matrix: what the marks mean, and the three numbers that summarize it. */
+function MapFacts({ permissions }) {
+  const { t } = useI18n()
+  const list = permissions ?? []
+  const facts = [
+    { key: "legendActive", n: list.filter((p) => p.active).length },
+    { key: "legendInactive", n: list.filter((p) => !p.active).length },
+    { key: "legendSystem", n: list.filter((p) => p.system).length },
+  ]
+  return (
+    <aside className="flex shrink-0 flex-col gap-6 xl:w-64 xl:border-l xl:pl-8">
+      <dl className="grid grid-cols-3 gap-4 xl:grid-cols-1">
+        {facts.map((f) => (
+          <div key={f.key} className="flex flex-col gap-1">
+            <dt className="text-muted-foreground">{t(`mgmt.overview.${f.key}`)}</dt>
+            <dd className="tabular text-2xl leading-none font-medium">{f.n}</dd>
+          </div>
+        ))}
+      </dl>
+      <Legend />
+    </aside>
+  )
+}
+
+// Which cells a status filter keeps; anything else (including undefined slots) fades back.
+const MAP_FILTERS = {
+  all: () => true,
+  active: (p) => !!p?.active,
+  inactive: (p) => !!p && !p.active,
+  system: (p) => !!p?.system,
+}
+
 function AccessMap({ state }) {
   const { t } = useI18n()
+  const [status, setStatus] = useState("all")
+  const keep = MAP_FILTERS[status]
   const { resources, actions, cells } = useMemo(() => {
     const list = state.data ?? []
     const cells = new Map(list.map((p) => [`${p.resource}:${p.action}`, p]))
@@ -141,7 +149,7 @@ function AccessMap({ state }) {
   }, [state.data])
 
   return (
-    <Card className="lg:col-span-2">
+    <Card>
       <CardHeader>
         <CardTitle>{t("mgmt.overview.accessMap")}</CardTitle>
         <CardDescription className="tabular">
@@ -158,7 +166,15 @@ function AccessMap({ state }) {
           </Button>
         </CardAction>
       </CardHeader>
-      <CardContent className="flex-1">
+      <CardContent className="flex flex-1 flex-col gap-5">
+        {state.status === "success" && resources.length > 0 && (
+          <FilterChips value={status} onValueChange={(v) => v && setStatus(v)} aria-label={t("mgmt.common.status")}>
+            <FilterChip value="all">{t("mgmt.common.all")}</FilterChip>
+            <FilterChip value="active">{t("mgmt.overview.legendActive")}</FilterChip>
+            <FilterChip value="inactive">{t("mgmt.overview.legendInactive")}</FilterChip>
+            <FilterChip value="system">{t("mgmt.overview.legendSystem")}</FilterChip>
+          </FilterChips>
+        )}
         {state.status === "loading" ? (
           <div className="flex flex-col gap-3">
             {[0, 1, 2, 3, 4].map((i) => (
@@ -170,19 +186,20 @@ function AccessMap({ state }) {
         ) : resources.length === 0 ? (
           <p className="py-8 text-muted-foreground">{t("mgmt.overview.noPermissions")}</p>
         ) : (
-          <div className="-mx-4 overflow-x-auto px-4">
+          <div className="flex flex-col gap-8 xl:flex-row xl:items-start">
+          <div className="-mx-4 min-w-0 flex-1 overflow-x-auto px-4">
             <div
               role="table"
               aria-label={t("mgmt.overview.accessMap")}
-              className="grid w-max min-w-full items-center gap-x-1"
-              style={{ gridTemplateColumns: `minmax(8rem, 1fr) repeat(${actions.length}, 4.5rem)` }}
+              className="grid min-w-max items-center"
+              style={{ gridTemplateColumns: `minmax(9rem, 14rem) repeat(${actions.length}, minmax(5rem, 1fr))` }}
             >
               <div role="row" className="contents">
-                <span role="columnheader" className="pb-2 text-muted-foreground">
+                <span role="columnheader" className="pb-3 text-muted-foreground">
                   {t("mgmt.overview.resource")}
                 </span>
                 {actions.map((a) => (
-                  <span role="columnheader" key={a} className="pb-2 text-center font-mono text-muted-foreground">
+                  <span role="columnheader" key={a} className="pb-3 text-center font-mono text-muted-foreground">
                     {a}
                   </span>
                 ))}
@@ -191,26 +208,28 @@ function AccessMap({ state }) {
                 <div role="row" key={r} className="group/row contents">
                   <span
                     role="rowheader"
-                    className="flex h-11 items-center border-t font-mono transition-colors group-hover/row:text-foreground"
+                    className="flex h-12 items-center border-t pr-6 font-medium capitalize"
                   >
                     {r}
                   </span>
                   {actions.map((a) => (
-                    <span role="cell" key={a} className="flex h-11 items-center justify-center border-t">
-                      <AccessCell permission={cells.get(`${r}:${a}`)} resource={r} action={a} />
+                    <span role="cell" key={a} className="flex h-12 items-center justify-center border-t">
+                      <AccessCell
+                        permission={cells.get(`${r}:${a}`)}
+                        resource={r}
+                        action={a}
+                        dim={status !== "all" && !keep(cells.get(`${r}:${a}`))}
+                      />
                     </span>
                   ))}
                 </div>
               ))}
             </div>
           </div>
+          <MapFacts permissions={state.data} />
+          </div>
         )}
       </CardContent>
-      {state.status === "success" && resources.length > 0 && (
-        <CardFooter className="border-t">
-          <Legend />
-        </CardFooter>
-      )}
     </Card>
   )
 }
@@ -219,12 +238,21 @@ function AccessMap({ state }) {
 
 function RolesCard({ state }) {
   const { t } = useI18n()
+  const canCreate = useAccess().can("role:create")
   const roles = (state.data ?? []).slice(0, 6)
   return (
-    <Card>
+    <Card className="lg:col-span-4">
       <CardHeader>
         <CardTitle>{t("mgmt.overview.rolesTitle")}</CardTitle>
-        <CardAction>
+        <CardAction className="flex gap-1">
+          {canCreate && (
+            <Button asChild variant="ghost" size="sm">
+              <Link to="/management/roles?new=1">
+                <PlusIcon data-icon="inline-start" />
+                {t("mgmt.overview.createRole")}
+              </Link>
+            </Button>
+          )}
           <Button asChild variant="ghost" size="sm">
             <Link to="/management/roles">
               {t("mgmt.overview.viewAll")}
@@ -269,60 +297,119 @@ function RolesCard({ state }) {
   )
 }
 
-function InactiveCard({ state }) {
+function ViewAll({ to }) {
   const { t } = useI18n()
+  return (
+    <Button asChild variant="ghost" size="sm">
+      <Link to={to}>
+        {t("mgmt.overview.viewAll")}
+        <ChevronRightIcon data-icon="inline-end" />
+      </Link>
+    </Button>
+  )
+}
+
+function ListSkeleton({ rows = 3, className = "h-9" }) {
+  return (
+    <div className="flex flex-col gap-3">
+      {Array.from({ length: rows }, (_, i) => (
+        <Skeleton key={i} className={className} />
+      ))}
+    </div>
+  )
+}
+
+/** Latest audit entries: who did what, newest first. */
+function RecentActivityCard({ state }) {
+  const { t, fmt } = useI18n()
   const items = state.data?.items ?? []
   return (
-    <Card>
+    <Card className="lg:col-span-5">
       <CardHeader>
-        <CardTitle>{t("mgmt.overview.inactiveTitle")}</CardTitle>
-        <CardDescription>{t("mgmt.overview.inactiveBody")}</CardDescription>
+        <CardTitle>{t("mgmt.overview.recent")}</CardTitle>
+        <CardAction>
+          <ViewAll to="/management/audit-logs" />
+        </CardAction>
       </CardHeader>
       <CardContent>
         {state.status === "loading" ? (
-          <div className="flex flex-col gap-3">
-            {[0, 1].map((i) => (
-              <Skeleton key={i} className="h-9" />
-            ))}
-          </div>
+          <ListSkeleton rows={4} />
         ) : state.status === "error" ? (
           <p className="text-muted-foreground">{t("mgmt.common.failed")}</p>
         ) : items.length === 0 ? (
-          <StatusDot on label={t("mgmt.overview.inactiveNone")} />
+          <p className="text-muted-foreground">{t("mgmt.overview.recentEmpty")}</p>
         ) : (
-          <ul className="-mx-2 flex flex-col">
-            {items.map((u) => (
-              <li key={u.uuid}>
-                <Link
-                  to={`/management/users/${u.uuid}`}
-                  className="flex h-14 items-center gap-3 rounded-md px-2 transition-colors hover:bg-muted/60 focus-visible:bg-muted/60 focus-visible:outline-none"
-                >
-                  <Avatar className="rounded-lg">
-                    <AvatarFallback className="rounded-lg">{initials(u.name)}</AvatarFallback>
-                  </Avatar>
-                  <span className="flex min-w-0 flex-col leading-tight">
-                    <span className="truncate font-medium">{u.name}</span>
-                    <span className="truncate font-mono text-muted-foreground">{u.username}</span>
-                  </span>
-                  <ChevronRightIcon className="ml-auto size-4 shrink-0 text-muted-foreground" />
-                </Link>
+          <ul className="flex flex-col gap-1">
+            {items.map((e) => (
+              <li key={e.id} className="flex items-center gap-3 py-1.5">
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <ActionTag action={e.action} bare />
+                  <span className="truncate text-muted-foreground">{e.actor}</span>
+                </span>
+                <span className="tabular shrink-0 text-muted-foreground">{fmt.relative(e.occurredAt)}</span>
               </li>
             ))}
           </ul>
         )}
       </CardContent>
-      {state.data?.total > items.length && (
-        <CardFooter className="border-t">
-          <Button asChild variant="ghost" size="sm" className="-ml-2">
-            <Link to="/management/users?status=inactive">
-              {t("mgmt.overview.viewAll")}
-              <ChevronRightIcon data-icon="inline-end" />
-            </Link>
-          </Button>
-        </CardFooter>
-      )}
     </Card>
   )
+}
+
+/** Registered OAuth clients, like the account side's linked accounts. */
+function ClientsCard({ state }) {
+  const { t } = useI18n()
+  const items = state.data?.items ?? []
+  return (
+    <Card className="lg:col-span-3">
+      <CardHeader>
+        <CardTitle>{t("mgmt.overview.clientsTitle")}</CardTitle>
+        <CardAction>
+          <ViewAll to="/management/clients" />
+        </CardAction>
+      </CardHeader>
+      <CardContent>
+        {state.status === "loading" ? (
+          <ListSkeleton rows={3} />
+        ) : state.status === "error" ? (
+          <p className="text-muted-foreground">{t("mgmt.common.failed")}</p>
+        ) : items.length === 0 ? (
+          <p className="text-muted-foreground">{t("mgmt.overview.noClients")}</p>
+        ) : (
+          <ul className="flex flex-col gap-1">
+            {items.map((c) => (
+              <li key={c.clientId} className="flex items-center gap-3 py-1.5">
+                {/* Public clients run in a browser or on a phone; confidential ones on a server that keeps a secret. */}
+                <span className="flex size-10 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground [&_svg]:size-4">
+                  {c.authenticationMethod === "none" ? <MonitorSmartphoneIcon /> : <ServerIcon />}
+                </span>
+                <span className="flex min-w-0 flex-1 flex-col">
+                  <span className="truncate font-medium">{c.clientName}</span>
+                  <ClientType method={c.authenticationMethod} />
+                </span>
+              </li>
+            ))}
+          </ul>
+        )}
+      </CardContent>
+    </Card>
+  )
+}
+
+const DAY = 86400000
+
+// Sign-in events from the audit log, as the chart's { at, result } entries (up to 5 pages of 100).
+async function loadSignIns(days) {
+  const from = new Date(Date.now() - days * DAY).toISOString()
+  const items = []
+  for (let page = 1; page <= 5; page++) {
+    const { items: rows, total } = await listAuditLogs({ targetType: "AUTH", from, page, size: 100 })
+    items.push(...rows)
+    if (items.length >= total || rows.length === 0) break
+  }
+  return items
+    .filter((e) => e.action === "LOGIN_SUCCESS" || e.action === "LOGIN_FAILED")
+    .map((e) => ({ at: e.occurredAt, result: e.action === "LOGIN_SUCCESS" ? "success" : "failed" }))
 }
 
 /* ---------- page ---------- */
@@ -331,106 +418,134 @@ export default function ManagementOverview() {
   const { t } = useI18n()
   const { can } = useAccess()
   const canUsers = can("user:read")
-  const users = useAsync(() => (canUsers ? countUsers() : denied()))
+  const canAudit = can("audit:read")
+  const [days, setDays] = useState(7)
+
+  const users = useAsync(() => (canUsers ? listUsers({ size: 100 }) : denied()))
   const active = useAsync(() => (canUsers ? countUsers({ enabled: true }) : denied()))
-  const inactive = useAsync(() => (canUsers ? listUsers({ enabled: false, size: 4 }) : denied()))
   const roles = useAsync(() => (can("role:read") ? allRoles() : denied()))
   const permissions = useAsync(() => (can("permission:read") ? allPermissions() : denied()))
+  const clients = useAsync(() => (can("client:read") ? listClients({ size: 4 }) : denied()))
+  const recent = useAsync(() => (canAudit ? listAuditLogs({ size: 5 }) : denied()))
+  const suspicious = useAsync(() => (canUsers ? listSuspiciousLogins({ days: 1, threshold: 5 }) : denied()))
+  const settings = useAsync(() => (can("settings:read") ? getSettings() : denied()))
+  // Twice the visible range, so the chart can compare with the previous period.
+  const signIns = useAsync(() => (canAudit ? loadSignIns(Math.max(days * 2, 30)) : denied()), [days])
 
-  const share = users.data ? Math.round(((active.data ?? 0) / users.data) * 100) : null
-  const activeRoles = roles.data?.filter((r) => r.active).length ?? 0
-  const resourceCount = new Set((permissions.data ?? []).map((p) => p.resource)).size
+  const userList = users.data?.items ?? []
+  const locked = userList.filter((u) => u.locked).length
+  const inactive = userList.filter((u) => !u.enabled).length
+  const offPermissions = (permissions.data ?? []).filter((p) => !p.active).length
+  const firstSuspect = suspicious.data?.[0]
+  const s = settings.data
+  const strongPolicy =
+    !!s && s.passwordMinLength >= 8 && s.passwordRequireUppercase && s.passwordRequireLowercase && s.passwordRequireDigit
 
+  // Platform health: each check passes or links to the page that fixes it.
+  const checks = [
+    canUsers && {
+      key: "locked",
+      ok: locked === 0,
+      to: "/management/users",
+      label: t("mgmt.overview.checks.locked"),
+      hint: t("mgmt.overview.checks.lockedHint", { n: locked }),
+    },
+    canUsers && {
+      key: "suspicious",
+      ok: !firstSuspect,
+      to: firstSuspect ? `/management/users/${firstSuspect.userId}?tab=history` : "/management/users",
+      label: t("mgmt.overview.checks.suspicious"),
+      hint: firstSuspect
+        ? t("mgmt.overview.checks.suspiciousHint", { name: firstSuspect.username, n: firstSuspect.failedCount })
+        : "",
+    },
+    canUsers && {
+      key: "inactive",
+      ok: inactive === 0,
+      to: "/management/users?status=inactive",
+      label: t("mgmt.overview.checks.inactive"),
+      hint: t("mgmt.overview.checks.inactiveHint", { n: inactive }),
+    },
+    can("permission:read") && {
+      key: "permissions",
+      ok: offPermissions === 0,
+      to: "/management/permissions",
+      label: t("mgmt.overview.checks.permissions"),
+      hint: t("mgmt.overview.checks.permissionsHint", { n: offPermissions }),
+    },
+    can("settings:read") && {
+      key: "policy",
+      ok: strongPolicy,
+      to: "/management/settings",
+      label: t("mgmt.overview.checks.policy"),
+      hint: t("mgmt.overview.checks.policyHint"),
+    },
+  ].filter(Boolean)
+  const checksLoading = [users, suspicious, permissions, settings].some((x) => x.status === "loading")
+
+  const count = (state, value) => (state.status === "success" ? value : "–")
   const stats = [
     {
-      label: t("mgmt.overview.totalUsers"),
-      state: users,
-      value: users.data,
-      note: users.data != null && active.data != null ? t("mgmt.overview.inactiveNote", { n: users.data - active.data }) : null,
-      to: "/management/users",
-      show: canUsers,
-    },
-    {
+      icon: UsersIcon,
+      value: count(active, active.data),
+      unit: users.data ? t("mgmt.overview.ofTotal", { n: users.data.total }) : null,
       label: t("mgmt.overview.activeUsers"),
-      state: active,
-      value: active.data,
-      note: share !== null ? t("mgmt.overview.activeShare", { n: share }) : null,
-      to: "/management/users?status=active",
+      to: "/management/users",
+      strong: true,
       show: canUsers,
     },
+    { icon: ShieldCheckIcon, value: count(roles, roles.data?.length), label: t("mgmt.overview.roles"), to: "/management/roles", show: can("role:read") },
     {
-      label: t("mgmt.overview.roles"),
-      state: roles,
-      value: roles.data?.length,
-      note: t("mgmt.overview.rolesNote", { n: activeRoles }),
-      to: "/management/roles",
-      show: can("role:read"),
-    },
-    {
+      icon: KeyRoundIcon,
+      value: count(permissions, permissions.data?.length),
       label: t("mgmt.overview.permissions"),
-      state: permissions,
-      value: permissions.data?.length,
-      note: t("mgmt.overview.resourcesNote", { n: resourceCount }),
       to: "/management/permissions",
       show: can("permission:read"),
     },
-  ].filter((s) => s.show)
+    { icon: AppWindowIcon, value: count(clients, clients.data?.total), label: t("mgmt.overview.clients"), to: "/management/clients", show: can("client:read") },
+  ].filter((x) => x.show)
 
   return (
-    <>
-      <PageHeader title={t("mgmt.overview.title")} intro={t("mgmt.overview.intro")}>
-        {can("role:create") && (
-          <Button asChild variant="outline">
-            <Link to="/management/roles?new=1">
-              <ShieldCheckIcon data-icon="inline-start" />
-              {t("mgmt.overview.createRole")}
-            </Link>
-          </Button>
-        )}
-        {can("user:create") && (
-          <Button asChild>
-            <Link to="/management/users?new=1">
-              <UserPlusIcon data-icon="inline-start" />
-              {t("mgmt.overview.createUser")}
-            </Link>
-          </Button>
-        )}
-      </PageHeader>
-
-      {stats.length > 0 && (
-        <Card className="gap-0 py-0">
-          <div className="grid grid-cols-2 lg:grid-cols-4">
-            {stats.map((s, i) => (
-                <div
-                  key={s.label}
-                  className={cn(
-                    "border-border",
-                    i % 2 === 1 && "border-l",
-                    i >= 2 && "border-t lg:border-t-0",
-                    i > 0 && "lg:border-l"
-                  )}
-                >
-                  <Stat
-                    label={s.label}
-                    value={s.value}
-                    note={s.note}
-                    to={s.to}
-                    loading={s.state.status === "loading"}
-                    failed={s.state.status === "error"}
-                  />
-                </div>
-            ))}
-          </div>
-        </Card>
-      )}
-
-      <div className="grid items-start gap-6 lg:grid-cols-3">
-        {can("permission:read") && <AccessMap state={permissions} />}
-        <div className="flex flex-col gap-6">
-          {can("role:read") && <RolesCard state={roles} />}
-          {canUsers && <InactiveCard state={inactive} />}
+    <div className="flex flex-col gap-6">
+      <div className="motion-rise flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
+        <h1 className="text-3xl leading-tight font-medium tracking-tight">{t("mgmt.overview.title")}</h1>
+        <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:flex-wrap sm:gap-x-8">
+          {stats.map((st) => (
+            <Stat key={st.label} icon={st.icon} value={st.value} unit={st.unit} label={st.label} to={st.to} strong={st.strong} />
+          ))}
         </div>
       </div>
-    </>
+
+      {(checks.length > 0 || canAudit) && (
+        <div className="grid gap-6 lg:grid-cols-12">
+          {checks.length > 0 && (
+            <Checkup
+              checks={checks}
+              loading={checksLoading}
+              title={t("mgmt.overview.healthTitle")}
+              description={t("mgmt.overview.healthBody")}
+              passedLabel={t("mgmt.overview.healthPassed", { n: checks.length })}
+            />
+          )}
+          {canAudit && (
+            <SignInChart
+              history={signIns}
+              days={days}
+              setDays={setDays}
+              title={t("mgmt.overview.chartTitle")}
+              description={t("mgmt.overview.chartBody")}
+            />
+          )}
+        </div>
+      )}
+
+      <div className="grid items-start gap-6 lg:grid-cols-12">
+        {canAudit && <RecentActivityCard state={recent} />}
+        {can("role:read") && <RolesCard state={roles} />}
+        {can("client:read") && <ClientsCard state={clients} />}
+      </div>
+
+      {can("permission:read") && <AccessMap state={permissions} />}
+    </div>
   )
 }
