@@ -22,6 +22,7 @@ public record UpdateUserProfileCommand(
         String addressLocality,
         String addressRegion,
         String addressPostalCode,
-        String addressCountry
+        String addressCountry,
+        String username
 ) {
 }

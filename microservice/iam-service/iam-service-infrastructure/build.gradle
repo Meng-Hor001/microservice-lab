@@ -3,6 +3,7 @@ plugins {
 }
 
 dependencies {
+    implementation 'org.springframework.boot:spring-boot-starter-mail'
     implementation 'tools.jackson.core:jackson-databind'
     implementation libs.iam.application.service
     implementation libs.spring.security.crypto

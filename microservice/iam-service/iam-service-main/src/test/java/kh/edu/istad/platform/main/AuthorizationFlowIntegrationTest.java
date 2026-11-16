@@ -50,10 +50,12 @@ class AuthorizationFlowIntegrationTest {
     static class LocalDecoder {
         @Bean
         @Primary
-        JwtDecoder flowDecoder(Environment environment) {
+        JwtDecoder flowDecoder(Environment environment,
+                               kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository accounts,
+                               java.time.Clock clock) {
             return token -> new ApiJwtDecoderConfig().jwtDecoder("http://localhost:9999",
                     "http://localhost:" + environment.getProperty("local.server.port") + "/oauth2/jwks",
-                    "iam-api").decode(token);
+                    "iam-api", accounts, clock).decode(token);
         }
     }
 
@@ -163,6 +165,11 @@ class AuthorizationFlowIntegrationTest {
         String authorize = "/oauth2/authorize?" + form(Map.of("response_type", "code", "client_id", id,
                 "redirect_uri", callback, "scope", "openid profile email", "state", "flow-state",
                 "code_challenge", challenge, "code_challenge_method", "S256"));
+        var failedLoginPage = send("GET", "/login", "", null, null);
+        var failedLogin = send("POST", "/login", form(Map.of("username", username, "password", "WrongPassword123!",
+                "_csrf", csrf(failedLoginPage.body()))), "application/x-www-form-urlencoded", null);
+        assertEquals(302, failedLogin.statusCode());
+        assertTrue(failedLogin.headers().firstValue("Location").orElseThrow().contains("error"));
         var loginPage = send("GET", "/login", "", null, null);
         var login = send("POST", "/login", form(Map.of("username", username, "password", "Str0ng!Pass2026",
                 "_csrf", csrf(loginPage.body()))), "application/x-www-form-urlencoded", null);
@@ -201,5 +208,27 @@ class AuthorizationFlowIntegrationTest {
         assertEquals(400, send("POST", "/oauth2/token", form(Map.of("grant_type", "authorization_code",
                         "code", code, "redirect_uri", callback, "code_verifier", verifier)),
                 "application/x-www-form-urlencoded", basic(id, secret)).statusCode());
+
+        var sessions = expect(send("GET", "/api/me/sessions", "", null, "Bearer " + accessToken), 200);
+        assertEquals(1, sessions.size());
+        assertEquals(claims.path("sid").asString(), sessions.get(0).path("id").asString());
+        assertTrue(sessions.get(0).path("current").asBoolean());
+        var history = expect(send("GET", "/api/me/login-history?result=success&days=7&page=0&size=10",
+                "", null, "Bearer " + accessToken), 200);
+        assertFalse(history.path("content").isEmpty());
+        var failures = expect(send("GET", "/api/me/login-history?result=failed&days=7&page=0&size=10",
+                "", null, "Bearer " + accessToken), 200);
+        assertFalse(failures.path("content").isEmpty());
+        assertEquals("failed", failures.path("content").get(0).path("result").asString());
+        assertEquals(400, send("GET", "/api/me/login-history?size=0", "", null, "Bearer " + accessToken).statusCode());
+        expect(send("GET", "/api/me/activity", "", null, "Bearer " + accessToken), 200);
+        expect(send("POST", "/api/me/deactivation", "{\"reason\":\"privacy\"}",
+                "application/json", "Bearer " + accessToken), 200);
+        expect(send("GET", "/api/me/deactivation", "", null, "Bearer " + accessToken), 200);
+        assertEquals(204, send("DELETE", "/api/me/deactivation", "", null, "Bearer " + accessToken).statusCode());
+        assertEquals(404, send("GET", "/api/me/deactivation", "", null, "Bearer " + accessToken).statusCode());
+        assertEquals(400, send("POST", "/api/auth/password/reset/confirm", "{}", "application/json", null).statusCode());
+        expect(send("DELETE", "/api/me/sessions/all", "", null, "Bearer " + accessToken), 200);
+        assertEquals(401, send("GET", "/api/me", "", null, "Bearer " + accessToken).statusCode());
     }
 }

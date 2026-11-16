@@ -58,7 +58,7 @@ public class IamWebController {
             return "redirect:/login?registered";
         } catch (IllegalArgumentException | kh.edu.istad.platform.iam.domain.exception.DomainRuleException |
                  kh.edu.istad.platform.iam.application.exception.DuplicateUserException e) {
-            return invalid("register", v, model, page);
+            return invalid("register", v, model, page, registrationError(e));
         }
     }
 
@@ -100,7 +100,8 @@ public class IamWebController {
                     v.get("addressLocality"),
                     v.get("addressRegion"),
                     v.get("addressPostalCode"),
-                    v.get("addressCountry")));
+                    v.get("addressCountry"),
+                    null));
             return "redirect:/";
         } catch (IllegalArgumentException | kh.edu.istad.platform.iam.domain.exception.DomainRuleException |
                  kh.edu.istad.platform.iam.application.exception.DuplicateUserException e) {
@@ -153,9 +154,33 @@ public class IamWebController {
     }
 
     String invalid(String view, Map<String, String> values, Model model, Page page) {
+        return invalid(view, values, model, page, "validation.failed");
+    }
+
+    String invalid(String view, Map<String, String> values, Model model, Page page, String errorKey) {
         var safe = new HashMap<>(values);
         safe.keySet().removeIf(k -> k.toLowerCase().contains("password"));
-        model.addAttribute("page", new Page(messages, page.locale(), page.csrfName(), page.csrfToken(), safe, "validation.failed"));
+        model.addAttribute("page", new Page(messages, page.locale(), page.csrfName(), page.csrfToken(), safe, errorKey));
         return view;
+    }
+
+    static String registrationError(RuntimeException exception) {
+        String message = exception.getMessage() == null ? "" : exception.getMessage().toLowerCase(java.util.Locale.ROOT);
+        if (exception instanceof kh.edu.istad.platform.iam.application.exception.DuplicateUserException) {
+            return message.contains("email") ? "register.emailTaken" : "register.usernameTaken";
+        }
+        if (message.contains("passwords do not match")) {
+            return "register.passwordMismatch";
+        }
+        if (message.contains("email")) {
+            return "register.emailInvalid";
+        }
+        if (message.contains("username")) {
+            return "register.usernameInvalid";
+        }
+        if (message.contains("password")) {
+            return "register.passwordInvalid";
+        }
+        return "validation.failed";
     }
 }

@@ -2,6 +2,7 @@ package kh.edu.istad.platform.iam.application.usecase;
 
 import kh.edu.istad.platform.iam.application.dto.UpdateUserProfileCommand;
 import kh.edu.istad.platform.iam.application.dto.UserResult;
+import kh.edu.istad.platform.iam.application.exception.DuplicateUserException;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
 import kh.edu.istad.platform.iam.application.port.out.CurrentActorProvider;
 import kh.edu.istad.platform.iam.application.port.out.UserRepository;
@@ -9,6 +10,7 @@ import kh.edu.istad.platform.iam.domain.entity.User;
 import kh.edu.istad.platform.iam.domain.valueobject.UserProfile;
 
 import java.time.Clock;
+import java.time.Instant;
 import java.util.Objects;
 
 public final class UpdateUserProfileUseCase {
@@ -61,7 +63,23 @@ public final class UpdateUserProfileUseCase {
                 value(command.addressCountry(), current.addressCountry())
         );
 
-        user.updateProfile(updated, actorProvider.currentActor(), clock.instant());
+        String actor = actorProvider.currentActor();
+        Instant now = clock.instant();
+
+        String username = command.username() == null ? null : command.username().trim();
+        if (username != null && !username.isEmpty() && !username.equalsIgnoreCase(user.getUsername())) {
+            if (users.existsByUsername(username)) {
+                throw new DuplicateUserException("username", username);
+            }
+            user.changeUsername(username, actor, now);
+        }
+
+        String email = command.email() == null ? null : command.email().trim();
+        if (email != null && !email.equalsIgnoreCase(user.getEmail()) && users.existsByEmail(email)) {
+            throw new DuplicateUserException("email", email);
+        }
+
+        user.updateProfile(updated, actor, now);
         return UserResult.from(users.save(user));
     }
 

@@ -14,6 +14,8 @@ public record UserResponse(
         boolean emailVerified,
         String name,
         String locale,
+        String phoneNumber,
+        String pictureUrl,
         boolean enabled,
         List<RoleReferenceResponse> roles,
         Instant createdAt,
@@ -27,7 +29,8 @@ public record UserResponse(
     public static UserResponse from(UserResult user, UserAuthoritiesResult authorities) {
         return new UserResponse(
                 user.uuid(), user.username(), user.email(), user.emailVerified(),
-                user.givenName() + " " + user.familyName(), user.locale(), user.enabled(),
+                user.givenName() + " " + user.familyName(), user.locale(),
+                user.phoneNumber(), user.pictureUrl(), user.enabled(),
                 authorities.roles().stream().map(RoleReferenceResponse::from).toList(),
                 user.createdAt(), user.updatedAt(), user.version()
         );

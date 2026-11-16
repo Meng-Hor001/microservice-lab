@@ -7,6 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.oauth2.core.DelegatingOAuth2TokenValidator;
 import org.springframework.security.oauth2.jwt.*;
 
+import kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository;
+import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
@@ -17,7 +19,9 @@ public class ApiJwtDecoderConfig {
     public JwtDecoder jwtDecoder(
             @Value("${spring.security.oauth2.resourceserver.jwt.issuer-uri}") String issuer,
             @Value("${spring.security.oauth2.resourceserver.jwt.jwk-set-uri}") String jwkSetUri,
-            @Value("${spring.security.oauth2.resourceserver.jwt.audiences[0]}") String audience
+            @Value("${spring.security.oauth2.resourceserver.jwt.audiences[0]}") String audience,
+            AccountSecurityRepository accounts,
+            Clock clock
     ) {
         var decoder = NimbusJwtDecoder.withJwkSetUri(jwkSetUri).build();
         var audienceValidator = new JwtClaimValidator<List<String>>(
@@ -34,7 +38,8 @@ public class ApiJwtDecoderConfig {
         decoder.setJwtValidator(new DelegatingOAuth2TokenValidator<>(
                 JwtValidators.createDefaultWithIssuer(issuer),
                 audienceValidator,
-                subjectValidator
+                subjectValidator,
+                new AccountSessionTokenValidator(accounts, clock)
         ));
         return decoder;
     }

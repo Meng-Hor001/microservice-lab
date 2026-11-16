@@ -220,3 +220,83 @@ settings. Live provider callbacks still need manual verification with real crede
 - **API returns 403:** check the account's effective permissions and the token claims.
 - **Provider callback fails:** verify credentials, registered callback URI, and browser origin.
 - **Templates fail under a JRE:** run with a full JDK; templates currently compile at runtime.
+
+
+## Account security APIs
+
+The account security feature uses Liquibase migration `010-account-security.sql`.
+It stores OAuth access sessions, login history, account activity, password-reset
+hashes, and deactivation requests in PostgreSQL.
+
+| Method | Path | Behavior |
+| --- | --- | --- |
+| GET | `/api/me/sessions` | List unexpired account API sessions |
+| DELETE | `/api/me/sessions/{sessionId}` | Revoke one owned API session |
+| DELETE | `/api/me/sessions` | Revoke other API sessions; preserve the caller |
+| DELETE | `/api/me/sessions/all` | Revoke all account API sessions, including the caller |
+| GET | `/api/me/login-history` | Filter by `result`, optional `days`, zero-based `page`, and `size` |
+| GET | `/api/me/activity` | Read the user's recorded account activities |
+| POST | `/api/me/password/reset` | Email a reset link to the signed-in user |
+| POST | `/api/auth/password/reset/confirm` | Consume a reset token and set a new password |
+| GET/POST/DELETE | `/api/me/deactivation` | Read, request, or cancel deactivation |
+
+User access tokens now carry a `sid` claim. Sign in again after upgrading: old
+user tokens without it are rejected by the account API. Revocation invalidates
+account API tokens and removes associated OAuth authorization records. It does
+not invalidate Spring's separate server-rendered browser login session; a browser
+with that session can authorize a new application session without entering a password.
+Each OAuth authorization is listed separately, so multiple app authorizations on
+one device can produce multiple entries. IP addresses come from the servlet request;
+locations remain `Unknown` until a trusted geolocation integration is configured.
+
+Login history is recorded for local success/failure and social success when the
+account is identifiable. Historical events cannot be reconstructed, and failed
+social logins before identity resolution have no user account to attach to.
+Activity recording covers React profile/password changes, identity unlinking,
+session revocations, deactivation, and password-reset actions.
+
+### Password-reset mail configuration
+
+Configure the following using application properties or equivalent environment
+variables. Keep SMTP credentials outside source control:
+
+```yaml
+spring:
+  mail:
+    host: ${SMTP_HOST}
+    port: ${SMTP_PORT:587}
+    username: ${SMTP_USERNAME}
+    password: ${SMTP_PASSWORD}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+      mail.smtp.connectiontimeout: 5000
+      mail.smtp.timeout: 5000
+      mail.smtp.writetimeout: 5000
+
+iam:
+  password-reset:
+    from: ${SMTP_FROM}
+    page: http://localhost:5173/me/reset-password
+```
+
+`page` must point to a frontend reset form. That page is not supplied by this
+backend change. It must read the `token` query parameter and submit:
+
+```json
+{
+  "token": "token-from-email",
+  "newPassword": "UpdatedPassword123!",
+  "confirmPassword": "UpdatedPassword123!"
+}
+```
+
+The confirmation endpoint is public, validates password strength, consumes tokens
+atomically, and revokes account API sessions. Reset tokens expire after 15 minutes;
+only their SHA-256 hash is stored. Requests have a 30-second per-account cooldown.
+SMTP delivery is synchronous; delivery errors roll back token creation rather
+than returning a false success. Configure mail timeouts as above. No mail is sent
+by tests; their delivery port is mocked.
+
+Deactivation creates a pending request only. It does not immediately disable the
+account or implement administrator approval.

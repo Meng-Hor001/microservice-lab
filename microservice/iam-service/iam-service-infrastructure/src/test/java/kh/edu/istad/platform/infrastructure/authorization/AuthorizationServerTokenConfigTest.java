@@ -13,6 +13,12 @@ import org.springframework.security.oauth2.jwt.JwsHeader;
 import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 
+import kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository;
+import org.springframework.security.oauth2.server.authorization.OAuth2Authorization;
+import org.springframework.security.oauth2.server.authorization.client.RegisteredClient;
+import org.springframework.security.oauth2.core.AuthorizationGrantType;
+import org.springframework.security.oauth2.core.ClientAuthenticationMethod;
+import java.time.Clock;
 import java.util.List;
 import java.util.Set;
 import java.util.UUID;
@@ -31,8 +37,18 @@ class AuthorizationServerTokenConfigTest {
         when(load.execute("dara")).thenReturn(user);
         when(authorities.execute(uuid)).thenReturn(new UserAuthoritiesResult(
                 List.of(), List.of(), List.of("user:read")));
+        var accounts = mock(AccountSecurityRepository.class);
+        var sessionId = UUID.randomUUID();
+        when(accounts.registerSession(eq(uuid), anyString(), any(), any(), any())).thenReturn(sessionId);
+        var client = RegisteredClient.withId("client-id").clientId("web-client")
+                .clientAuthenticationMethod(ClientAuthenticationMethod.NONE)
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE)
+                .redirectUri("http://localhost/callback").build();
+        var authorization = OAuth2Authorization.withRegisteredClient(client)
+                .id("authorization-id").principalName("dara")
+                .authorizationGrantType(AuthorizationGrantType.AUTHORIZATION_CODE).build();
         var customizer = new AuthorizationServerTokenConfig()
-                .jwtTokenCustomizer(load, authorities, "iam-api");
+                .jwtTokenCustomizer(load, authorities, "iam-api", accounts, Clock.systemUTC());
         var principal = UsernamePasswordAuthenticationToken.authenticated(
                 User.withUsername("dara").password("unused").authorities("user:read").build(),
                 null, List.of());
@@ -41,6 +57,8 @@ class AuthorizationServerTokenConfigTest {
             var claims = JwtClaimsSet.builder().audience(List.of("web-client"));
             var context = JwtEncodingContext.with(
                             JwsHeader.with(SignatureAlgorithm.RS256), claims)
+                    .registeredClient(client)
+                    .authorization(authorization)
                     .principal(principal)
                     .authorizedScopes(Set.of("openid"))
                     .tokenType(type)
@@ -52,6 +70,7 @@ class AuthorizationServerTokenConfigTest {
                     ? "iam-api" : "web-client"), token.getAudience());
             if (type.equals(OAuth2TokenType.ACCESS_TOKEN)) {
                 assertEquals(List.of("user:read"), token.getClaim("permissions"));
+                assertEquals(sessionId.toString(), token.getClaim("sid"));
             }
         }
     }

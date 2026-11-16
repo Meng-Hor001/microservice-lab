@@ -18,6 +18,8 @@ public class WebPageAdvice {
     @ModelAttribute("page")
     Page page(HttpServletRequest request, Locale locale) {
         var token = (CsrfToken) request.getAttribute(CsrfToken.class.getName());
-        return new Page(messages, locale, token == null ? "_csrf" : token.getParameterName(), token == null ? "" : token.getToken(), Map.of(), request.getParameterMap().containsKey("error") ? "login.failed" : "");
+        return new Page(messages, locale, token == null ? "_csrf" : token.getParameterName(), token == null ? "" : token.getToken(), Map.of(),
+                request.getParameterMap().containsKey("error") ? "login.failed" : "",
+                request.getParameterMap().containsKey("registered") ? "register.success" : "");
     }
 }

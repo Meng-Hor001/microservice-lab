@@ -14,6 +14,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository;
+import org.springframework.transaction.annotation.Transactional;
+import java.time.Clock;
 import java.util.List;
 import java.util.UUID;
 
@@ -29,6 +32,8 @@ public class MeController {
     private final ListUserIdentitiesUseCase listIdentities;
     private final UnlinkIdentityUseCase unlinkIdentity;
     private final UserApiMapper mapper;
+    private final AccountSecurityRepository accounts;
+    private final Clock clock;
 
     @GetMapping
     public UserResponse getProfile(
@@ -43,6 +48,7 @@ public class MeController {
     }
 
     @PatchMapping
+    @Transactional
     public UserResponse updateProfile(
             @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody UpdateUserProfileRequest request
@@ -54,11 +60,13 @@ public class MeController {
         );
 
         var authorities = getAuthorities.execute(userUuid);
+        accounts.recordActivity(userUuid, "profile_updated", null, clock.instant());
 
         return mapper.toResponse(user, authorities);
     }
 
     @PutMapping("/password")
+    @Transactional
     public ResponseEntity<Void> changePassword(
             @AuthenticationPrincipal Jwt jwt,
             @Valid @RequestBody ChangePasswordRequest request
@@ -66,6 +74,7 @@ public class MeController {
         UUID userUuid = UUID.fromString(jwt.getSubject());
 
         changePassword.execute(mapper.toCommand(userUuid, request));
+        accounts.recordActivity(userUuid, "password_changed", null, clock.instant());
 
         return ResponseEntity.noContent().build();
     }
@@ -83,6 +92,7 @@ public class MeController {
     }
 
     @DeleteMapping("/identities/{identityUuid}")
+    @Transactional
     public ResponseEntity<Void> unlinkIdentity(
             @AuthenticationPrincipal Jwt jwt,
             @PathVariable UUID identityUuid
@@ -90,6 +100,7 @@ public class MeController {
         UUID userUuid = UUID.fromString(jwt.getSubject());
 
         unlinkIdentity.execute(userUuid, identityUuid);
+        accounts.recordActivity(userUuid, "provider_unlinked", null, clock.instant());
 
         return ResponseEntity.noContent().build();
     }

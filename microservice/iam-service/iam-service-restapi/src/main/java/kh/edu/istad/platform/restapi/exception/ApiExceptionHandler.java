@@ -101,7 +101,9 @@ public class ApiExceptionHandler extends ResponseEntityExceptionHandler {
 
     @ExceptionHandler({
             DomainRuleException.class,
-            IllegalArgumentException.class
+            IllegalArgumentException.class,
+            kh.edu.istad.platform.iam.application.exception.InvalidAccountSecurityRequestException.class,
+            jakarta.validation.ConstraintViolationException.class
     })
     public ProblemDetail handleInvalidRequest(RuntimeException exception) {
         return problem(

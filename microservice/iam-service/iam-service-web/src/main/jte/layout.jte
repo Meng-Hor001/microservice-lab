@@ -70,6 +70,11 @@
                         </p>
                     @endif
                 </div>
+                @if(!page.notice().isEmpty())
+                    <p class="notice" role="status">
+                        ${page.t(page.notice())}
+                    </p>
+                @endif
                 @if(!page.error().isEmpty())
                     <p class="error" role="alert">
                         ${page.t(page.error())}

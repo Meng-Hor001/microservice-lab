@@ -12,6 +12,9 @@ import org.springframework.security.oauth2.server.authorization.OAuth2TokenType;
 import org.springframework.security.oauth2.server.authorization.token.JwtEncodingContext;
 import org.springframework.security.oauth2.server.authorization.token.OAuth2TokenCustomizer;
 
+import kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository;
+import kh.edu.istad.platform.infrastructure.account.RequestClientInfo;
+import java.time.Clock;
 import java.util.LinkedHashMap;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +28,9 @@ public class AuthorizationServerTokenConfig {
     OAuth2TokenCustomizer<JwtEncodingContext> jwtTokenCustomizer(
             LoadUserForAuthenticationUseCase loadUser,
             GetUserAuthoritiesUseCase getUserAuthorities,
-            @Value("${spring.security.oauth2.resourceserver.jwt.audiences[0]}") String apiAudience
+            @Value("${spring.security.oauth2.resourceserver.jwt.audiences[0]}") String apiAudience,
+            AccountSecurityRepository accounts,
+            Clock clock
     ) {
         return context -> {
             if (!(context.getPrincipal().getPrincipal()
@@ -106,6 +111,15 @@ public class AuthorizationServerTokenConfig {
             if (OAuth2TokenType.ACCESS_TOKEN.equals(
                     context.getTokenType())) {
                 context.getClaims().audience(new ArrayList<>(List.of(apiAudience)));
+                var authorization = context.getAuthorization();
+                if (authorization == null) {
+                    throw new IllegalStateException("A user access token requires an OAuth authorization");
+                }
+                var now = clock.instant();
+                var expiresAt = now.plus(context.getRegisteredClient().getTokenSettings().getAccessTokenTimeToLive());
+                var sessionId = accounts.registerSession(user.uuid(), authorization.getId(),
+                        RequestClientInfo.current(), expiresAt, now);
+                context.getClaims().claim("sid", sessionId.toString());
 
                 var authorities =
                         getUserAuthorities.execute(user.uuid());

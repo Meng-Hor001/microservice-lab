@@ -20,10 +20,19 @@ final class LoginAuditSuccessHandler extends SavedRequestAwareAuthenticationSucc
     private final RecordLoginAttemptUseCase attempts;
     private final RecordIdentityLoginUseCase identities;
     private final LoadUserForAuthenticationUseCase loadUser;
+    private final AccountLoginRecorder loginHistory;
 
     LoginAuditSuccessHandler(RecordLoginAttemptUseCase attempts,
                              RecordIdentityLoginUseCase identities,
                              LoadUserForAuthenticationUseCase loadUser) {
+        this(attempts, identities, loadUser, null);
+    }
+
+    LoginAuditSuccessHandler(RecordLoginAttemptUseCase attempts,
+                             RecordIdentityLoginUseCase identities,
+                             LoadUserForAuthenticationUseCase loadUser,
+                             AccountLoginRecorder loginHistory) {
+        this.loginHistory = loginHistory;
         this.attempts = attempts;
         this.identities = identities;
         this.loadUser = loadUser;
@@ -37,6 +46,11 @@ final class LoginAuditSuccessHandler extends SavedRequestAwareAuthenticationSucc
         String username = authentication.getPrincipal() instanceof UserDetails user
                 ? user.getUsername() : authentication.getName();
         ApiSecurityConfig.auditLogin(attempts, username, true);
+        if (loginHistory != null) {
+            String method = authentication instanceof OAuth2AuthenticationToken oauth
+                    ? oauth.getAuthorizedClientRegistrationId() : "password";
+            loginHistory.record(username, true, method);
+        }
 
         if (authentication instanceof OAuth2AuthenticationToken oauth) {
             try {

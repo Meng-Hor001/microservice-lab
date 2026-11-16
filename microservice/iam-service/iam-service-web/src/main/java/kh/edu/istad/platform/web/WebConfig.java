@@ -29,6 +29,30 @@ public class WebConfig implements WebMvcConfigurer {
         return r;
     }
 
+    /**
+     * Serves the React account dashboard under /me/. Real files (JS, CSS, icons) are returned as-is;
+     * any other path falls back to index.html so React Router can handle client-side routes like
+     * /me/overview or /me/sessions on refresh or direct links.
+     */
+    @Override
+    public void addResourceHandlers(ResourceHandlerRegistry registry) {
+        var index = new org.springframework.core.io.ClassPathResource("static/me/index.html");
+        registry.addResourceHandler("/me", "/me/", "/me/**")
+                .addResourceLocations("classpath:/static/me/")
+                .resourceChain(true)
+                .addResolver(new org.springframework.web.servlet.resource.PathResourceResolver() {
+                    @Override
+                    protected org.springframework.core.io.Resource getResource(
+                            String resourcePath, org.springframework.core.io.Resource location) throws java.io.IOException {
+                        var file = location.createRelative(resourcePath);
+                        if (!resourcePath.isEmpty() && file.exists() && file.isReadable()) {
+                            return file;
+                        }
+                        return index.exists() ? index : null;
+                    }
+                });
+    }
+
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         var i = new LocaleChangeInterceptor();

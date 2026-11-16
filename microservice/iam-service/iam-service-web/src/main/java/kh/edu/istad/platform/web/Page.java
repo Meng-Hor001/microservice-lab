@@ -5,7 +5,12 @@ import org.springframework.context.MessageSource;
 import java.util.*;
 
 public record Page(MessageSource messages, Locale locale, String csrfName, String csrfToken, Map<String, String> values,
-                   String error) {
+                   String error, String notice) {
+    public Page(MessageSource messages, Locale locale, String csrfName, String csrfToken, Map<String, String> values,
+                String error) {
+        this(messages, locale, csrfName, csrfToken, values, error, "");
+    }
+
     public String t(String key) {
         return messages.getMessage(key, null, locale);
     }

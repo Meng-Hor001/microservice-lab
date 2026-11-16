@@ -175,6 +175,13 @@ public class User {
         return givenName + " " + familyName;
     }
 
+    public void changeUsername(String newUsername, String actor, Instant now) {
+        mutation(deleted, updatedAt, actor, now);
+        username = text(newUsername, "Username", 50);
+        updatedAt = now;
+        updatedBy = actor.trim();
+    }
+
     public void updateProfile(
             UserProfile profile,
             String actor,

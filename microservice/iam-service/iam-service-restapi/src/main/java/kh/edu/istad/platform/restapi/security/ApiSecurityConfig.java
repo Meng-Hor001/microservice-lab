@@ -44,7 +44,8 @@ public class ApiSecurityConfig {
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(
                                 HttpMethod.POST,
-                                "/api/auth/register"
+                                "/api/auth/register",
+                                "/api/auth/password/reset/confirm"
                         ).permitAll()
                         .anyRequest().authenticated()
                 )
@@ -96,10 +97,11 @@ public class ApiSecurityConfig {
             OAuth2UserService<OAuth2UserRequest, OAuth2User> oauth2UserService,
             RecordLoginAttemptUseCase recordLoginAttempt,
             RecordIdentityLoginUseCase recordIdentityLogin,
-            LoadUserForAuthenticationUseCase loadUser
+            LoadUserForAuthenticationUseCase loadUser,
+            AccountLoginRecorder loginHistory
     ) throws Exception {
         var successHandler = new LoginAuditSuccessHandler(
-                recordLoginAttempt, recordIdentityLogin, loadUser);
+                recordLoginAttempt, recordIdentityLogin, loadUser, loginHistory);
 
         var failureRedirect = new SimpleUrlAuthenticationFailureHandler("/login?error");
         http
@@ -107,6 +109,8 @@ public class ApiSecurityConfig {
                         .requestMatchers(
                                 "/login", "/register", "/iam.css",
                                 "/error",
+                                // React dashboard: static files only, it signs in with its own OAuth2 PKCE flow.
+                                "/me", "/me/**",
                                 "/oauth2/authorization/**",
                                 "/login/oauth2/code/**"
                         ).permitAll()
@@ -122,6 +126,7 @@ public class ApiSecurityConfig {
                                     false
                             );
 
+                            loginHistory.record(request.getParameter("username"), false, "password");
                             failureRedirect.onAuthenticationFailure(
                                     request, response, exception
                             );

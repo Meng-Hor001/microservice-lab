@@ -1,0 +1,179 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+    /* 18px is the smallest text anywhere (root font-size is 18px, so 1rem = 18px).
+       xs and sm are remapped up to it; hierarchy comes from color and weight instead. */
+    --text-xs: 1rem;
+    --text-xs--line-height: 1.35;
+    --text-sm: 1rem;
+    --text-sm--line-height: 1.5;
+    --text-base: 1rem;
+    --text-base--line-height: 1.5;
+    --font-heading: var(--font-sans);
+    --font-sans: 'Google Sans', 'Kantumruy Pro', ui-sans-serif, system-ui, sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-rail-danger: var(--rail-danger);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-success: var(--success);
+    --color-success-soft: var(--success-soft);
+    --color-warning: var(--warning);
+    --color-warning-soft: var(--warning-soft);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+:root {
+    --background: #f2f2f1;
+    --foreground: #18212e;
+    --card: #ffffff;
+    --card-foreground: #18212e;
+    --popover: #ffffff;
+    --popover-foreground: #18212e;
+    --primary: #12615a;
+    --primary-foreground: #f4fbf9;
+    --secondary: #f4f4f5;
+    --secondary-foreground: #18212e;
+    --muted: #f4f4f5;
+    --muted-foreground: #626266;
+    --accent: #e6efec;
+    --accent-foreground: #0e4a45;
+    --destructive: #b4231b;
+    --success: #12615a;
+    --success-soft: #e3f1ee;
+    --warning: #9a5806;
+    --warning-soft: #fbf0dc;
+    --border: #e4e4e3;
+    --input: #d8d8d6;
+    --ring: #12615a;
+    --chart-1: #12615a;
+    --chart-2: #5d6875;
+    --chart-3: #9a5806;
+    --chart-4: #b4231b;
+    --chart-5: #18212e;
+    --radius: 0.625rem;
+    --sidebar: #141a1a;
+    --sidebar-foreground: #b3bcbb;
+    --sidebar-primary: #7fd1bf;
+    --sidebar-primary-foreground: #0b2321;
+    --sidebar-accent: #223230;
+    --rail-danger: #f47067;
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgb(255 255 255 / 0.1);
+    --sidebar-ring: #7fd1bf;
+}
+
+.dark {
+    /* Graphite ramp with the same teal accent as light mode, lifted for contrast on dark surfaces. */
+    --background: #111312;
+    --foreground: #ecedec;
+    --card: #181a19;
+    --card-foreground: #ecedec;
+    --popover: #1c1e1d;
+    --popover-foreground: #ecedec;
+    --primary: #5cc2ad;
+    --primary-foreground: #0b2321;
+    --secondary: #222524;
+    --secondary-foreground: #ecedec;
+    --muted: #222524;
+    --muted-foreground: #9b9f9d;
+    --accent: #1c2b28;
+    --accent-foreground: #bfe6dc;
+    --destructive: #f0705f;
+    --success: #6fcab6;
+    --success-soft: #15302b;
+    --warning: #e0a64a;
+    --warning-soft: #33270f;
+    --border: rgb(255 255 255 / 0.08);
+    --input: rgb(255 255 255 / 0.12);
+    --ring: #5cc2ad;
+    --chart-1: #5cc2ad;
+    --chart-2: #8a918f;
+    --chart-3: #e0a64a;
+    --chart-4: #f0705f;
+    --chart-5: #ecedec;
+    --sidebar: #0d0f0e;
+    --sidebar-foreground: #a5adac;
+    --sidebar-primary: #7fd1bf;
+    --sidebar-primary-foreground: #0b2321;
+    --sidebar-accent: #1c2726;
+    --sidebar-accent-foreground: #ffffff;
+    --sidebar-border: rgb(255 255 255 / 0.08);
+    --sidebar-ring: #7fd1bf;
+    --rail-danger: #f47067;
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+@layer base {
+  html { font-size: 18px; -webkit-font-smoothing: antialiased; }
+  :lang(km) body { line-height: 1.7; }
+  .tabular { font-variant-numeric: tabular-nums; }
+}
+
+/* Motion: one easing curve; entrances use transform and opacity only. */
+:root { --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1); }
+
+@keyframes rise { from { opacity: 0; transform: translateY(10px); } }
+@keyframes bar-grow { from { transform: scaleY(0); } }
+@keyframes tick-in { from { opacity: 0.12; } }
+@keyframes halo { from { transform: scale(1); opacity: 0.55; } to { transform: scale(2.8); opacity: 0; } }
+
+.motion-rise { animation: rise 480ms var(--ease-out-soft) both; animation-delay: calc(var(--i, 0) * 60ms); }
+.motion-bar { transform-origin: bottom; animation: bar-grow 640ms var(--ease-out-soft) both; animation-delay: calc(240ms + var(--i, 0) * var(--step, 40ms)); }
+.motion-tick { animation: tick-in 360ms ease-out both; animation-delay: calc(200ms + var(--i, 0) * 16ms); }
+.motion-halo { animation: halo 2.4s var(--ease-out-soft) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { animation-duration: 0.01ms !important; animation-delay: 0ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; }
+  .motion-halo { display: none; }
+}

@@ -7,6 +7,7 @@ import java.time.LocalDate;
 
 
 public record UpdateUserProfileRequest(
+        @Pattern(regexp = "^[A-Za-z0-9._-]{3,50}$", message = "must be 3-50 letters, numbers, dots, dashes or underscores") String username,
         @Email @Size(min = 1, max = 255) String email,
         @Pattern(regexp = "(?s).*\\S.*") @Size(max = 100) String givenName,
         @Pattern(regexp = "(?s).*\\S.*") @Size(max = 100) String familyName,
@@ -19,7 +20,7 @@ public record UpdateUserProfileRequest(
         @Size(max = 500) String websiteUrl,
         @Size(max = 50) String zoneinfo,
         @Pattern(regexp = "en|km") String locale,
-        @Pattern(regexp = "^\\+[1-9]\\d{1,14}$", message = "must use E.164 format") String phoneNumber,
+        @Pattern(regexp = "^$|^\\+[1-9]\\d{1,14}$", message = "must use E.164 format") String phoneNumber,
         @Valid AddressRequest address
 ) {
 }

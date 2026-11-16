@@ -1,5 +1,30 @@
 plugins {
     id 'spring-boot-common-conventions'
+    id 'com.github.node-gradle.node' version '7.1.0'
+}
+
+node {
+    // Uses Node.js already installed on your machine.
+    download = false
+    nodeProjectDir = file('../iam-web')
+}
+
+tasks.register('buildReact', com.github.gradle.node.npm.task.NpmTask) {
+    dependsOn tasks.named('npmInstall')
+    args = ['run', 'build']
+
+    inputs.files(fileTree('../iam-web') {
+        exclude 'node_modules/**', 'dist/**', '.git/**'
+    })
+    outputs.dir('../iam-web/dist')
+}
+
+tasks.named('processResources') {
+    dependsOn tasks.named('buildReact')
+
+    from('../iam-web/dist') {
+        into 'static/me'
+    }
 }
 
 dependencies {
