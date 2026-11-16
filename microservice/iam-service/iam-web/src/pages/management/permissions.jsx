@@ -275,8 +275,9 @@ export default function PermissionsPage() {
         toolbar={
           <>
             <SearchBox className="sm:max-w-sm" value={search} onChange={(q) => update({ q, page: 1 })} />
+            {perms.status === "refreshing" && <Spinner className="text-muted-foreground" />}
             <Select value={resource || "all"} onValueChange={(v) => update({ resource: v === "all" ? null : v, page: 1 })}>
-              <SelectTrigger className="w-full sm:w-48" aria-label={t("mgmt.permissions.resourceFilter")}>
+              <SelectTrigger className="w-full sm:ml-auto sm:w-48" aria-label={t("mgmt.permissions.resourceFilter")}>
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
@@ -290,7 +291,6 @@ export default function PermissionsPage() {
                 </SelectGroup>
               </SelectContent>
             </Select>
-            {perms.status === "refreshing" && <Spinner className="text-muted-foreground" />}
           </>
         }
         footer={

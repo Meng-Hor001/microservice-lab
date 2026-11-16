@@ -14,7 +14,7 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { Switch } from "@/components/ui/switch"
-import { FilterChip, FilterChips } from "@/components/filter-chips"
+import { FilterSelect } from "@/components/filter-select"
 import { useAccess } from "@/lib/access"
 import { allRoles, createUser, listUsers, setUserStatus } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
@@ -279,16 +279,18 @@ export default function UsersPage() {
               placeholder={t("mgmt.users.searchPlaceholder")}
               onChange={(q) => update({ q, page: 1 })}
             />
-            <FilterChips
-              value={status}
-              onValueChange={(v) => v && update({ status: v, page: 1 })}
-              aria-label={t("mgmt.common.status")}
-            >
-              <FilterChip value="all">{t("mgmt.common.all")}</FilterChip>
-              <FilterChip value="active">{t("mgmt.common.active")}</FilterChip>
-              <FilterChip value="inactive">{t("mgmt.common.inactive")}</FilterChip>
-            </FilterChips>
             {users.status === "refreshing" && <Spinner className="text-muted-foreground" />}
+            <FilterSelect
+              className="sm:ml-auto"
+              value={status}
+              onValueChange={(v) => update({ status: v, page: 1 })}
+              label={t("mgmt.common.status")}
+              options={[
+                { value: "all", label: t("mgmt.common.all") },
+                { value: "active", label: t("mgmt.common.active") },
+                { value: "inactive", label: t("mgmt.common.inactive") },
+              ]}
+            />
           </>
         }
         footer={

@@ -9,7 +9,7 @@ import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
-import { FilterChip, FilterChips } from "@/components/filter-chips"
+import { FilterSelect } from "@/components/filter-select"
 import { useAccess } from "@/lib/access"
 import { getUserLoginHistory, getUserSessions, revokeAllUserSessions, revokeUserSession } from "@/lib/admin-api"
 import { useI18n } from "@/lib/i18n-context"
@@ -238,19 +238,19 @@ export function UserSignInsTab({ user }) {
         {history.data && <CardDescription>{t("history.count", { n: history.data.total })}</CardDescription>}
       </CardHeader>
       <div className="flex flex-col gap-3 border-b px-5 py-4 sm:flex-row sm:items-center sm:justify-between">
-        <FilterChips
+        <FilterSelect
           value={result}
           onValueChange={(v) => {
-            if (!v) return
             setResult(v)
             setPage(1)
           }}
-          aria-label={t("history.resultFilter")}
-        >
-          <FilterChip value="all">{t("history.all")}</FilterChip>
-          <FilterChip value="success">{t("history.success")}</FilterChip>
-          <FilterChip value="failed">{t("history.failed")}</FilterChip>
-        </FilterChips>
+          label={t("history.resultFilter")}
+          options={[
+            { value: "all", label: t("history.all") },
+            { value: "success", label: t("history.success") },
+            { value: "failed", label: t("history.failed") },
+          ]}
+        />
         <Select
           value={range}
           onValueChange={(v) => {

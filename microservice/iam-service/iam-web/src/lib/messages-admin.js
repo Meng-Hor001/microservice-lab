@@ -46,6 +46,8 @@ export const adminMessages = {
       never: "Never",
       optional: "optional",
       selected: "{n} selected",
+      increase: "Increase",
+      decrease: "Decrease",
     },
     denied: {
       title: "You don't have access to Management",
@@ -259,6 +261,8 @@ export const adminMessages = {
       never: "មិនផុតកំណត់",
       optional: "ស្រេចចិត្ត",
       selected: "បានជ្រើស {n}",
+      increase: "បង្កើន",
+      decrease: "បន្ថយ",
     },
     denied: {
       title: "អ្នកមិនមានសិទ្ធិចូលការគ្រប់គ្រងទេ",

@@ -10,7 +10,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip
 import { useAccess } from "@/lib/access"
 import { allPermissions, allRoles, countUsers, getSettings, listAuditLogs, listClients, listSuspiciousLogins, listUsers } from "@/lib/admin-api"
 import { Checkup, SignInChart } from "@/components/overview-cards"
-import { FilterChip, FilterChips } from "@/components/filter-chips"
+import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ClientType } from "@/pages/management/clients"
 import { ActionTag } from "@/components/management/action-tag"
 import { useI18n } from "@/lib/i18n-context"
@@ -157,7 +157,22 @@ function AccessMap({ state }) {
             ? t("mgmt.overview.accessMapBody", { n: state.data.length, r: resources.length })
             : " "}
         </CardDescription>
-        <CardAction>
+        <CardAction className="flex items-center gap-2">
+          {state.status === "success" && resources.length > 0 && (
+            <Select value={status} onValueChange={setStatus}>
+              <SelectTrigger className="w-36" aria-label={t("mgmt.common.status")}>
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectGroup>
+                  <SelectItem value="all">{t("mgmt.common.all")}</SelectItem>
+                  <SelectItem value="active">{t("mgmt.overview.legendActive")}</SelectItem>
+                  <SelectItem value="inactive">{t("mgmt.overview.legendInactive")}</SelectItem>
+                  <SelectItem value="system">{t("mgmt.overview.legendSystem")}</SelectItem>
+                </SelectGroup>
+              </SelectContent>
+            </Select>
+          )}
           <Button asChild variant="ghost" size="sm">
             <Link to="/management/permissions">
               {t("mgmt.overview.viewAll")}
@@ -167,14 +182,6 @@ function AccessMap({ state }) {
         </CardAction>
       </CardHeader>
       <CardContent className="flex flex-1 flex-col gap-5">
-        {state.status === "success" && resources.length > 0 && (
-          <FilterChips value={status} onValueChange={(v) => v && setStatus(v)} aria-label={t("mgmt.common.status")}>
-            <FilterChip value="all">{t("mgmt.common.all")}</FilterChip>
-            <FilterChip value="active">{t("mgmt.overview.legendActive")}</FilterChip>
-            <FilterChip value="inactive">{t("mgmt.overview.legendInactive")}</FilterChip>
-            <FilterChip value="system">{t("mgmt.overview.legendSystem")}</FilterChip>
-          </FilterChips>
-        )}
         {state.status === "loading" ? (
           <div className="flex flex-col gap-3">
             {[0, 1, 2, 3, 4].map((i) => (
@@ -241,7 +248,7 @@ function RolesCard({ state }) {
   const canCreate = useAccess().can("role:create")
   const roles = (state.data ?? []).slice(0, 6)
   return (
-    <Card className="lg:col-span-4">
+    <Card>
       <CardHeader>
         <CardTitle>{t("mgmt.overview.rolesTitle")}</CardTitle>
         <CardAction className="flex gap-1">
@@ -278,10 +285,15 @@ function RolesCard({ state }) {
               <li key={r.uuid}>
                 <Link
                   to={`/management/roles/${r.uuid}`}
-                  className="flex h-11 items-center gap-3 rounded-md px-2 transition-colors hover:bg-muted/60 focus-visible:bg-muted/60 focus-visible:outline-none"
+                  className="flex items-center gap-3 rounded-md px-2 py-2 transition-colors hover:bg-muted/60 focus-visible:bg-muted/60 focus-visible:outline-none"
                 >
-                  <KeyTag name={r.name} />
-                  {r.system && <span className="text-muted-foreground">{t("mgmt.common.system")}</span>}
+                  <span className="flex min-w-0 flex-1 flex-col items-start gap-1">
+                    <span className="flex items-center gap-2">
+                      <KeyTag name={r.name} />
+                      {r.system && <span className="text-muted-foreground">{t("mgmt.common.system")}</span>}
+                    </span>
+                    {r.description && <span className="w-full truncate text-muted-foreground">{r.description}</span>}
+                  </span>
                   <StatusDot
                     className="ml-auto"
                     on={r.active}
@@ -324,7 +336,7 @@ function RecentActivityCard({ state }) {
   const { t, fmt } = useI18n()
   const items = state.data?.items ?? []
   return (
-    <Card className="lg:col-span-5">
+    <Card className="lg:col-span-7">
       <CardHeader>
         <CardTitle>{t("mgmt.overview.recent")}</CardTitle>
         <CardAction>
@@ -333,7 +345,7 @@ function RecentActivityCard({ state }) {
       </CardHeader>
       <CardContent>
         {state.status === "loading" ? (
-          <ListSkeleton rows={4} />
+          <ListSkeleton rows={7} />
         ) : state.status === "error" ? (
           <p className="text-muted-foreground">{t("mgmt.common.failed")}</p>
         ) : items.length === 0 ? (
@@ -361,7 +373,7 @@ function ClientsCard({ state }) {
   const { t } = useI18n()
   const items = state.data?.items ?? []
   return (
-    <Card className="lg:col-span-3">
+    <Card>
       <CardHeader>
         <CardTitle>{t("mgmt.overview.clientsTitle")}</CardTitle>
         <CardAction>
@@ -426,7 +438,7 @@ export default function ManagementOverview() {
   const roles = useAsync(() => (can("role:read") ? allRoles() : denied()))
   const permissions = useAsync(() => (can("permission:read") ? allPermissions() : denied()))
   const clients = useAsync(() => (can("client:read") ? listClients({ size: 4 }) : denied()))
-  const recent = useAsync(() => (canAudit ? listAuditLogs({ size: 5 }) : denied()))
+  const recent = useAsync(() => (canAudit ? listAuditLogs({ size: 7 }) : denied()))
   const suspicious = useAsync(() => (canUsers ? listSuspiciousLogins({ days: 1, threshold: 5 }) : denied()))
   const settings = useAsync(() => (can("settings:read") ? getSettings() : denied()))
   // Twice the visible range, so the chart can compare with the previous period.
@@ -539,10 +551,15 @@ export default function ManagementOverview() {
         </div>
       )}
 
-      <div className="grid items-start gap-6 lg:grid-cols-12">
+      {/* Activity on the left; roles and clients stacked on the right so both columns end level. */}
+      <div className="grid gap-6 lg:grid-cols-12">
         {canAudit && <RecentActivityCard state={recent} />}
-        {can("role:read") && <RolesCard state={roles} />}
-        {can("client:read") && <ClientsCard state={clients} />}
+        {(can("role:read") || can("client:read")) && (
+          <div className={cn("flex flex-col gap-6", canAudit ? "lg:col-span-5" : "lg:col-span-12")}>
+            {can("role:read") && <RolesCard state={roles} />}
+            {can("client:read") && <ClientsCard state={clients} />}
+          </div>
+        )}
       </div>
 
       {can("permission:read") && <AccessMap state={permissions} />}

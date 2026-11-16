@@ -13,7 +13,7 @@ import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/c
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
-import { FilterChip, FilterChips } from "@/components/filter-chips"
+import { FilterSelect } from "@/components/filter-select"
 import { useAccess } from "@/lib/access"
 import { allPermissions, createRole, deleteRole, listRoles } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
@@ -230,16 +230,18 @@ export default function RolesPage() {
         toolbar={
           <>
             <SearchBox className="sm:max-w-sm" value={search} onChange={(q) => update({ q, page: 1 })} />
-            <FilterChips
-              value={status}
-              onValueChange={(v) => v && update({ status: v, page: 1 })}
-              aria-label={t("mgmt.common.status")}
-            >
-              <FilterChip value="all">{t("mgmt.common.all")}</FilterChip>
-              <FilterChip value="active">{t("mgmt.common.active")}</FilterChip>
-              <FilterChip value="inactive">{t("mgmt.common.inactive")}</FilterChip>
-            </FilterChips>
             {roles.status === "refreshing" && <Spinner className="text-muted-foreground" />}
+            <FilterSelect
+              className="sm:ml-auto"
+              value={status}
+              onValueChange={(v) => update({ status: v, page: 1 })}
+              label={t("mgmt.common.status")}
+              options={[
+                { value: "all", label: t("mgmt.common.all") },
+                { value: "active", label: t("mgmt.common.active") },
+                { value: "inactive", label: t("mgmt.common.inactive") },
+              ]}
+            />
           </>
         }
         footer={
