@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.restapi.controller;
 
+import kh.edu.istad.platform.restapi.audit.Audited;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.Size;
 import kh.edu.istad.platform.iam.application.query.RoleFilterQuery;
@@ -38,6 +39,7 @@ public class RoleController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('role:create')")
+    @Audited(action = "ROLE_CREATED", target = "ROLE")
     public ResponseEntity<RoleResponse> create(
             @Valid @RequestBody CreateRoleRequest request
     ) {
@@ -99,6 +101,7 @@ public class RoleController {
 
     @PatchMapping("/{uuid}")
     @PreAuthorize("hasAuthority('role:update')")
+    @Audited(action = "ROLE_UPDATED", target = "ROLE")
     public RoleResponse update(
             @PathVariable UUID uuid,
             @Valid @RequestBody UpdateRoleRequest request
@@ -110,6 +113,7 @@ public class RoleController {
 
     @DeleteMapping("/{uuid}")
     @PreAuthorize("hasAuthority('role:delete')")
+    @Audited(action = "ROLE_DELETED", target = "ROLE")
     public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
         deleteRole.execute(uuid);
 
@@ -118,6 +122,7 @@ public class RoleController {
 
     @PostMapping("/{uuid}/activate")
     @PreAuthorize("hasAuthority('role:update')")
+    @Audited(action = "ROLE_ACTIVATED", target = "ROLE")
     public ResponseEntity<Void> activate(@PathVariable UUID uuid) {
         activateRole.execute(uuid);
 
@@ -126,6 +131,7 @@ public class RoleController {
 
     @PostMapping("/{uuid}/deactivate")
     @PreAuthorize("hasAuthority('role:update')")
+    @Audited(action = "ROLE_DEACTIVATED", target = "ROLE")
     public ResponseEntity<Void> deactivate(@PathVariable UUID uuid) {
         deactivateRole.execute(uuid);
 
@@ -134,6 +140,7 @@ public class RoleController {
 
     @PostMapping("/{uuid}/permissions")
     @PreAuthorize("hasAuthority('role:assign')")
+    @Audited(action = "ROLE_PERMISSION_ASSIGNED", target = "ROLE")
     public List<PermissionAssignmentResponse> assignPermissions(
             @PathVariable UUID uuid,
             @Valid @RequestBody AssignPermissionsToRoleRequest request
@@ -146,6 +153,7 @@ public class RoleController {
 
     @DeleteMapping("/{uuid}/permissions/{permissionUuid}")
     @PreAuthorize("hasAuthority('role:assign')")
+    @Audited(action = "ROLE_PERMISSION_REVOKED", target = "ROLE")
     public ResponseEntity<Void> revokePermission(
             @PathVariable UUID uuid,
             @PathVariable UUID permissionUuid,

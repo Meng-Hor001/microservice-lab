@@ -19,3 +19,11 @@ databaseChangeLog:
       file: db.changelog/change/009-seed-client-create-permission.sql
   - include:
       file: db.changelog/change/010-account-security.sql
+  - include:
+      file: db.changelog/change/011-audit-logs.sql
+  - include:
+      file: db.changelog/change/012-seed-audit-read-permission.sql
+  - include:
+      file: db.changelog/change/013-seed-client-management-permissions.sql
+  - include:
+      file: db.changelog/change/014-system-settings.sql

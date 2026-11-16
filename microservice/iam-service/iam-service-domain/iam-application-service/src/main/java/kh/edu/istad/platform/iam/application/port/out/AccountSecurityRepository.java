@@ -6,6 +6,7 @@ import kh.edu.istad.platform.iam.application.dto.ClientInfo;
 import kh.edu.istad.platform.iam.application.dto.DeactivationResult;
 import kh.edu.istad.platform.iam.application.dto.LoginHistoryResult;
 import kh.edu.istad.platform.iam.application.dto.PageResult;
+import kh.edu.istad.platform.iam.application.dto.SuspiciousLoginResult;
 
 import java.time.Instant;
 import java.util.List;
@@ -22,6 +23,8 @@ public interface AccountSecurityRepository {
     UUID registerSession(UUID userId, String authorizationId, ClientInfo client, Instant expiresAt, Instant now);
 
     PageResult<LoginHistoryResult> loginHistory(UUID userId, String result, Instant since, int page, int size);
+
+    List<SuspiciousLoginResult> suspiciousLogins(Instant since, int threshold, int limit);
 
     void recordLogin(UUID userId, boolean success, String method, ClientInfo client, Instant now);
 

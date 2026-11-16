@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.restapi.controller;
 
+import kh.edu.istad.platform.restapi.audit.Audited;
 import jakarta.validation.Valid;
 
 import java.net.URI;
@@ -47,6 +48,7 @@ public class UserController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('user:create')")
+    @Audited(action = "USER_CREATED", target = "USER")
     public ResponseEntity<UserResponse> create(
             @Valid @RequestBody CreateUserRequest request
     ) {
@@ -120,6 +122,7 @@ public class UserController {
 
     @PatchMapping("/{uuid}")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "USER_UPDATED", target = "USER")
     public UserResponse updateProfile(
             @PathVariable UUID uuid,
             @Valid @RequestBody UpdateUserProfileRequest request
@@ -135,6 +138,7 @@ public class UserController {
 
     @DeleteMapping("/{uuid}")
     @PreAuthorize("hasAuthority('user:delete')")
+    @Audited(action = "USER_DELETED", target = "USER")
     public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
         deleteUser.execute(uuid);
 
@@ -143,6 +147,7 @@ public class UserController {
 
     @PostMapping("/{uuid}/enable")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "USER_ENABLED", target = "USER")
     public ResponseEntity<Void> enable(@PathVariable UUID uuid) {
         enableUser.execute(uuid);
 
@@ -151,6 +156,7 @@ public class UserController {
 
     @PostMapping("/{uuid}/disable")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "USER_DISABLED", target = "USER")
     public ResponseEntity<Void> disable(@PathVariable UUID uuid) {
         disableUser.execute(uuid);
 
@@ -159,6 +165,7 @@ public class UserController {
 
     @PostMapping("/{uuid}/lock")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "USER_LOCKED", target = "USER")
     public ResponseEntity<Void> lock(@PathVariable UUID uuid) {
         lockUser.execute(uuid);
 
@@ -167,6 +174,7 @@ public class UserController {
 
     @PostMapping("/{uuid}/unlock")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "USER_UNLOCKED", target = "USER")
     public ResponseEntity<Void> unlock(@PathVariable UUID uuid) {
         unlockUser.execute(uuid);
 
@@ -175,6 +183,7 @@ public class UserController {
 
     @PutMapping("/{uuid}/password")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "USER_PASSWORD_RESET", target = "USER")
     public ResponseEntity<Void> resetPassword(
             @PathVariable UUID uuid,
             @Valid @RequestBody ResetUserPasswordRequest request
@@ -186,6 +195,7 @@ public class UserController {
 
     @PostMapping("/{uuid}/roles")
     @PreAuthorize("hasAuthority('user:assign')")
+    @Audited(action = "ROLE_ASSIGNED", target = "USER")
     public List<RoleAssignmentResponse> assignRoles(
             @PathVariable UUID uuid,
             @Valid @RequestBody AssignRolesToUserRequest request
@@ -198,6 +208,7 @@ public class UserController {
 
     @DeleteMapping("/{uuid}/roles/{roleUuid}")
     @PreAuthorize("hasAuthority('user:assign')")
+    @Audited(action = "ROLE_REVOKED", target = "USER")
     public ResponseEntity<Void> revokeRole(
             @PathVariable UUID uuid,
             @PathVariable UUID roleUuid,
@@ -211,6 +222,7 @@ public class UserController {
 
     @PostMapping("/{uuid}/permissions")
     @PreAuthorize("hasAuthority('user:assign')")
+    @Audited(action = "PERMISSION_GRANTED", target = "USER")
     public List<PermissionGrantResponse> grantPermissions(
             @PathVariable UUID uuid,
             @Valid @RequestBody GrantPermissionsToUserRequest request
@@ -223,6 +235,7 @@ public class UserController {
 
     @DeleteMapping("/{uuid}/permissions/{permissionUuid}")
     @PreAuthorize("hasAuthority('user:assign')")
+    @Audited(action = "PERMISSION_REVOKED", target = "USER")
     public ResponseEntity<Void> revokePermission(
             @PathVariable UUID uuid,
             @PathVariable UUID permissionUuid,
@@ -247,6 +260,7 @@ public class UserController {
 
     @DeleteMapping("/{uuid}/identities/{identityUuid}")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "IDENTITY_UNLINKED", target = "USER")
     public ResponseEntity<Void> unlinkIdentity(
             @PathVariable UUID uuid,
             @PathVariable UUID identityUuid

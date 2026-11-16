@@ -189,10 +189,12 @@ class PartTwoIntegrationTest {
 
     @Test
     void freshDatabaseRunsEveryMigrationAndSeedsAccess() {
-        assertEquals(9, jdbc.queryForObject("select count(*) from databasechangelog", Integer.class));
+        // 14 changesets: 001-014 (011 audit logs, 012-014 audit/client/settings permissions + settings table).
+        assertEquals(14, jdbc.queryForObject("select count(*) from databasechangelog", Integer.class));
         assertEquals(2, jdbc.queryForObject("select count(*) from roles where name in ('ADMIN','USER') and is_system", Integer.class));
-        assertEquals(15, jdbc.queryForObject("select count(*) from permissions where is_system", Integer.class));
-        assertEquals(18, jdbc.queryForObject("select count(*) from role_permissions rp join roles r on r.id=rp.role_id where r.name in ('ADMIN','USER')", Integer.class));
+        // 15 original + audit:read + client:read/update/delete + settings:read/update
+        assertEquals(21, jdbc.queryForObject("select count(*) from permissions where is_system", Integer.class));
+        assertEquals(24, jdbc.queryForObject("select count(*) from role_permissions rp join roles r on r.id=rp.role_id where r.name in ('ADMIN','USER')", Integer.class));
         assertEquals(7, jdbc.queryForObject("select count(*) from information_schema.tables where table_schema='public' and table_name in ('users','roles','permissions','identities','user_roles','role_permissions','user_permissions')", Integer.class));
     }
 

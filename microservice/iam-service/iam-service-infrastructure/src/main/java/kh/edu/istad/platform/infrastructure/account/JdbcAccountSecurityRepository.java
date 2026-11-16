@@ -6,6 +6,7 @@ import kh.edu.istad.platform.iam.application.dto.ClientInfo;
 import kh.edu.istad.platform.iam.application.dto.DeactivationResult;
 import kh.edu.istad.platform.iam.application.dto.LoginHistoryResult;
 import kh.edu.istad.platform.iam.application.dto.PageResult;
+import kh.edu.istad.platform.iam.application.dto.SuspiciousLoginResult;
 import kh.edu.istad.platform.iam.application.exception.ResourceNotFoundException;
 import kh.edu.istad.platform.iam.application.exception.InvalidAccountSecurityRequestException;
 import kh.edu.istad.platform.iam.application.port.out.AccountSecurityRepository;
@@ -126,6 +127,27 @@ public class JdbcAccountSecurityRepository implements AccountSecurityRepository 
         var items = jdbc.query("SELECT * FROM account_login_history WHERE " + conditions
                 + " ORDER BY occurred_at DESC, id LIMIT ? OFFSET ?", loginMapper(), arguments.toArray());
         return new PageResult<>(items, page, size, count, (int) ((count + size - 1) / size));
+    }
+
+    @Override
+    public List<SuspiciousLoginResult> suspiciousLogins(Instant since, int threshold, int limit) {
+        return jdbc.query("""
+                SELECT h.user_uuid, u.username,
+                       COUNT(*) AS failed_count,
+                       COUNT(DISTINCT h.ip_address) AS distinct_ips,
+                       MAX(h.occurred_at) AS last_failed_at
+                FROM account_login_history h
+                JOIN users u ON u.uuid = h.user_uuid
+                WHERE h.success = FALSE AND h.occurred_at >= ?
+                GROUP BY h.user_uuid, u.username
+                HAVING COUNT(*) >= ?
+                ORDER BY failed_count DESC, last_failed_at DESC
+                LIMIT ?
+                """, (rs, row) -> new SuspiciousLoginResult(
+                rs.getObject("user_uuid", UUID.class), rs.getString("username"),
+                rs.getLong("failed_count"), rs.getLong("distinct_ips"),
+                rs.getTimestamp("last_failed_at").toInstant()
+        ), timestamp(since), threshold, limit);
     }
 
     @Override

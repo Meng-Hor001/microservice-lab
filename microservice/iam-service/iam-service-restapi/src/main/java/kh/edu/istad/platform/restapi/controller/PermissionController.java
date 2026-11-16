@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.restapi.controller;
 
+import kh.edu.istad.platform.restapi.audit.Audited;
 import jakarta.validation.Valid;
 import kh.edu.istad.platform.iam.application.query.PermissionFilterQuery;
 import kh.edu.istad.platform.iam.application.usecase.*;
@@ -31,6 +32,7 @@ public class PermissionController {
 
     @PostMapping
     @PreAuthorize("hasAuthority('permission:create')")
+    @Audited(action = "PERMISSION_CREATED", target = "PERMISSION")
     public ResponseEntity<PermissionResponse> create(
             @Valid @RequestBody CreatePermissionRequest request
     ) {
@@ -96,6 +98,7 @@ public class PermissionController {
 
     @PatchMapping("/{uuid}")
     @PreAuthorize("hasAuthority('permission:update')")
+    @Audited(action = "PERMISSION_UPDATED", target = "PERMISSION")
     public PermissionResponse update(
             @PathVariable UUID uuid,
             @Valid @RequestBody UpdatePermissionRequest request
@@ -107,6 +110,7 @@ public class PermissionController {
 
     @DeleteMapping("/{uuid}")
     @PreAuthorize("hasAuthority('permission:delete')")
+    @Audited(action = "PERMISSION_DELETED", target = "PERMISSION")
     public ResponseEntity<Void> delete(@PathVariable UUID uuid) {
         deletePermission.execute(uuid);
 
@@ -115,6 +119,7 @@ public class PermissionController {
 
     @PostMapping("/{uuid}/activate")
     @PreAuthorize("hasAuthority('permission:update')")
+    @Audited(action = "PERMISSION_ACTIVATED", target = "PERMISSION")
     public ResponseEntity<Void> activate(@PathVariable UUID uuid) {
         activatePermission.execute(uuid);
 
@@ -123,6 +128,7 @@ public class PermissionController {
 
     @PostMapping("/{uuid}/deactivate")
     @PreAuthorize("hasAuthority('permission:update')")
+    @Audited(action = "PERMISSION_DEACTIVATED", target = "PERMISSION")
     public ResponseEntity<Void> deactivate(@PathVariable UUID uuid) {
         deactivatePermission.execute(uuid);
 

@@ -30,6 +30,11 @@ public class AccountSecurityUseCaseConfig {
     }
 
     @Bean
+    public ListSuspiciousLoginsUseCase listSuspiciousLoginsUseCase(AccountSecurityRepository accounts, Clock clock) {
+        return new ListSuspiciousLoginsUseCase(accounts, clock);
+    }
+
+    @Bean
     public ListAccountActivityUseCase listAccountActivityUseCase(AccountSecurityRepository accounts) {
         return new ListAccountActivityUseCase(accounts);
     }

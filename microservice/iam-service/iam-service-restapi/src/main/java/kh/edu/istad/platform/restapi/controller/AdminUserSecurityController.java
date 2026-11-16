@@ -1,5 +1,6 @@
 package kh.edu.istad.platform.restapi.controller;
 
+import kh.edu.istad.platform.restapi.audit.Audited;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.Pattern;
@@ -52,6 +53,7 @@ public class AdminUserSecurityController {
 
     @DeleteMapping("/sessions/{sessionId}")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "SESSION_REVOKED", target = "USER")
     public ResponseEntity<Void> revokeSession(@PathVariable UUID uuid, @PathVariable UUID sessionId) {
         revokeSessions.revokeOne(uuid, sessionId);
         return ResponseEntity.noContent().build();
@@ -59,6 +61,7 @@ public class AdminUserSecurityController {
 
     @DeleteMapping("/sessions")
     @PreAuthorize("hasAuthority('user:update')")
+    @Audited(action = "SESSIONS_REVOKED_ALL", target = "USER")
     public AccountSecurityController.TerminationResponse revokeAllSessions(@PathVariable UUID uuid) {
         getUser.execute(uuid);
         return new AccountSecurityController.TerminationResponse(revokeSessions.revokeAll(uuid));
