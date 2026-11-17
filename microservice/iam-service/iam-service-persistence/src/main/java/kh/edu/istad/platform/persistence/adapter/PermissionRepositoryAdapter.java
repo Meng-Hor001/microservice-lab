@@ -9,7 +9,9 @@ import kh.edu.istad.platform.iam.application.query.PermissionFilterQuery;
 import kh.edu.istad.platform.iam.domain.entity.Permission;
 import kh.edu.istad.platform.persistence.entity.PermissionJpaEntity;
 import kh.edu.istad.platform.persistence.mapper.PermissionMapper;
+import kh.edu.istad.platform.persistence.repository.PermissionCountView;
 import kh.edu.istad.platform.persistence.repository.PermissionJpaRepository;
+import kh.edu.istad.platform.persistence.repository.RolePermissionJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,13 +19,16 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PermissionRepositoryAdapter implements PermissionRepository {
     private final PermissionJpaRepository repository;
+    private final RolePermissionJpaRepository rolePermissions;
     private final PermissionMapper mapper;
 
     @Override
@@ -149,5 +154,11 @@ public class PermissionRepositoryAdapter implements PermissionRepository {
 
         return mapper.toDomain(repository.saveAndFlush(entity));
     }
-}
 
+    @Override
+    public Map<Long, Long> countRoles(Collection<Long> permissionIds) {
+        if (permissionIds.isEmpty()) return Map.of();
+        return rolePermissions.countActiveRolesByPermissionIds(permissionIds, Instant.now()).stream()
+                .collect(Collectors.toMap(PermissionCountView::getPermissionId, PermissionCountView::getTotal));
+    }
+}

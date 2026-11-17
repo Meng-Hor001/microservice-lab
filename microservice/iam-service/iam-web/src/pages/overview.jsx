@@ -1,18 +1,14 @@
 import { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useSearchParams } from "react-router-dom"
 import {
   ActivityIcon,
   ArrowRightIcon,
   LaptopIcon,
-  LinkIcon,
-  LogInIcon,
-  MonitorSmartphoneIcon,
-  ShieldAlertIcon,
   SmartphoneIcon,
   TabletIcon,
 } from "lucide-react"
 import { ProviderLogo } from "@/components/provider-logo"
-import { Stat } from "@/components/stat"
+import { TopbarTabs } from "@/components/top-tabs"
 import { Checkup, SignInChart } from "@/components/overview-cards"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -27,6 +23,7 @@ import { cn } from "@/lib/utils"
 const DAY = 86400000
 const DEVICE_ICON = { desktop: LaptopIcon, laptop: LaptopIcon, mobile: SmartphoneIcon, phone: SmartphoneIcon, tablet: TabletIcon }
 const SIX_MONTHS = 183 * DAY
+const TABS = ["checkup", "signIns", "devices", "activity", "linked"]
 
 // The API caps a page at 100 rows; read up to 5 pages so the chart covers busy accounts too.
 async function loadHistory(days) {
@@ -53,7 +50,7 @@ function Devices({ sessions }) {
           {sessions.data?.length ?? "–"}
         </span>
       </div>
-      <ul className="flex flex-col gap-1">
+      <ul className="grid gap-x-8 gap-y-1 md:grid-cols-2">
         {sessions.status === "loading" &&
           [0, 1, 2].map((i) => <Skeleton key={i} className="h-14" />)}
         {list.map((s) => {
@@ -148,7 +145,7 @@ function LinkedAccounts({ providers }) {
             {[0, 1, 2].map((i) => <Skeleton key={i} className="h-10" />)}
           </div>
         ) : (
-          <ul className="flex flex-col gap-1">
+          <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2 xl:grid-cols-4">
             {(providers.data ?? []).map((p) => (
               <li key={p.id} className="flex items-center gap-3 py-2">
                 <span className="flex size-9 shrink-0 items-center justify-center rounded-md bg-muted">
@@ -174,6 +171,8 @@ export default function OverviewPage() {
   const { user } = useAccount()
   const [days, setDays] = useState(7)
   const [now] = useState(() => Date.now())
+  const [params] = useSearchParams()
+  const tab = TABS.includes(params.get("tab")) ? params.get("tab") : TABS[0]
 
   const sessions = useAsync(getSessions)
   const providers = useAsync(getProviders)
@@ -183,8 +182,6 @@ export default function OverviewPage() {
   const month = useAsync(() => loadHistory(30))
 
   const monthEntries = month.data ?? []
-  const signIns = monthEntries.filter((e) => e.result === "success").length
-  const failed30 = monthEntries.filter((e) => e.result !== "success").length
   const failed7 = monthEntries.filter((e) => e.result !== "success" && now - new Date(e.at) < 7 * DAY).length
   const linkedCount = (providers.data ?? []).filter((p) => p.linked).length
 
@@ -207,39 +204,40 @@ export default function OverviewPage() {
   ]
   const checksLoading = !user || providers.status === "loading" || month.status === "loading" || activity.status === "loading"
 
-  const stats = [
-    { icon: MonitorSmartphoneIcon, value: sessions.data?.length ?? "–", unit: t("overview.stats.live"), label: t("overview.stats.devices"), strong: true, to: "/sessions" },
-    { icon: LogInIcon, value: month.data ? signIns : "–", label: t("overview.stats.signIns"), to: "/login-history" },
-    { icon: ShieldAlertIcon, value: month.data ? failed30 : "–", label: t("overview.stats.failed"), to: "/login-history" },
-    {
-      icon: LinkIcon,
-      value: providers.data ? linkedCount : "–",
-      unit: providers.data ? t("overview.stats.of", { n: providers.data.length }) : null,
-      label: t("overview.stats.linked"),
-      to: "/linked-accounts",
-    },
-  ]
+
+  const badges = {
+    checkup: checksLoading ? 0 : checks.filter((c) => !c.ok).length,
+    signIns: failed7,
+    devices: (sessions.data ?? []).filter((s) => !s.current).length,
+  }
+
+  // One section per tab; the tab bar itself lives in the top header.
+  const sections = {
+    checkup: <Checkup checks={checks} loading={checksLoading} />,
+    signIns: <SignInChart history={history} days={days} setDays={setDays} />,
+    devices: <Devices sessions={sessions} />,
+    activity: <RecentActivity activity={activity} />,
+    linked: <LinkedAccounts providers={providers} />,
+  }
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="motion-rise flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-        <h1 className="text-3xl leading-tight font-medium tracking-tight">{t("overview.title")}</h1>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:flex-wrap sm:gap-x-8">
-          {stats.map((s) => (
-            <Stat key={s.label} {...s} />
-          ))}
-        </div>
-      </div>
+      <TopbarTabs
+        label={t("overview.title")}
+        items={TABS.map((key) => ({
+          key,
+          to: { search: `?tab=${key}` },
+          label: t(`overview.tabs.${key}`),
+          active: key === tab,
+          badge: badges[key] ?? 0,
+        }))}
+      />
 
-      <div className="grid gap-6 lg:grid-cols-12">
-        <Checkup checks={checks} loading={checksLoading} />
-        <SignInChart history={history} days={days} setDays={setDays} />
-      </div>
+      <h1 className="motion-rise text-3xl leading-tight font-medium tracking-tight">{t("overview.title")}</h1>
 
-      <div className="grid gap-6 lg:grid-cols-12">
-        <Devices sessions={sessions} />
-        <RecentActivity activity={activity} />
-        <LinkedAccounts providers={providers} />
+      {/* Flex, not grid: each section's lg:col-span-* is ignored so it fills the width. */}
+      <div key={tab} className="flex flex-col gap-6">
+        {sections[tab]}
       </div>
     </div>
   )

@@ -1,4 +1,9 @@
 spring:
+  servlet:
+    multipart:
+      # Profile photos are capped at 2 MB; leave room for the form encoding.
+      max-file-size: 2MB
+      max-request-size: 3MB
   security:
     oauth2:
       resourceserver:

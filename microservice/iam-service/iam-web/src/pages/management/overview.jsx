@@ -1,14 +1,14 @@
 import { useMemo, useState } from "react"
-import { Link } from "react-router-dom"
-import { AppWindowIcon, ChevronRightIcon, KeyRoundIcon, MonitorSmartphoneIcon, PlusIcon, ServerIcon, ShieldCheckIcon, UsersIcon } from "lucide-react"
-import { Stat } from "@/components/stat"
+import { Link, useSearchParams } from "react-router-dom"
+import { ActivityIcon, ChevronRightIcon, KeyRoundIcon, MonitorSmartphoneIcon, PlusIcon, ServerIcon, UsersIcon } from "lucide-react"
+import { TopbarTabs } from "@/components/top-tabs"
 import { KeyTag, StatusDot } from "@/components/management/states"
 import { Button } from "@/components/ui/button"
 import { Card, CardAction, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip"
 import { useAccess } from "@/lib/access"
-import { allPermissions, allRoles, countUsers, getSettings, listAuditLogs, listClients, listSuspiciousLogins, listUsers } from "@/lib/admin-api"
+import { allPermissions, allRoles, getSettings, listAuditLogs, listClients, listSuspiciousLogins, listUsers } from "@/lib/admin-api"
 import { Checkup, SignInChart } from "@/components/overview-cards"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { ClientType } from "@/pages/management/clients"
@@ -67,6 +67,11 @@ function AccessCell({ permission, resource, action, dim }) {
       <TooltipContent side="top" className="flex max-w-64 flex-col items-start gap-1">
         <span className="font-mono">{permission.name}</span>
         {permission.description && <span className="opacity-70">{permission.description}</span>}
+        {permission.roleCount != null && (
+          <span className="tabular opacity-70">
+            {t("mgmt.permissions.roles")}: {permission.roleCount}
+          </span>
+        )}
       </TooltipContent>
     </Tooltip>
   )
@@ -149,7 +154,7 @@ function AccessMap({ state }) {
   }, [state.data])
 
   return (
-    <Card>
+    <Card className="motion-rise">
       <CardHeader>
         <CardTitle>{t("mgmt.overview.accessMap")}</CardTitle>
         <CardDescription className="tabular">
@@ -246,9 +251,9 @@ function AccessMap({ state }) {
 function RolesCard({ state }) {
   const { t } = useI18n()
   const canCreate = useAccess().can("role:create")
-  const roles = (state.data ?? []).slice(0, 6)
+  const roles = (state.data ?? []).slice(0, 8)
   return (
-    <Card>
+    <Card className="motion-rise">
       <CardHeader>
         <CardTitle>{t("mgmt.overview.rolesTitle")}</CardTitle>
         <CardAction className="flex gap-1">
@@ -280,7 +285,7 @@ function RolesCard({ state }) {
         ) : roles.length === 0 ? (
           <p className="text-muted-foreground">{t("mgmt.overview.noRoles")}</p>
         ) : (
-          <ul className="-mx-2 flex flex-col">
+          <ul className="-mx-2 grid gap-x-8 gap-y-1 md:grid-cols-2">
             {roles.map((r) => (
               <li key={r.uuid}>
                 <Link
@@ -294,6 +299,20 @@ function RolesCard({ state }) {
                     </span>
                     {r.description && <span className="w-full truncate text-muted-foreground">{r.description}</span>}
                   </span>
+                  {r.permissionCount != null && (
+                    <span className="tabular flex shrink-0 items-center gap-3 text-muted-foreground [&_svg]:size-3.5">
+                      <span className="flex items-center gap-1" title={t("mgmt.roles.permissions")}>
+                        <KeyRoundIcon aria-hidden />
+                        <span className="sr-only">{t("mgmt.roles.permissions")}</span>
+                        {r.permissionCount}
+                      </span>
+                      <span className="flex items-center gap-1" title={t("mgmt.roles.users")}>
+                        <UsersIcon aria-hidden />
+                        <span className="sr-only">{t("mgmt.roles.users")}</span>
+                        {r.userCount}
+                      </span>
+                    </span>
+                  )}
                   <StatusDot
                     className="ml-auto"
                     on={r.active}
@@ -336,7 +355,7 @@ function RecentActivityCard({ state }) {
   const { t, fmt } = useI18n()
   const items = state.data?.items ?? []
   return (
-    <Card className="lg:col-span-7">
+    <Card className="motion-rise">
       <CardHeader>
         <CardTitle>{t("mgmt.overview.recent")}</CardTitle>
         <CardAction>
@@ -351,9 +370,12 @@ function RecentActivityCard({ state }) {
         ) : items.length === 0 ? (
           <p className="text-muted-foreground">{t("mgmt.overview.recentEmpty")}</p>
         ) : (
-          <ul className="flex flex-col gap-1">
+          <ul className="flex flex-col">
             {items.map((e) => (
-              <li key={e.id} className="flex items-center gap-3 py-1.5">
+              <li key={e.id} className="flex items-center gap-3 border-b border-foreground/6 py-3 last:border-0">
+                <span className="flex size-8 shrink-0 items-center justify-center rounded-md bg-muted text-muted-foreground [&_svg]:size-4">
+                  <ActivityIcon />
+                </span>
                 <span className="flex min-w-0 flex-1 flex-col">
                   <ActionTag action={e.action} bare />
                   <span className="truncate text-muted-foreground">{e.actor}</span>
@@ -373,7 +395,7 @@ function ClientsCard({ state }) {
   const { t } = useI18n()
   const items = state.data?.items ?? []
   return (
-    <Card>
+    <Card className="motion-rise">
       <CardHeader>
         <CardTitle>{t("mgmt.overview.clientsTitle")}</CardTitle>
         <CardAction>
@@ -388,7 +410,7 @@ function ClientsCard({ state }) {
         ) : items.length === 0 ? (
           <p className="text-muted-foreground">{t("mgmt.overview.noClients")}</p>
         ) : (
-          <ul className="flex flex-col gap-1">
+          <ul className="grid gap-x-8 gap-y-1 sm:grid-cols-2 xl:grid-cols-4">
             {items.map((c) => (
               <li key={c.clientId} className="flex items-center gap-3 py-1.5">
                 {/* Public clients run in a browser or on a phone; confidential ones on a server that keeps a secret. */}
@@ -432,13 +454,14 @@ export default function ManagementOverview() {
   const canUsers = can("user:read")
   const canAudit = can("audit:read")
   const [days, setDays] = useState(7)
+  const [now] = useState(() => Date.now())
+  const [params] = useSearchParams()
 
   const users = useAsync(() => (canUsers ? listUsers({ size: 100 }) : denied()))
-  const active = useAsync(() => (canUsers ? countUsers({ enabled: true }) : denied()))
   const roles = useAsync(() => (can("role:read") ? allRoles() : denied()))
   const permissions = useAsync(() => (can("permission:read") ? allPermissions() : denied()))
-  const clients = useAsync(() => (can("client:read") ? listClients({ size: 4 }) : denied()))
-  const recent = useAsync(() => (canAudit ? listAuditLogs({ size: 7 }) : denied()))
+  const clients = useAsync(() => (can("client:read") ? listClients({ size: 8 }) : denied()))
+  const recent = useAsync(() => (canAudit ? listAuditLogs({ size: 10 }) : denied()))
   const suspicious = useAsync(() => (canUsers ? listSuspiciousLogins({ days: 1, threshold: 5 }) : denied()))
   const settings = useAsync(() => (can("settings:read") ? getSettings() : denied()))
   // Twice the visible range, so the chart can compare with the previous period.
@@ -495,74 +518,68 @@ export default function ManagementOverview() {
   ].filter(Boolean)
   const checksLoading = [users, suspicious, permissions, settings].some((x) => x.status === "loading")
 
-  const count = (state, value) => (state.status === "success" ? value : "–")
-  const stats = [
-    {
-      icon: UsersIcon,
-      value: count(active, active.data),
-      unit: users.data ? t("mgmt.overview.ofTotal", { n: users.data.total }) : null,
-      label: t("mgmt.overview.activeUsers"),
-      to: "/management/users",
-      strong: true,
-      show: canUsers,
+  const failed7 = (signIns.data ?? []).filter((e) => e.result !== "success" && now - new Date(e.at) < 7 * DAY).length
+  const badges = {
+    health: checksLoading ? 0 : checks.filter((c) => !c.ok).length,
+    signIns: failed7,
+  }
+
+  // One section per tab; the tab bar itself lives in the top header (same as the account Overview).
+  const sections = [
+    checks.length > 0 && {
+      key: "health",
+      node: (
+        <Checkup
+          checks={checks}
+          loading={checksLoading}
+          title={t("mgmt.overview.healthTitle")}
+          description={t("mgmt.overview.healthBody")}
+          passedLabel={t("mgmt.overview.healthPassed", { n: checks.length })}
+        />
+      ),
     },
-    { icon: ShieldCheckIcon, value: count(roles, roles.data?.length), label: t("mgmt.overview.roles"), to: "/management/roles", show: can("role:read") },
-    {
-      icon: KeyRoundIcon,
-      value: count(permissions, permissions.data?.length),
-      label: t("mgmt.overview.permissions"),
-      to: "/management/permissions",
-      show: can("permission:read"),
+    canAudit && {
+      key: "signIns",
+      node: (
+        <SignInChart
+          history={signIns}
+          days={days}
+          setDays={setDays}
+          title={t("mgmt.overview.chartTitle")}
+          description={t("mgmt.overview.chartBody")}
+        />
+      ),
     },
-    { icon: AppWindowIcon, value: count(clients, clients.data?.total), label: t("mgmt.overview.clients"), to: "/management/clients", show: can("client:read") },
-  ].filter((x) => x.show)
+    canAudit && { key: "activity", node: <RecentActivityCard state={recent} /> },
+    can("role:read") && { key: "roles", node: <RolesCard state={roles} /> },
+    can("client:read") && { key: "clients", node: <ClientsCard state={clients} /> },
+    can("permission:read") && { key: "access", node: <AccessMap state={permissions} /> },
+  ].filter(Boolean)
+  const current = sections.find((x) => x.key === params.get("tab")) ?? sections[0]
 
   return (
     <div className="flex flex-col gap-6">
-      <div className="motion-rise flex flex-col gap-5 xl:flex-row xl:items-center xl:justify-between">
-        <h1 className="text-3xl leading-tight font-medium tracking-tight">{t("mgmt.overview.title")}</h1>
-        <div className="grid grid-cols-2 gap-x-6 gap-y-4 sm:flex sm:flex-wrap sm:gap-x-8">
-          {stats.map((st) => (
-            <Stat key={st.label} icon={st.icon} value={st.value} unit={st.unit} label={st.label} to={st.to} strong={st.strong} />
-          ))}
-        </div>
-      </div>
-
-      {(checks.length > 0 || canAudit) && (
-        <div className="grid gap-6 lg:grid-cols-12">
-          {checks.length > 0 && (
-            <Checkup
-              checks={checks}
-              loading={checksLoading}
-              title={t("mgmt.overview.healthTitle")}
-              description={t("mgmt.overview.healthBody")}
-              passedLabel={t("mgmt.overview.healthPassed", { n: checks.length })}
-            />
-          )}
-          {canAudit && (
-            <SignInChart
-              history={signIns}
-              days={days}
-              setDays={setDays}
-              title={t("mgmt.overview.chartTitle")}
-              description={t("mgmt.overview.chartBody")}
-            />
-          )}
-        </div>
+      {sections.length > 0 && (
+        <TopbarTabs
+          label={t("mgmt.overview.title")}
+          items={sections.map((x) => ({
+            key: x.key,
+            to: { search: `?tab=${x.key}` },
+            label: t(`mgmt.overview.tabs.${x.key}`),
+            active: x.key === current.key,
+            badge: badges[x.key] ?? 0,
+          }))}
+        />
       )}
 
-      {/* Activity on the left; roles and clients stacked on the right so both columns end level. */}
-      <div className="grid gap-6 lg:grid-cols-12">
-        {canAudit && <RecentActivityCard state={recent} />}
-        {(can("role:read") || can("client:read")) && (
-          <div className={cn("flex flex-col gap-6", canAudit ? "lg:col-span-5" : "lg:col-span-12")}>
-            {can("role:read") && <RolesCard state={roles} />}
-            {can("client:read") && <ClientsCard state={clients} />}
-          </div>
-        )}
-      </div>
+      <h1 className="motion-rise text-3xl leading-tight font-medium tracking-tight">{t("mgmt.overview.title")}</h1>
 
-      {can("permission:read") && <AccessMap state={permissions} />}
+      {/* Flex, not grid: each section's lg:col-span-* is ignored so it fills the width. */}
+      {current && (
+        <div key={current.key} className="flex flex-col gap-6">
+          {current.node}
+        </div>
+      )}
     </div>
   )
 }

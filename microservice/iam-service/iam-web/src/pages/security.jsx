@@ -159,6 +159,8 @@ export default function SecurityPage() {
   return (
     <>
       <PageIntro>{t("security.intro")}</PageIntro>
+      {/* Wide screens: change-password on the left, the reset-by-email card beside it. */}
+      <div className="grid gap-6 xl:grid-cols-[minmax(0,2fr)_minmax(0,1fr)] xl:items-start">
       <Card>
         <CardHeader>
           <CardTitle>{t("security.changeTitle")}</CardTitle>
@@ -255,6 +257,7 @@ export default function SecurityPage() {
           </Button>
         </CardFooter>
       </Card>
+      </div>
       <ResetDialog open={resetOpen} onOpenChange={setResetOpen} />
     </>
   )

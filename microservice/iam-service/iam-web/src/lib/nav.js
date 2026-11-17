@@ -8,7 +8,7 @@ export const NAV = [
   { path: "/sessions", key: "sessions", group: "activity", icon: MonitorSmartphoneIcon },
   { path: "/login-history", key: "history", group: "activity", icon: HistoryIcon },
   { path: "/activity", key: "activity", group: "activity", icon: ActivityIcon },
-  { path: "/deactivate", key: "deactivate", group: "danger", icon: PowerIcon, danger: true },
+  { path: "/deactivate", key: "deactivate", group: "danger", icon: PowerIcon, danger: true, narrow: true },
 ]
 
 // Shown in the rail only for accounts with the ADMIN role.

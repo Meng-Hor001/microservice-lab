@@ -234,20 +234,6 @@ a:hover {
     box-shadow: var(--card-shadow)
 }
 
-.auth-trust {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    margin: 24px 0 0;
-    color: var(--muted)
-}
-
-.auth-trust svg {
-    flex-shrink: 0;
-    color: var(--accent)
-}
-
 .auth-tabs {
     display: grid;
     grid-template-columns: 1fr 1fr;

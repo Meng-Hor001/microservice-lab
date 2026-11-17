@@ -25,12 +25,6 @@
                     <span></span><span></span><span></span><span></span><span></span><span></span><span></span>
                 </div>
                 <div class="auth-panel">
-                    <header class="auth-top">
-                        <span class="auth-controls">
-                            @template.theme-switch(page=page)
-                            @template.language-switch(page=page)
-                        </span>
-                    </header>
                     <main class="auth-main">
                         <div class="auth-card">
                         <nav class="auth-tabs" aria-label="${page.t("common.navigation")}">
@@ -61,10 +55,6 @@
                         @endif
                         ${body}
                         </div>
-                        <p class="auth-trust">
-                            <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect width="16" height="11" x="4" y="11" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
-                            ${page.t("auth.footer")}
-                        </p>
                     </main>
                 </div>
             </div>

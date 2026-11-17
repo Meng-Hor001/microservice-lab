@@ -48,6 +48,8 @@ public class ApiSecurityConfig {
                                 "/api/auth/password/reset/confirm"
                         ).permitAll()
                         .requestMatchers(HttpMethod.GET, "/api/auth/password-policy").permitAll()
+                        // Profile photos load in <img> tags, which can't send a bearer token.
+                        .requestMatchers(HttpMethod.GET, "/api/avatars/*").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(exceptions -> exceptions

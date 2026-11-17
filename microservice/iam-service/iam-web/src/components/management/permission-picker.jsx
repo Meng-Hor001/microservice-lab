@@ -57,7 +57,9 @@ export function ItemPicker({ items, loading, selected, onChange, label, sublabel
               {list.map((item) => {
                 const id = `pick-${item.uuid}`
                 return (
-                  <Field key={item.uuid} orientation="horizontal" className="rounded-md px-2 py-2 hover:bg-muted">
+                  // `relative` keeps Radix's hidden form input (one per checkbox) inside the scrolling list;
+                  // without it those inputs escape the list and stretch the whole dialog.
+                  <Field key={item.uuid} orientation="horizontal" className="relative rounded-md px-2 py-2 hover:bg-muted">
                     <Checkbox
                       id={id}
                       checked={selected.has(item.uuid)}

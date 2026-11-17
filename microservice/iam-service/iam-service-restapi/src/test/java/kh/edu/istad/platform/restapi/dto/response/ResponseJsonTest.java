@@ -18,14 +18,17 @@ class ResponseJsonTest {
     @Test
     void pageUsesNestedMetadataAndPublicSummary() {
         var result = new PageResult<>(List.of(
-                new RoleSummary(UUID.randomUUID(), "ADMIN", "Internal description", true)
+                new RoleSummary(UUID.randomUUID(), "ADMIN", "Internal description", true, true, 24, 3, now, "system")
         ), 0, 20, 1, 1);
         var tree = json.valueToTree(PageResponse.from(result, RoleSummaryResponse::from));
         assertEquals(2, tree.size());
         assertEquals(20, tree.path("page").path("size").asInt());
         assertEquals(1, tree.path("page").path("totalElements").asLong());
         assertEquals("ADMIN", tree.path("content").get(0).path("name").asText());
-        assertFalse(tree.path("content").get(0).has("description"));
+        assertEquals("Internal description", tree.path("content").get(0).path("description").asText());
+        assertTrue(tree.path("content").get(0).path("system").asBoolean());
+        assertEquals(24, tree.path("content").get(0).path("permissionCount").asLong());
+        assertEquals(3, tree.path("content").get(0).path("userCount").asLong());
     }
 
     @Test

@@ -9,7 +9,10 @@ import kh.edu.istad.platform.iam.application.query.RoleFilterQuery;
 import kh.edu.istad.platform.iam.domain.entity.Role;
 import kh.edu.istad.platform.persistence.entity.RoleJpaEntity;
 import kh.edu.istad.platform.persistence.mapper.RoleMapper;
+import kh.edu.istad.platform.persistence.repository.RoleCountView;
 import kh.edu.istad.platform.persistence.repository.RoleJpaRepository;
+import kh.edu.istad.platform.persistence.repository.RolePermissionJpaRepository;
+import kh.edu.istad.platform.persistence.repository.UserRoleJpaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,13 +20,17 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Repository
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class RoleRepositoryAdapter implements RoleRepository {
     private final RoleJpaRepository repository;
+    private final RolePermissionJpaRepository rolePermissions;
+    private final UserRoleJpaRepository userRoles;
     private final RoleMapper mapper;
 
     @Override
@@ -120,5 +127,21 @@ public class RoleRepositoryAdapter implements RoleRepository {
                 page.getTotalElements(),
                 page.getTotalPages()
         );
+    }
+
+    @Override
+    public Map<Long, Long> countPermissions(Collection<Long> roleIds) {
+        if (roleIds.isEmpty()) return Map.of();
+        return toMap(rolePermissions.countActiveByRoleIds(roleIds, Instant.now()));
+    }
+
+    @Override
+    public Map<Long, Long> countUsers(Collection<Long> roleIds) {
+        if (roleIds.isEmpty()) return Map.of();
+        return toMap(userRoles.countActiveByRoleIds(roleIds, Instant.now()));
+    }
+
+    private static Map<Long, Long> toMap(List<RoleCountView> rows) {
+        return rows.stream().collect(Collectors.toMap(RoleCountView::getRoleId, RoleCountView::getTotal));
     }
 }

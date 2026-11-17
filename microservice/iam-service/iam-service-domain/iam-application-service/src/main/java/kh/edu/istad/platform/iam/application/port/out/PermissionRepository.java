@@ -5,6 +5,8 @@ import kh.edu.istad.platform.iam.application.query.PermissionFilterQuery;
 import kh.edu.istad.platform.iam.domain.entity.Permission;
 
 import javax.swing.text.html.Option;
+import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -19,4 +21,7 @@ public interface PermissionRepository {
     PageResult<Permission> findAll(PermissionFilterQuery query);
 
     Permission save(Permission permission);
+
+    /** Permission id → number of roles that currently grant it. Permissions with none are left out. */
+    Map<Long, Long> countRoles(Collection<Long> permissionIds);
 }

@@ -1,12 +1,21 @@
 import { useCallback, useState } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "sonner"
-import { UserPlusIcon, UsersIcon } from "lucide-react"
+import { BadgeCheckIcon, EllipsisIcon, EyeIcon, LockIcon, PowerIcon, Trash2Icon, UnlockIcon, UserPlusIcon, UsersIcon } from "lucide-react"
 import { EmptyState } from "@/components/page-states"
+import { ConfirmDialog } from "@/components/confirm-dialog"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { ItemPicker } from "@/components/management/permission-picker"
-import { DataBody, DataHead, DataRow, DataTable, RowChevron, rowLink, Td, Th } from "@/components/management/data-table"
-import { ListPanel, PageHeader, Pager, PanelError, SearchBox, StatusDot, TableSkeleton } from "@/components/management/states"
-import { Avatar, AvatarFallback } from "@/components/ui/avatar"
+import { DataBody, DataHead, DataRow, DataTable, revealOnRow, rowLink, Td, Th } from "@/components/management/data-table"
+import { KeyTag, ListPanel, PageHeader, Pager, PanelError, SearchBox, StatusDot, TableSkeleton } from "@/components/management/states"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
@@ -16,7 +25,7 @@ import { Spinner } from "@/components/ui/spinner"
 import { Switch } from "@/components/ui/switch"
 import { FilterSelect } from "@/components/filter-select"
 import { useAccess } from "@/lib/access"
-import { allRoles, createUser, listUsers, setUserStatus } from "@/lib/admin-api"
+import { allRoles, createUser, deleteUser, listUsers, setUserStatus } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
 import { useI18n } from "@/lib/i18n-context"
 import { usePasswordRules } from "@/lib/password"
@@ -142,6 +151,7 @@ function CreateUserDialog({ open, onOpenChange, onCreated }) {
                 selected={roles}
                 onChange={setRoles}
                 label={(r) => r.name}
+                sublabel={(r) => r.description}
               />
             </Field>
           </FieldGroup>
@@ -161,7 +171,7 @@ function CreateUserDialog({ open, onOpenChange, onCreated }) {
 }
 
 export default function UsersPage() {
-  const { t } = useI18n()
+  const { t, fmt } = useI18n()
   const { can } = useAccess()
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
@@ -169,6 +179,8 @@ export default function UsersPage() {
   const status = params.get("status") ?? "all"
   const page = Number(params.get("page") ?? 1)
   const creating = params.get("new") === "1"
+  // { type: "enable" | "disable" | "lock" | "unlock" | "delete", user }
+  const [confirm, setConfirm] = useState(null)
 
   const update = useCallback(
     (patch) =>
@@ -218,12 +230,13 @@ export default function UsersPage() {
     return (
       <DataTable>
         <DataHead>
-          <Th>{t("mgmt.users.name")}</Th>
-          <Th className="hidden md:table-cell">{t("mgmt.users.username")}</Th>
-          <Th className="w-40">{t("mgmt.common.status")}</Th>
-          <Th className="w-12">
-            <span className="sr-only">{t("mgmt.common.actions")}</span>
-          </Th>
+          <Th className="w-[22%]">{t("mgmt.users.name")}</Th>
+          <Th className="hidden w-[15%] md:table-cell">{t("mgmt.users.username")}</Th>
+          <Th className="hidden w-[15%] lg:table-cell">{t("mgmt.users.roles")}</Th>
+          <Th className="hidden w-[15%] lg:table-cell">{t("mgmt.users.lastLogin")}</Th>
+          <Th className="hidden w-[14%] xl:table-cell">{t("mgmt.users.createdAt")}</Th>
+          <Th className="w-[14%]">{t("mgmt.common.status")}</Th>
+          <Th className="w-16 text-right">{t("mgmt.common.actions")}</Th>
         </DataHead>
         <DataBody>
           {items.map((u) => (
@@ -231,6 +244,7 @@ export default function UsersPage() {
               <Td>
                 <div className="flex items-center gap-3">
                   <Avatar className="size-9 rounded-md">
+                    {u.pictureUrl && <AvatarImage src={u.pictureUrl} alt="" className="rounded-md" />}
                     <AvatarFallback className="rounded-md">{initials(u.name)}</AvatarFallback>
                   </Avatar>
                   <div className="flex min-w-0 flex-col leading-snug">
@@ -241,16 +255,84 @@ export default function UsersPage() {
                     >
                       {u.name}
                     </Link>
-                    <span className="truncate text-muted-foreground">{u.email}</span>
+                    <span className="flex min-w-0 items-center gap-1 text-muted-foreground">
+                      <span className="truncate">{u.email}</span>
+                      {u.emailVerified && (
+                        <BadgeCheckIcon className="size-3.5 shrink-0 text-primary" aria-label={t("mgmt.users.emailVerified")}>
+                          <title>{t("mgmt.users.emailVerified")}</title>
+                        </BadgeCheckIcon>
+                      )}
+                    </span>
                   </div>
                 </div>
               </Td>
               <Td className="hidden font-mono text-muted-foreground md:table-cell">{u.username}</Td>
+              <Td className="hidden whitespace-normal lg:table-cell">
+                {u.roles?.length ? (
+                  <span className="flex flex-wrap gap-1">
+                    {u.roles.map((r) => (
+                      <KeyTag key={r} name={r} />
+                    ))}
+                  </span>
+                ) : (
+                  <span className="text-muted-foreground">–</span>
+                )}
+              </Td>
+              <Td className="tabular hidden text-muted-foreground lg:table-cell">
+                {u.lastLoginAt ? fmt.relative(u.lastLoginAt) : t("mgmt.users.neverSignedIn")}
+              </Td>
+              <Td className="tabular hidden text-muted-foreground xl:table-cell">
+                {u.createdAt ? fmt.date(u.createdAt) : "–"}
+              </Td>
               <Td>
                 <StatusBadge enabled={u.enabled} locked={u.locked} />
               </Td>
               <Td>
-                <RowChevron />
+                <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        className={cn("text-muted-foreground", revealOnRow)}
+                        aria-label={`${t("mgmt.common.actions")} ${u.name}`}
+                      >
+                        <EllipsisIcon />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem onSelect={() => navigate(`/management/users/${u.uuid}`)}>
+                          <EyeIcon />
+                          {t("mgmt.common.open")}
+                        </DropdownMenuItem>
+                        {can("user:update") && (
+                          <>
+                            <DropdownMenuItem onSelect={() => setConfirm({ type: u.enabled ? "disable" : "enable", user: u })}>
+                              <PowerIcon />
+                              {u.enabled ? t("mgmt.users.deactivate") : t("mgmt.users.activate")}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onSelect={() => setConfirm({ type: u.locked ? "unlock" : "lock", user: u })}>
+                              {u.locked ? <UnlockIcon /> : <LockIcon />}
+                              {u.locked ? t("mgmt.users.unlock") : t("mgmt.users.lock")}
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuGroup>
+                      {can("user:delete") && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuGroup>
+                            <DropdownMenuItem variant="destructive" onSelect={() => setConfirm({ type: "delete", user: u })}>
+                              <Trash2Icon />
+                              {t("mgmt.common.delete")}
+                            </DropdownMenuItem>
+                          </DropdownMenuGroup>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
               </Td>
             </DataRow>
           ))}
@@ -309,6 +391,46 @@ export default function UsersPage() {
           onCreated={(user) => navigate(`/management/users/${user.uuid}`)}
         />
       )}
+      <UserActionConfirm confirm={confirm} onClose={() => setConfirm(null)} onDone={users.reload} />
     </>
+  )
+}
+
+/** The confirm step for every action in the row menu, so each one says what it does before it runs. */
+function UserActionConfirm({ confirm, onClose, onDone }) {
+  const { t } = useI18n()
+  const type = confirm?.type
+  const user = confirm?.user
+  const copy = {
+    enable: { icon: PowerIcon, title: t("mgmt.users.activate"), body: t("mgmt.users.statusBody"), done: t("mgmt.users.activated") },
+    disable: { icon: PowerIcon, title: t("mgmt.users.deactivate"), body: t("mgmt.users.statusBody"), done: t("mgmt.users.deactivated"), danger: true },
+    lock: { icon: LockIcon, title: t("mgmt.users.lock"), body: t("mgmt.users.lockBody"), done: t("mgmt.users.lockedDone"), danger: true },
+    unlock: { icon: UnlockIcon, title: t("mgmt.users.unlock"), body: t("mgmt.users.lockBody"), done: t("mgmt.users.unlockedDone") },
+    delete: {
+      icon: Trash2Icon,
+      title: t("mgmt.users.deleteTitle", { name: user?.name ?? "" }),
+      body: t("mgmt.users.deleteBody"),
+      done: t("mgmt.common.deleted"),
+      confirmLabel: t("mgmt.common.delete"),
+      danger: true,
+    },
+  }[type] ?? { icon: PowerIcon, title: "", body: "" }
+
+  return (
+    <ConfirmDialog
+      open={!!confirm}
+      onOpenChange={(v) => !v && onClose()}
+      icon={copy.icon}
+      destructive={!!copy.danger}
+      title={copy.title}
+      description={type === "delete" ? copy.body : `${user?.name ?? ""} · ${copy.body}`}
+      confirmLabel={copy.confirmLabel ?? copy.title}
+      onConfirm={async () => {
+        if (type === "delete") await deleteUser(user.uuid)
+        else await setUserStatus(user.uuid, type)
+        toast.success(copy.done)
+        onDone()
+      }}
+    />
   )
 }

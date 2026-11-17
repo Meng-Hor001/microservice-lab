@@ -97,7 +97,7 @@ export function Checkup({ checks, loading, title, description, passedLabel }) {
           )}
         </div>
 
-        <ul className="flex flex-col gap-1">
+        <ul className="grid gap-x-8 gap-y-1 md:grid-cols-2">
           {checks.map((c) => (
             <li key={c.key} className="flex items-center gap-3 rounded-md py-2">
               <span

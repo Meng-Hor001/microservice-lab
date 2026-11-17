@@ -85,6 +85,10 @@ export const messages = {
       emailHint: "Security alerts and password resets go here.",
       phone: "Phone number",
       avatarUrl: "Profile picture",
+      roles: "Roles",
+      noRoles: "No roles",
+      createdAt: "Member since",
+      updatedAt: "Last updated",
       save: "Save changes",
       saved: "Profile saved",
       saveFailedTitle: "Your changes weren't saved",
@@ -166,6 +170,13 @@ export const messages = {
     },
     overview: {
       title: "Overview",
+      tabs: {
+        checkup: "Checkup",
+        signIns: "Sign-ins",
+        devices: "Devices",
+        activity: "Activity",
+        linked: "Linked accounts",
+      },
       stats: {
         devices: "Signed-in devices",
         live: "live",
@@ -404,6 +415,10 @@ export const messages = {
       emailHint: "ការជូនដំណឹងសុវត្ថិភាព និងការកំណត់ពាក្យសម្ងាត់ឡើងវិញ នឹងផ្ញើមកទីនេះ។",
       phone: "លេខទូរសព្ទ",
       avatarUrl: "រូបប្រវត្តិរូប",
+      roles: "តួនាទី",
+      noRoles: "គ្មានតួនាទី",
+      createdAt: "សមាជិកតាំងពី",
+      updatedAt: "កែប្រែចុងក្រោយ",
       save: "រក្សាទុកការផ្លាស់ប្ដូរ",
       saved: "បានរក្សាទុកប្រវត្តិរូប",
       saveFailedTitle: "ការផ្លាស់ប្ដូររបស់អ្នកមិនទាន់បានរក្សាទុកទេ",
@@ -485,6 +500,13 @@ export const messages = {
     },
     overview: {
       title: "ទិដ្ឋភាពទូទៅ",
+      tabs: {
+        checkup: "ការត្រួតពិនិត្យ",
+        signIns: "ការចូល",
+        devices: "ឧបករណ៍",
+        activity: "សកម្មភាព",
+        linked: "គណនីភ្ជាប់",
+      },
       stats: {
         devices: "ឧបករណ៍ដែលបានចូល",
         live: "ផ្ទាល់",

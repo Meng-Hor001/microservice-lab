@@ -4,6 +4,9 @@ import kh.edu.istad.platform.iam.application.dto.PageResult;
 import kh.edu.istad.platform.iam.application.query.UserFilterQuery;
 import kh.edu.istad.platform.iam.domain.entity.User;
 
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -22,4 +25,7 @@ public interface UserRepository {
     PageResult<User> findAll(UserFilterQuery query);
 
     User save(User user);
+
+    /** User id → names of the roles they currently hold, A–Z. Users with none are left out. */
+    Map<Long, List<String>> findRoleNames(Collection<Long> userIds);
 }

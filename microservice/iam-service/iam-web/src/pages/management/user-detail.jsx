@@ -547,6 +547,7 @@ function RolesTab({ user, authorities }) {
         loading={roles.status === "loading"}
         exclude={assigned.map((r) => r.uuid)}
         label={(r) => r.name}
+        sublabel={(r) => r.description}
         onSubmit={async ({ uuids, reason, expiresAt }) => {
           await assignUserRoles(user.uuid, { roleUuids: uuids, reason, expiresAt })
           toast.success(t("mgmt.users.assigned"))

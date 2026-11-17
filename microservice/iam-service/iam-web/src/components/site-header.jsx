@@ -48,13 +48,14 @@ function LiveSessions() {
   )
 }
 
-export function SiteHeader({ onSignOut, label, home = "/overview" }) {
+/** `slotRef` receives an empty spot for page tabs: inline on wide screens, its own row below on smaller ones. */
+export function SiteHeader({ onSignOut, label, home = "/overview", slotRef }) {
   const { t } = useI18n()
   const { user } = useAccount()
   const navigate = useNavigate()
 
   return (
-    <header className="flex h-20 shrink-0 items-center gap-3 px-4 md:px-6">
+    <header className="relative flex min-h-20 shrink-0 flex-wrap items-center gap-3 px-4 py-4 md:px-6">
       <NavLink
         to={home}
         className="flex min-w-0 flex-1 items-center gap-3 rounded-md outline-none focus-visible:ring-2 focus-visible:ring-ring"
@@ -64,6 +65,10 @@ export function SiteHeader({ onSignOut, label, home = "/overview" }) {
         </span>
         <span className="truncate text-base font-semibold">{label ?? t("app.name")}</span>
       </NavLink>
+
+      {slotRef && (
+        <div ref={slotRef} className="order-last flex w-full min-w-0 justify-center empty:hidden xl:absolute xl:top-1/2 xl:left-1/2 xl:w-auto xl:-translate-x-1/2 xl:-translate-y-1/2" />
+      )}
 
       <LiveSessions />
 

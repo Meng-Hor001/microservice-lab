@@ -10,6 +10,8 @@ import kh.edu.istad.platform.iam.domain.entity.User;
 import kh.edu.istad.platform.persistence.entity.UserJpaEntity;
 import kh.edu.istad.platform.persistence.mapper.UserMapper;
 import kh.edu.istad.platform.persistence.repository.UserJpaRepository;
+import kh.edu.istad.platform.persistence.repository.UserRoleJpaRepository;
+import kh.edu.istad.platform.persistence.repository.UserRoleNameView;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -17,7 +19,12 @@ import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Locale;
 import java.util.Optional;
 import java.util.UUID;
@@ -27,6 +34,7 @@ import java.util.UUID;
 @Transactional(readOnly = true)
 public class UserRepositoryAdapter implements UserRepository {
     private final UserJpaRepository repository;
+    private final UserRoleJpaRepository userRoles;
     private final UserMapper mapper;
 
     @Override
@@ -130,5 +138,16 @@ public class UserRepositoryAdapter implements UserRepository {
 
         return mapper.toDomain(repository.saveAndFlush(entity));
 
+    }
+
+    @Override
+    public Map<Long, List<String>> findRoleNames(Collection<Long> userIds) {
+        if (userIds.isEmpty()) return Map.of();
+        Map<Long, List<String>> names = new LinkedHashMap<>();
+        for (UserRoleNameView row : userRoles.findActiveRoleNames(userIds, Instant.now())) {
+            List<String> list = names.computeIfAbsent(row.getUserId(), id -> new ArrayList<>());
+            if (!list.contains(row.getRoleName())) list.add(row.getRoleName());
+        }
+        return names;
     }
 }

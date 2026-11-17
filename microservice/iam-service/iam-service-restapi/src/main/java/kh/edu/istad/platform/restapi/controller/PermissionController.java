@@ -8,6 +8,7 @@ import kh.edu.istad.platform.restapi.dto.request.CreatePermissionRequest;
 import kh.edu.istad.platform.restapi.dto.request.UpdatePermissionRequest;
 import kh.edu.istad.platform.restapi.dto.response.PageResponse;
 import kh.edu.istad.platform.restapi.dto.response.PermissionResponse;
+import kh.edu.istad.platform.restapi.dto.response.PermissionSummaryResponse;
 import kh.edu.istad.platform.restapi.mapper.PermissionApiMapper;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,7 @@ public class PermissionController {
 
     @GetMapping
     @PreAuthorize("hasAuthority('permission:read')")
-    public PageResponse<PermissionResponse> list(
+    public PageResponse<PermissionSummaryResponse> list(
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "20") int size,
             @RequestParam(defaultValue = "name,asc") String sort,
@@ -92,7 +93,7 @@ public class PermissionController {
 
         return PageResponse.from(
                 listPermissions.execute(query),
-                mapper::toResponse
+                PermissionSummaryResponse::from
         );
     }
 

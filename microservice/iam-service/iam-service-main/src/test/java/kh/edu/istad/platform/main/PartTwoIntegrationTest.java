@@ -74,6 +74,8 @@ class PartTwoIntegrationTest {
     JdbcTemplate jdbc;
     @Autowired
     Clock clock;
+    @Autowired
+    UserAvatarRepository avatars;
 
     private final CurrentActorProvider actor = () -> "integration-test";
 
@@ -189,13 +191,35 @@ class PartTwoIntegrationTest {
 
     @Test
     void freshDatabaseRunsEveryMigrationAndSeedsAccess() {
-        // 14 changesets: 001-014 (011 audit logs, 012-014 audit/client/settings permissions + settings table).
-        assertEquals(14, jdbc.queryForObject("select count(*) from databasechangelog", Integer.class));
+        // 15 changesets: 001-015 (011 audit logs, 012-014 audit/client/settings permissions + settings table, 015 avatars).
+        assertEquals(15, jdbc.queryForObject("select count(*) from databasechangelog", Integer.class));
         assertEquals(2, jdbc.queryForObject("select count(*) from roles where name in ('ADMIN','USER') and is_system", Integer.class));
         // 15 original + audit:read + client:read/update/delete + settings:read/update
         assertEquals(21, jdbc.queryForObject("select count(*) from permissions where is_system", Integer.class));
         assertEquals(24, jdbc.queryForObject("select count(*) from role_permissions rp join roles r on r.id=rp.role_id where r.name in ('ADMIN','USER')", Integer.class));
         assertEquals(7, jdbc.queryForObject("select count(*) from information_schema.tables where table_schema='public' and table_name in ('users','roles','permissions','identities','user_roles','role_permissions','user_permissions')", Integer.class));
+    }
+
+    @Test
+    void avatarUploadStoresBytesAndCanBeReplacedAndDeleted() {
+        var user = user();
+        byte[] png = {(byte) 0x89, 'P', 'N', 'G', 0x0D, 0x0A, 0x1A, 0x0A, 1, 2, 3};
+        new UploadAvatarUseCase(users, avatars, clock).execute(new UploadAvatarCommand(user.getUuid(), "image/png", png));
+        var stored = new GetAvatarUseCase(avatars).execute(user.getUuid()).orElseThrow();
+        assertEquals("image/png", stored.contentType());
+        assertArrayEquals(png, stored.data());
+
+        byte[] jpeg = {(byte) 0xFF, (byte) 0xD8, (byte) 0xFF, 9, 9};
+        new UploadAvatarUseCase(users, avatars, clock).execute(new UploadAvatarCommand(user.getUuid(), "image/jpeg", jpeg));
+        assertEquals("image/jpeg", new GetAvatarUseCase(avatars).execute(user.getUuid()).orElseThrow().contentType());
+        assertEquals(1, jdbc.queryForObject("select count(*) from user_avatars where user_id=?", Integer.class, user.getId()));
+
+        // A file pretending to be an image is refused by its bytes, not its claimed type.
+        assertThrows(IllegalArgumentException.class, () -> new UploadAvatarUseCase(users, avatars, clock)
+                .execute(new UploadAvatarCommand(user.getUuid(), "image/png", "<svg/>".getBytes())));
+
+        new DeleteAvatarUseCase(users, avatars).execute(user.getUuid());
+        assertTrue(new GetAvatarUseCase(avatars).execute(user.getUuid()).isEmpty());
     }
 
     @Test

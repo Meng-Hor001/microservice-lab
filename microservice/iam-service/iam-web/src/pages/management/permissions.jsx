@@ -134,7 +134,7 @@ function PermissionDialog({ open, permission, onOpenChange, onSaved }) {
 }
 
 export default function PermissionsPage() {
-  const { t } = useI18n()
+  const { t, fmt } = useI18n()
   const { can } = useAccess()
   const [params, setParams] = useSearchParams()
   const search = params.get("q") ?? ""
@@ -189,11 +189,13 @@ export default function PermissionsPage() {
     return (
       <DataTable>
         <DataHead>
-          <Th>{t("mgmt.permissions.code")}</Th>
-          <Th className="w-40">{t("mgmt.common.status")}</Th>
-          <Th className="w-12">
-            <span className="sr-only">{t("mgmt.common.actions")}</span>
-          </Th>
+          <Th className="w-[15.5%]">{t("mgmt.permissions.code")}</Th>
+          <Th className="hidden w-[15.5%] lg:table-cell">{t("mgmt.permissions.resource")}</Th>
+          <Th className="hidden w-[15.5%] lg:table-cell">{t("mgmt.permissions.action")}</Th>
+          <Th className="hidden w-[15.5%] lg:table-cell">{t("mgmt.permissions.roles")}</Th>
+          <Th className="hidden w-[15.5%] md:table-cell">{t("mgmt.roles.updatedAt")}</Th>
+          <Th className="w-[15.5%]">{t("mgmt.common.status")}</Th>
+          <Th className="w-16 text-right">{t("mgmt.common.actions")}</Th>
         </DataHead>
         <DataBody>
           {items.map((p) => (
@@ -207,6 +209,19 @@ export default function PermissionsPage() {
                   {p.description && p.description.trim().toLowerCase() !== `${p.action} ${p.resource}` && (
                     <span className="w-full truncate text-muted-foreground">{p.description}</span>
                   )}
+                </div>
+              </Td>
+              <Td className="hidden lg:table-cell">
+                <span className="font-mono text-muted-foreground">{p.resource}</span>
+              </Td>
+              <Td className="hidden lg:table-cell">
+                <span className="font-mono text-muted-foreground">{p.action}</span>
+              </Td>
+              <Td className="tabular hidden lg:table-cell">{p.roleCount ?? "–"}</Td>
+              <Td className="hidden md:table-cell">
+                <div className="flex flex-col text-muted-foreground">
+                  <span className="tabular">{p.updatedAt ? fmt.relative(p.updatedAt) : "–"}</span>
+                  {p.updatedBy && <span className="truncate text-xs">{t("mgmt.roles.updatedBy", { name: p.updatedBy })}</span>}
                 </div>
               </Td>
               <Td>

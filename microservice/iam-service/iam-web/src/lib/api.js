@@ -39,6 +39,8 @@ export async function http(method, path, body, { auth = true } = {}) {
     throw new ApiError("unauthorized", null, 401)
   }
 
+  // FormData (file uploads) goes as-is; the browser sets the multipart Content-Type and boundary.
+  const isForm = body instanceof FormData
   let response
   try {
     response = await fetch(API_BASE + path, {
@@ -46,9 +48,9 @@ export async function http(method, path, body, { auth = true } = {}) {
       headers: {
         Accept: "application/json",
         ...(token ? { Authorization: `Bearer ${token}` } : {}),
-        ...(body ? { "Content-Type": "application/json" } : {}),
+        ...(body && !isForm ? { "Content-Type": "application/json" } : {}),
       },
-      body: body ? JSON.stringify(body) : undefined,
+      body: isForm ? body : body ? JSON.stringify(body) : undefined,
     })
   } catch {
     throw new ApiError("network")
@@ -80,9 +82,22 @@ const toProfile = (user, fallback = {}) => ({
   email: user.email,
   phone: user.phoneNumber ?? "",
   avatarUrl: user.pictureUrl ?? null,
+  roles: (user.roles ?? fallback.roles ?? []).map((r) => r.name ?? r),
+  createdAt: user.createdAt ?? fallback.createdAt ?? null,
+  updatedAt: user.updatedAt ?? fallback.updatedAt ?? null,
 })
 
 export const getProfile = async () => toProfile(await http("GET", "/me"))
+
+/** Uploads a profile photo and returns the URL it's served from (save it as the profile's avatarUrl). */
+export async function uploadAvatar(file) {
+  const form = new FormData()
+  form.append("file", file)
+  const { pictureUrl } = await http("POST", "/me/avatar", form)
+  return pictureUrl
+}
+
+export const deleteAvatar = () => http("DELETE", "/me/avatar")
 
 export async function updateProfile(profile) {
   const [givenName, ...rest] = profile.name.trim().split(/\s+/)

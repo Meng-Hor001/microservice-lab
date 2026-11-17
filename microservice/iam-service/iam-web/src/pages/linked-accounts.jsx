@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react"
+import { useState } from "react"
 import { LinkIcon, PlugZapIcon, UnlinkIcon } from "lucide-react"
 import { toast } from "sonner"
 import { ConfirmDialog } from "@/components/confirm-dialog"
@@ -8,7 +8,6 @@ import { PROVIDERS } from "@/lib/providers"
 import { StatusDot } from "@/components/management/states"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
-import { Separator } from "@/components/ui/separator"
 import { Spinner } from "@/components/ui/spinner"
 import { getProviders, linkProvider, unlinkProvider } from "@/lib/api"
 import { useI18n } from "@/lib/i18n-context"
@@ -48,11 +47,9 @@ export default function LinkedAccountsPage() {
           {list.length === 0 ? (
             <EmptyState icon={PlugZapIcon} title={t("linked.emptyTitle")} description={t("linked.emptyBody")} />
           ) : (
-            <ul className="flex flex-col">
-              {list.map((p, i) => (
-                <Fragment key={p.id}>
-                  {i > 0 && <Separator className="my-4" />}
-                  <li className="flex flex-col gap-3 sm:flex-row sm:items-center">
+            <ul className="grid gap-4 xl:grid-cols-2">
+              {list.map((p) => (
+                  <li key={p.id} className="flex flex-col gap-3 rounded-md p-4 ring-1 ring-border sm:flex-row sm:items-center">
                     <div className="flex min-w-0 flex-1 items-center gap-3">
                       <ProviderLogo id={p.id} />
                       <div className="flex min-w-0 flex-col gap-0.5">
@@ -85,7 +82,6 @@ export default function LinkedAccountsPage() {
                       </Button>
                     )}
                   </li>
-                </Fragment>
               ))}
             </ul>
           )}

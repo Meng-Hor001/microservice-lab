@@ -13,11 +13,12 @@ import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle }
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
 import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
+import { Skeleton } from "@/components/ui/skeleton"
 import { Spinner } from "@/components/ui/spinner"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Textarea } from "@/components/ui/textarea"
 import { useAccess } from "@/lib/access"
-import { allPermissions, assignRolePermissions, deleteRole, getRole, revokeRolePermission, setRoleActive, updateRole } from "@/lib/admin-api"
+import { allPermissions, assignRolePermissions, deleteRole, getRole, listRoles, revokeRolePermission, setRoleActive, updateRole } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
 import { useI18n } from "@/lib/i18n-context"
 import { useAsync } from "@/lib/use-async"
@@ -117,7 +118,7 @@ function DetailsTab({ role, onSaved, onDeleted }) {
           </CardHeader>
           <CardContent className="flex flex-col items-start gap-4">
             <ActiveBadge active={role.active} />
-            {can("role:update") && (
+            {can("role:update") && !role.system && (
               <Button variant="outline" onClick={() => setConfirm("status")}>
                 <PowerIcon data-icon="inline-start" />
                 {role.active ? t("mgmt.roles.deactivate") : t("mgmt.roles.activate")}
@@ -228,6 +229,42 @@ function PermissionsDialog({ role, mode, onOpenChange }) {
   )
 }
 
+// The single-role endpoint has no counts, so read this role's row from the list endpoint.
+async function loadRoleStats(role) {
+  const { items } = await listRoles({ search: role.name, size: 100 })
+  return items.find((x) => x.uuid === role.uuid) ?? null
+}
+
+/** Permissions, users and last change, in one row under the role's name. */
+function RoleFacts({ stats }) {
+  const { t, fmt } = useI18n()
+  const s = stats.data
+  const facts = [
+    { key: "permissions", label: t("mgmt.roles.permissions"), value: s?.permissionCount },
+    { key: "users", label: t("mgmt.roles.users"), value: s?.userCount },
+    {
+      key: "updated",
+      label: t("mgmt.roles.updatedAt"),
+      value: s?.updatedAt ? fmt.relative(s.updatedAt) : null,
+      note: s?.updatedBy ? t("mgmt.roles.updatedBy", { name: s.updatedBy }) : null,
+    },
+  ]
+  if (stats.status === "error" || (stats.status === "success" && !s)) return null
+  return (
+    <dl className="flex flex-wrap gap-x-10 gap-y-4 pt-2">
+      {facts.map((f) => (
+        <div key={f.key} className="flex flex-col gap-1">
+          <dt className="text-muted-foreground">{f.label}</dt>
+          <dd className="tabular text-2xl leading-none font-medium">
+            {stats.status === "loading" ? <Skeleton className="h-6 w-12" /> : (f.value ?? "–")}
+          </dd>
+          {f.note && <dd className="text-xs text-muted-foreground">{f.note}</dd>}
+        </div>
+      ))}
+    </dl>
+  )
+}
+
 export default function RoleDetailPage() {
   const { id } = useParams()
   const { t } = useI18n()
@@ -237,6 +274,7 @@ export default function RoleDetailPage() {
   const [mode, setMode] = useState(null)
   const tab = TABS.includes(params.get("tab")) ? params.get("tab") : "details"
   const role = useAsync(() => getRole(id), [id])
+  const stats = useAsync(() => (role.data ? loadRoleStats(role.data) : new Promise(() => {})), [role.data?.uuid, role.data?.name, role.data?.version])
 
   if (role.status === "loading") return <CardSkeleton rows={4} />
   if (role.status === "error") return <ErrorState onRetry={role.reload} />
@@ -252,6 +290,7 @@ export default function RoleDetailPage() {
           {r.system && <span className="text-muted-foreground">{t("mgmt.common.system")}</span>}
         </div>
         {r.description && <p className="max-w-[62ch] text-muted-foreground">{r.description}</p>}
+        <RoleFacts stats={stats} />
       </div>
 
       <Tabs value={tab} onValueChange={(v) => setParams({ tab: v }, { replace: true })} className="gap-6">
@@ -291,7 +330,12 @@ export default function RoleDetailPage() {
               )}
             </CardContent>
           </Card>
-          <PermissionsDialog role={r} mode={mode} onOpenChange={(v) => !v && setMode(null)} />
+          <PermissionsDialog role={r} mode={mode} onOpenChange={(v) => {
+            if (!v) {
+              setMode(null)
+              stats.reload()
+            }
+          }} />
         </TabsContent>
       </Tabs>
     </>

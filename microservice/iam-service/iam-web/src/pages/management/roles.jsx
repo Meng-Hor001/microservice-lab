@@ -1,21 +1,29 @@
 import { useCallback, useState } from "react"
 import { Link, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "sonner"
-import { PlusIcon, ShieldCheckIcon, Trash2Icon } from "lucide-react"
+import { EllipsisIcon, EyeIcon, PencilIcon, PlusIcon, PowerIcon, ShieldCheckIcon, Trash2Icon } from "lucide-react"
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import { ItemPicker } from "@/components/management/permission-picker"
-import { DataBody, DataHead, DataRow, DataTable, revealOnRow, RowChevron, rowLink, Td, Th } from "@/components/management/data-table"
+import { DataBody, DataHead, DataRow, DataTable, revealOnRow, rowLink, Td, Th } from "@/components/management/data-table"
 import { KeyTag, ListPanel, PageHeader, Pager, PanelError, SearchBox, StatusDot, TableSkeleton } from "@/components/management/states"
 import { EmptyState } from "@/components/page-states"
 import { Button } from "@/components/ui/button"
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog"
-import { Field, FieldDescription, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
+import { Field, FieldError, FieldGroup, FieldLabel } from "@/components/ui/field"
 import { Input } from "@/components/ui/input"
 import { Spinner } from "@/components/ui/spinner"
 import { Textarea } from "@/components/ui/textarea"
 import { FilterSelect } from "@/components/filter-select"
 import { useAccess } from "@/lib/access"
-import { allPermissions, createRole, deleteRole, listRoles } from "@/lib/admin-api"
+import { allPermissions, createRole, deleteRole, listRoles, setRoleActive } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
 import { useI18n } from "@/lib/i18n-context"
 import { useAsync } from "@/lib/use-async"
@@ -79,7 +87,7 @@ function CreateRoleDialog({ open, onOpenChange, onCreated }) {
                 aria-invalid={!!error || undefined}
                 onChange={(e) => setName(e.target.value.toUpperCase())}
               />
-              {error ? <FieldError>{error}</FieldError> : <FieldDescription>{t("mgmt.roles.nameHint")}</FieldDescription>}
+              {error && <FieldError>{error}</FieldError>}
             </Field>
             <Field>
               <FieldLabel htmlFor="role-description">{t("mgmt.roles.description")}</FieldLabel>
@@ -114,7 +122,7 @@ function CreateRoleDialog({ open, onOpenChange, onCreated }) {
 }
 
 export default function RolesPage() {
-  const { t } = useI18n()
+  const { t, fmt } = useI18n()
   const { can } = useAccess()
   const navigate = useNavigate()
   const [params, setParams] = useSearchParams()
@@ -122,6 +130,7 @@ export default function RolesPage() {
   const status = params.get("status") ?? "all"
   const page = Number(params.get("page") ?? 1)
   const [deleting, setDeleting] = useState(null)
+  const [toggling, setToggling] = useState(null)
 
   const update = useCallback(
     (patch) =>
@@ -171,41 +180,88 @@ export default function RolesPage() {
     return (
       <DataTable>
         <DataHead>
-          <Th>{t("mgmt.roles.name")}</Th>
-          <Th className="w-40">{t("mgmt.common.status")}</Th>
-          <Th className="w-28">
-            <span className="sr-only">{t("mgmt.common.actions")}</span>
-          </Th>
+          <Th className="w-[19%]">{t("mgmt.roles.name")}</Th>
+          <Th className="hidden w-[19%] lg:table-cell">{t("mgmt.roles.permissions")}</Th>
+          <Th className="hidden w-[19%] lg:table-cell">{t("mgmt.roles.users")}</Th>
+          <Th className="hidden w-[19%] md:table-cell">{t("mgmt.roles.updatedAt")}</Th>
+          <Th className="w-[19%]">{t("mgmt.common.status")}</Th>
+          <Th className="w-16 text-right">{t("mgmt.common.actions")}</Th>
         </DataHead>
         <DataBody>
           {items.map((r) => (
             <DataRow key={r.uuid} onOpen={() => navigate(`/management/roles/${r.uuid}`)}>
               <Td>
-                <Link
-                  to={`/management/roles/${r.uuid}`}
-                  className={cn("inline-flex", rowLink)}
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <KeyTag name={r.name} />
-                </Link>
+                <div className="flex min-w-0 flex-col items-start gap-1">
+                  <span className="flex items-center gap-2">
+                    <Link
+                      to={`/management/roles/${r.uuid}`}
+                      className={cn("inline-flex", rowLink)}
+                      onClick={(e) => e.stopPropagation()}
+                    >
+                      <KeyTag name={r.name} />
+                    </Link>
+                    {r.system && <span className="text-muted-foreground">{t("mgmt.common.system")}</span>}
+                  </span>
+                  {r.description && <span className="max-w-xl truncate text-muted-foreground">{r.description}</span>}
+                </div>
+              </Td>
+              <Td className="tabular hidden lg:table-cell">{r.permissionCount ?? "–"}</Td>
+              <Td className="tabular hidden lg:table-cell">{r.userCount ?? "–"}</Td>
+              <Td className="hidden md:table-cell">
+                <div className="flex flex-col text-muted-foreground">
+                  <span className="tabular">{r.updatedAt ? fmt.relative(r.updatedAt) : "–"}</span>
+                  {r.updatedBy && <span className="truncate text-xs">{t("mgmt.roles.updatedBy", { name: r.updatedBy })}</span>}
+                </div>
               </Td>
               <Td>
                 <ActiveBadge active={r.active} />
               </Td>
               <Td>
-                <div className="flex items-center justify-end gap-1" onClick={(e) => e.stopPropagation()}>
-                  {can("role:delete") && (
-                    <Button
-                      variant="ghost"
-                      size="icon-sm"
-                      className={cn("text-muted-foreground hover:text-destructive", revealOnRow)}
-                      aria-label={`${t("mgmt.common.delete")} ${r.name}`}
-                      onClick={() => setDeleting(r)}
-                    >
-                      <Trash2Icon />
-                    </Button>
-                  )}
-                  <RowChevron />
+                <div className="flex justify-end" onClick={(e) => e.stopPropagation()}>
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button
+                        variant="ghost"
+                        size="icon-sm"
+                        className={cn("text-muted-foreground", revealOnRow)}
+                        aria-label={`${t("mgmt.common.actions")} ${r.name}`}
+                      >
+                        <EllipsisIcon />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="end">
+                      <DropdownMenuGroup>
+                        <DropdownMenuItem onSelect={() => navigate(`/management/roles/${r.uuid}`)}>
+                          <EyeIcon />
+                          {t("mgmt.common.open")}
+                        </DropdownMenuItem>
+                        {can("role:update") && (
+                          <>
+                            {/* The backend refuses any change to a system role, so these are greyed out for them. */}
+                            <DropdownMenuItem disabled={r.system} onSelect={() => navigate(`/management/roles/${r.uuid}`)}>
+                              <PencilIcon />
+                              {t("mgmt.common.edit")}
+                            </DropdownMenuItem>
+                            <DropdownMenuItem disabled={r.system} onSelect={() => setToggling(r)}>
+                              <PowerIcon />
+                              {r.active ? t("mgmt.roles.deactivate") : t("mgmt.roles.activate")}
+                            </DropdownMenuItem>
+                          </>
+                        )}
+                      </DropdownMenuGroup>
+                      {can("role:delete") && !r.system && (
+                        <>
+                          <DropdownMenuSeparator />
+                          <DropdownMenuGroup>
+                            <DropdownMenuItem variant="destructive" onSelect={() => setDeleting(r)}>
+                              <Trash2Icon />
+                              {t("mgmt.common.delete")}
+                            </DropdownMenuItem>
+                          </DropdownMenuGroup>
+                        </>
+                      )}
+                    </DropdownMenuContent>
+                  </DropdownMenu>
                 </div>
               </Td>
             </DataRow>
@@ -260,6 +316,20 @@ export default function RolesPage() {
           onCreated={(role) => navigate(`/management/roles/${role.uuid}`)}
         />
       )}
+      <ConfirmDialog
+        open={!!toggling}
+        onOpenChange={(v) => !v && setToggling(null)}
+        icon={PowerIcon}
+        destructive={!!toggling?.active}
+        title={toggling?.active ? t("mgmt.roles.deactivate") : t("mgmt.roles.activate")}
+        description={t("mgmt.roles.statusBody")}
+        confirmLabel={toggling?.active ? t("mgmt.roles.deactivate") : t("mgmt.roles.activate")}
+        onConfirm={async () => {
+          await setRoleActive(toggling.uuid, !toggling.active)
+          toast.success(t("mgmt.common.saved"))
+          roles.reload()
+        }}
+      />
       <ConfirmDialog
         open={!!deleting}
         onOpenChange={(v) => !v && setDeleting(null)}

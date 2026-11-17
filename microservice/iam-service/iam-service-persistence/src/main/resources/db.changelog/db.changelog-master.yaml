@@ -27,3 +27,5 @@ databaseChangeLog:
       file: db.changelog/change/013-seed-client-management-permissions.sql
   - include:
       file: db.changelog/change/014-system-settings.sql
+  - include:
+      file: db.changelog/change/015-user-avatars.sql

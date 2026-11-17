@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from
 import { LogInIcon, ShieldCheckIcon } from "lucide-react"
 import { NavRail } from "@/components/nav-rail"
 import { SiteHeader } from "@/components/site-header"
+import { TopbarSlotContext } from "@/lib/topbar"
 import { Alert, AlertDescription } from "@/components/ui/alert"
 import { Button } from "@/components/ui/button"
 import { Toaster } from "@/components/ui/sonner"
@@ -52,19 +53,21 @@ function Shell({ onSignOut }) {
   const { pathname } = useLocation()
   const current = NAV.find((n) => n.path === pathname)
   const title = current ? t(`nav.${current.key}`) : t("nav.group")
+  const [tabSlot, setTabSlot] = useState(null)
 
   useEffect(() => {
     document.title = `${title} | ${t("app.name")}`
   }, [title, t])
 
   return (
+    <TopbarSlotContext.Provider value={tabSlot}>
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader onSignOut={onSignOut} />
+      <SiteHeader onSignOut={onSignOut} slotRef={setTabSlot} />
       <NavRail />
       <main className="flex flex-1 flex-col px-4 pt-4 pb-28 md:pr-6 md:pb-12 md:pl-28">
         <div
           key={pathname}
-          className={cn("mx-auto flex w-full flex-col gap-6", !current?.wide && "motion-rise", current?.wide ? "max-w-7xl" : "max-w-5xl")}
+          className={cn("mx-auto flex w-full flex-col gap-6", !current?.wide && "motion-rise", current?.narrow ? "max-w-5xl" : "max-w-none")}
         >
           {!current?.wide && <h1 className="text-3xl leading-tight font-medium tracking-tight">{title}</h1>}
           <Routes>
@@ -82,6 +85,7 @@ function Shell({ onSignOut }) {
         </div>
       </main>
     </div>
+    </TopbarSlotContext.Provider>
   )
 }
 

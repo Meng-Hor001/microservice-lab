@@ -1,4 +1,4 @@
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { Outlet, useLocation } from "react-router-dom"
 import { ArrowLeftIcon } from "lucide-react"
 import { Rail } from "@/components/nav-rail"
@@ -6,7 +6,7 @@ import { SiteHeader } from "@/components/site-header"
 import { useAccess } from "@/lib/access"
 import { useI18n } from "@/lib/i18n-context"
 import { findNav, MGMT_NAV } from "@/components/management/nav"
-import { cn } from "@/lib/utils"
+import { TopbarSlotContext } from "@/lib/topbar"
 
 /** Management uses the same floating icon rail and header as the account pages. */
 export function MgmtShell({ onSignOut }) {
@@ -15,6 +15,7 @@ export function MgmtShell({ onSignOut }) {
   const { can } = useAccess()
   const found = findNav(pathname)
   const title = found ? t(`mgmt.nav.${found.item.key}`) : t("mgmt.title")
+  const [tabSlot, setTabSlot] = useState(null)
 
   useEffect(() => {
     document.title = `${title} | ${t("mgmt.title")}`
@@ -35,17 +36,19 @@ export function MgmtShell({ onSignOut }) {
   ]
 
   return (
+    <TopbarSlotContext.Provider value={tabSlot}>
     <div className="flex min-h-svh flex-col bg-background">
-      <SiteHeader onSignOut={onSignOut} label={t("mgmt.title")} home="/management" />
+      <SiteHeader onSignOut={onSignOut} label={t("mgmt.title")} home="/management" slotRef={setTabSlot} />
       <Rail label={t("mgmt.title")} sections={sections} />
       <main className="flex flex-1 flex-col px-4 pt-4 pb-28 md:pr-6 md:pb-12 md:pl-28">
         <div
           key={pathname}
-          className={cn("motion-rise mx-auto flex w-full flex-col gap-6", pathname === "/management" ? "max-w-7xl" : "max-w-5xl")}
+          className="motion-rise mx-auto flex w-full flex-col gap-6"
         >
           <Outlet />
         </div>
       </main>
     </div>
+    </TopbarSlotContext.Provider>
   )
 }

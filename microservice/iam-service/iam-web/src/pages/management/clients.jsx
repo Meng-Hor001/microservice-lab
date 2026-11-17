@@ -1,7 +1,7 @@
-import { useCallback, useState } from "react"
+import { useCallback, useRef, useState } from "react"
 import { useSearchParams } from "react-router-dom"
 import { toast } from "sonner"
-import { AppWindowIcon, CheckIcon, CopyIcon, EllipsisIcon, KeyRoundIcon, PencilIcon, PlusIcon, Trash2Icon } from "lucide-react"
+import { AppWindowIcon, CheckIcon, CopyIcon, EllipsisIcon, KeyRoundIcon, PencilIcon, PlusIcon, Trash2Icon, XIcon } from "lucide-react"
 import { ConfirmDialog } from "@/components/confirm-dialog"
 import { DataBody, DataHead, DataRow, DataTable, revealOnRow, Td, Th } from "@/components/management/data-table"
 import { KeyTag, ListPanel, PageHeader, Pager, PanelError, SearchBox, TableSkeleton } from "@/components/management/states"
@@ -23,7 +23,6 @@ import { Input } from "@/components/ui/input"
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Spinner } from "@/components/ui/spinner"
 import { Switch } from "@/components/ui/switch"
-import { Textarea } from "@/components/ui/textarea"
 import { useAccess } from "@/lib/access"
 import { createClient, deleteClient, listClients, rotateClientSecret, updateClient } from "@/lib/admin-api"
 import { errorText } from "@/lib/errors"
@@ -39,8 +38,8 @@ const EMPTY = {
   clientName: "",
   authenticationMethod: "client_secret_basic",
   grantTypes: ["authorization_code", "refresh_token"],
-  redirectUris: "",
-  postLogoutRedirectUris: "",
+  redirectUris: [""],
+  postLogoutRedirectUris: [""],
   scopes: "openid profile",
   requireProofKey: true,
   requireConsent: false,
@@ -48,11 +47,10 @@ const EMPTY = {
   refreshTokenMinutes: "1440",
 }
 
-const lines = (text) =>
-  text
-    .split("\n")
-    .map((s) => s.trim())
-    .filter(Boolean)
+// The URL rows as sent to the API: trimmed, blanks dropped.
+const lines = (rows) => rows.map((s) => s.trim()).filter(Boolean)
+// Always keep one row to type into.
+const toRows = (list) => (list?.length ? [...list] : [""])
 
 const isUrl = (value) => {
   try {
@@ -69,8 +67,8 @@ function toForm(client) {
     clientName: client.clientName ?? "",
     authenticationMethod: client.authenticationMethod,
     grantTypes: [...client.grantTypes],
-    redirectUris: [...client.redirectUris].join("\n"),
-    postLogoutRedirectUris: [...client.postLogoutRedirectUris].join("\n"),
+    redirectUris: toRows(client.redirectUris),
+    postLogoutRedirectUris: toRows(client.postLogoutRedirectUris),
     scopes: [...client.scopes].join(" "),
     requireProofKey: client.requireProofKey,
     requireConsent: client.requireConsent,
@@ -86,6 +84,91 @@ export function ClientType({ method }) {
     <span className={cn("whitespace-nowrap", isPublic ? "text-muted-foreground" : "text-foreground")}>
       {isPublic ? t("mgmt.clients.public") : t("mgmt.clients.confidential")}
     </span>
+  )
+}
+
+/**
+ * One input per URL. The last row has a + button (enabled once it has text, Enter works too)
+ * that adds an empty row below; every other row has an x to remove it.
+ */
+function UrlListField({ id, label, hint, rows, onChange, error }) {
+  const { t } = useI18n()
+  const listRef = useRef(null)
+  const last = rows.length - 1
+
+  const focusRow = (i) =>
+    requestAnimationFrame(() => listRef.current?.querySelectorAll("input")[i]?.focus())
+
+  const setRow = (i, value) => onChange(rows.map((r, j) => (j === i ? value : r)))
+  const add = () => {
+    if (!rows[last].trim()) return
+    onChange([...rows, ""])
+    focusRow(rows.length)
+  }
+  const remove = (i) => {
+    const next = rows.filter((_, j) => j !== i)
+    onChange(next.length ? next : [""])
+    focusRow(Math.min(i, next.length - 1))
+  }
+
+  return (
+    <Field data-invalid={!!error || undefined}>
+      <FieldLabel htmlFor={`${id}-0`}>{label}</FieldLabel>
+      <ul ref={listRef} className="flex flex-col gap-2">
+        {rows.map((value, i) => {
+          const bad = !!error && !!value.trim() && !isUrl(value.trim())
+          return (
+            <li key={i} className="flex items-center gap-2">
+              <Input
+                id={`${id}-${i}`}
+                type="url"
+                inputMode="url"
+                autoComplete="off"
+                spellCheck={false}
+                className="font-mono"
+                placeholder="https://app.example.com/callback"
+                value={value}
+                aria-invalid={bad || (!!error && rows.length === 1) || undefined}
+                onChange={(e) => setRow(i, e.target.value)}
+                onKeyDown={(e) => {
+                  // Enter adds a row instead of submitting the whole form.
+                  if (e.key === "Enter") {
+                    e.preventDefault()
+                    if (i === last) add()
+                    else focusRow(i + 1)
+                  }
+                }}
+              />
+              {i === last ? (
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="icon"
+                  className="shrink-0"
+                  disabled={!value.trim()}
+                  aria-label={t("mgmt.clients.addUri")}
+                  onClick={add}
+                >
+                  <PlusIcon />
+                </Button>
+              ) : (
+                <Button
+                  type="button"
+                  variant="ghost"
+                  size="icon"
+                  className="shrink-0 text-muted-foreground hover:text-destructive"
+                  aria-label={`${t("mgmt.clients.removeUri")} ${value}`}
+                  onClick={() => remove(i)}
+                >
+                  <XIcon />
+                </Button>
+              )}
+            </li>
+          )
+        })}
+      </ul>
+      {error ? <FieldError>{error}</FieldError> : hint && <FieldDescription>{hint}</FieldDescription>}
+    </Field>
   )
 }
 
@@ -164,20 +247,15 @@ function ClientDialog({ open, client, onOpenChange, onSaved }) {
     </Field>
   )
 
-  const areaField = (key, label, hint) => (
-    <Field data-invalid={!!errors[key] || undefined}>
-      <FieldLabel htmlFor={`client-${key}`}>{label}</FieldLabel>
-      <Textarea
-        id={`client-${key}`}
-        rows={3}
-        className="font-mono"
-        placeholder="https://app.example.com/callback"
-        value={form[key]}
-        onChange={set(key)}
-        aria-invalid={!!errors[key] || undefined}
-      />
-      {errors[key] ? <FieldError>{errors[key]}</FieldError> : <FieldDescription>{hint}</FieldDescription>}
-    </Field>
+  const urlField = (key, label, hint) => (
+    <UrlListField
+      id={`client-${key}`}
+      label={label}
+      hint={hint}
+      rows={form[key]}
+      onChange={(rows) => setForm((f) => ({ ...f, [key]: rows }))}
+      error={errors[key]}
+    />
   )
 
   return (
@@ -212,7 +290,6 @@ function ClientDialog({ open, client, onOpenChange, onSaved }) {
                   </SelectGroup>
                 </SelectContent>
               </Select>
-              <FieldDescription>{t("mgmt.clients.authMethodHint")}</FieldDescription>
             </Field>
 
             <FieldSet data-invalid={!!errors.grantTypes || undefined}>
@@ -239,9 +316,9 @@ function ClientDialog({ open, client, onOpenChange, onSaved }) {
               {errors.grantTypes && <FieldError>{errors.grantTypes}</FieldError>}
             </FieldSet>
 
-            {areaField("redirectUris", t("mgmt.clients.redirectUris"), t("mgmt.clients.redirectUrisHint"))}
-            {areaField("postLogoutRedirectUris", t("mgmt.clients.logoutUris"), t("mgmt.clients.logoutUrisHint"))}
-            {textField("scopes", t("mgmt.clients.scopes"), t("mgmt.clients.scopesHint"), { className: "font-mono" })}
+            {urlField("redirectUris", t("mgmt.clients.redirectUris"))}
+            {urlField("postLogoutRedirectUris", t("mgmt.clients.logoutUris"))}
+            {textField("scopes", t("mgmt.clients.scopes"), null, { className: "font-mono" })}
 
             <div className="grid gap-4 sm:grid-cols-2">
               {textField("accessTokenMinutes", `${t("mgmt.clients.accessToken")} (${t("mgmt.clients.minutes")})`, null, {
